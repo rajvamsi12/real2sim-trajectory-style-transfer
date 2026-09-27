@@ -5,7 +5,7 @@
 [![CARLA 0.9.15](https://img.shields.io/badge/CARLA-0.9.15-orange.svg)](https://carla.org/)
 [![PyTorch](https://img.shields.io/badge/PyTorch-2.0%2B-ee4c2c.svg)](https://pytorch.org/)
 
-Official implementation of **"While in London do as the Gwaliorites do: Style Transfer of Trajectories across Traffic Domains in Real-to-Sim"** by **Dasari Raj Vamsi** and **Rahul Kala** (*Center for Autonomous Systems, ABV-Indian Institute of Information Technology and Management Gwalior, India*).
+Official repository for the research paper: **"While in London do as the Gwaliorites do: Style Transfer of Trajectories across Traffic Domains in Real-to-Sim"** by **Dasari Raj Vamsi** and **Rahul Kala** (*Center for Autonomous Systems, ABV-Indian Institute of Information Technology and Management Gwalior, India*).
 
 ---
 
@@ -209,12 +209,12 @@ The evaluation harness (`compare3.py`) tests driving policies across 100 scenari
 If you find this work or codebase useful in your research, please cite our paper:
 
 ```bibtex
-@inproceedings{vamsi2026london,
+@article{vamsi2026london,
   title={While in London do as the Gwaliorites do: Style Transfer of Trajectories across Traffic Domains in Real-to-Sim},
   author={Dasari Raj Vamsi and Rahul Kala},
-  booktitle={Workshop on the Algorithmic Foundations of Robotics (WAFR)},
+  journal={Preprint / Technical Report},
   year={2026},
-  organization={Center for Autonomous Systems, ABV-IIITM Gwalior}
+  institution={Center for Autonomous Systems, ABV-IIITM Gwalior}
 }
 ```
 
