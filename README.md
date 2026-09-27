@@ -1,6 +1,6 @@
 # While in London do as the Gwaliorites do: Style Transfer of Trajectories across Traffic Domains in Real-to-Sim
 
-[![Paper PDF](https://img.shields.io/badge/Paper-PDF-red.svg)](raj_vamsi_wafr%20.pdf)
+[![Paper PDF](https://img.shields.io/badge/Paper-PDF-red.svg)](raj_vamsi_wafr.pdf)
 [![Python 3.8+](https://img.shields.io/badge/python-3.8%2B-blue.svg)](https://www.python.org/)
 [![CARLA 0.9.15](https://img.shields.io/badge/CARLA-0.9.15-orange.svg)](https://carla.org/)
 [![PyTorch](https://img.shields.io/badge/PyTorch-2.0%2B-ee4c2c.svg)](https://pytorch.org/)
