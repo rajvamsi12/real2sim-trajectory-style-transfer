@@ -1,0 +1,52 @@
+# Python & Bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.pytest_cache/
+
+# Large Datasets & Media
+*.mp4
+*.MP4
+*.avi
+*.mov
+*.deb
+*.tar.gz
+*.zip
+*.pkl
+*.pkl5
+default.json
+dji0003_data.csv
+selected_annotations*.json
+scenario_catalog.html
+index.html
+town10_autopilot_convoy_log.csv
+overtaking.txt
+tids.txt
+tids2.txt
+tids_direction_unassigned.txt
+
+# Model Checkpoints & Logs
+checkpoints/
+runs/
+*.pth
+*.pt
+*.onnx
+lr_*
+
+# Simulation Outputs & Temporary Runs
+_scenario_output/
+_scenario_output2/
+Scenariosssss/
+output/
+scenario_replays/
+scenario_snapshots/
+test/
+safe_run/
+archive/
+
+# IDE & OS Files
+.DS_Store
+.vscode/
+.idea/
+.codex
