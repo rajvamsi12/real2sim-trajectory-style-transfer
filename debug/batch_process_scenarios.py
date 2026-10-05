@@ -279,7 +279,7 @@ def run_stage_2_time_method(scenario_dir, summary_data, annotation_parser):
         # Slice transformed CARLA coordinates for scenario range [start_frame .. end_frame]
         carla_pts = []
         for frame, c_pt in zip(all_frames, all_carla_coords):
-            if start_frame <= frame <= end_frame:
+            if start_frame <= frame <= end_frame and c_pt is not None:
                 carla_pts.append({
                     "frame": frame,
                     "x": float(c_pt[0]),
@@ -306,6 +306,7 @@ def run_stage_3_spawns(scenario_dir, summary_data, annotation_parser, dji_spawn_
 
     raw_spawns = {}
     retracted_spawns = {}
+    stage3_test_actors = []
 
     for tid in vehicle_ids:
         if tid not in annotation_parser.track_data:
@@ -376,7 +377,16 @@ def run_stage_3_spawns(scenario_dir, summary_data, annotation_parser, dji_spawn_
                 annotation_parser=annotation_parser,
                 tid=tid, interaction_frame=init_frame
             )
-            chosen_tf = candidates[0][0] if candidates else carla.Transform(base_loc, carla.Rotation(yaw=carla_yaw))
+            chosen_tf = None
+            bp = world.get_blueprint_library().find(bp_name)
+            for cand_tf, strategy in candidates:
+                test_actor = world.try_spawn_actor(bp, cand_tf)
+                if test_actor is not None:
+                    chosen_tf = cand_tf
+                    stage3_test_actors.append(test_actor)
+                    break
+            if chosen_tf is None and candidates:
+                chosen_tf = candidates[0][0]
         else:
             chosen_tf = None
 
@@ -393,6 +403,10 @@ def run_stage_3_spawns(scenario_dir, summary_data, annotation_parser, dji_spawn_
                 "yaw": float(chosen_tf.rotation.yaw),
                 "roll": float(chosen_tf.rotation.roll),
             }
+
+    for act in stage3_test_actors:
+        if act and act.is_alive:
+            act.destroy()
         else:
             retracted_spawns[str(tid)] = raw_spawns[str(tid)]
 

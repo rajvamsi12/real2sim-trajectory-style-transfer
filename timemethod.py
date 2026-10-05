@@ -203,18 +203,20 @@ def transform_trajectory_with_analysis(real_coords):
                 carla_coord = tuple(M_blend @ np.array([x, y, 1]))
             else:
                 # Fallback to entry region if exit unknown
-                M = transformation_matrices.get(entry_region, transformation_matrices['East'])
+                M = transformation_matrices.get(entry_region, transformation_matrices['Region_1'])
                 x, y = real_coord
                 carla_coord = tuple(M @ np.array([x, y, 1]))
         else:
             # Standard transformation for non-center points inside the 6 regions
             if region == 'Unclassified':
-                # Trim points that lie outside the 6 regions and outside Center
-                continue
-            carla_coord = transform_to_carla(real_coord)
+                carla_coord = None
+            else:
+                carla_coord = transform_to_carla(real_coord)
         
         if carla_coord is not None:
             carla_coords.append((carla_coord[0], carla_coord[1]))
+        else:
+            carla_coords.append(None)
     
     return carla_coords
 
