@@ -186,6 +186,35 @@ def load_frame_detections(
     track_hits = {track_id: 0 for track_id in track_ids}
     detections: FrameDetections = {}
 
+    if annotation_path.endswith(".csv"):
+        import pandas as pd
+        import ast
+        df = pd.read_csv(annotation_path)
+        for row in df.itertuples():
+            tid = int(row.trackID)
+            if tid not in target_ids:
+                continue
+            fr_str = str(row.frameID)
+            fr = int(fr_str.split('_')[-1]) if 'frame_' in fr_str else int(float(fr_str))
+            if not (start_frame <= fr <= end_frame):
+                continue
+
+            try:
+                coords = ast.literal_eval(row.kf_obbox_coord_pixel)
+                xs = [c[0] for c in coords]
+                ys = [c[1] for c in coords]
+                left, top = int(round(min(xs))), int(round(min(ys)))
+                right, bottom = int(round(max(xs))), int(round(max(ys)))
+            except Exception:
+                cx, cy = float(row.kf_cx_pixel), float(row.kf_cy_pixel)
+                left, top, right, bottom = int(cx - 15), int(cy - 15), int(cx + 15), int(cy + 15)
+
+            if fr not in detections:
+                detections[fr] = []
+            detections[fr].append((tid, (left, top, right, bottom)))
+            track_hits[tid] += 1
+        return detections, track_hits
+
     for frame_index, item in enumerate(iter_annotation_items(annotation_path)):
         if frame_index > end_frame:
             break

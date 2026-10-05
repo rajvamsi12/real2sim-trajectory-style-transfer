@@ -12,13 +12,14 @@ For each scenario, generates:
 - Stage 1, 2, 3 data JSONs & spawn plots
 - trajectory_comparison.png (Trajectory plot)
 - trajectory_video_without_avoidance.mp4 (CARLA top-down video with EGO vehicle clearly marked in Green HUD)
-- real_drone_video.mp4 (Real drone map video with EGO vehicle clearly marked in Neon Green BBox & active vehicles only)
+- real_drone_video.mp4 (Real moving drone video from DJI_0003-002.MP4 with EGO and vehicle bounding boxes overlaid)
 """
 
 import os
 import sys
 import json
 import math
+import subprocess
 import cv2
 import numpy as np
 import carla
@@ -37,7 +38,7 @@ from debug.batch_process_scenarios import (
 )
 
 STABILIZE_EKF_CSV = os.path.join(SCRIPT_DIR, "stabilize_ekf_final2.csv")
-DRONE_MAP_PATH = os.path.join(SCRIPT_DIR, "drone_background_map.png")
+REAL_DRONE_VIDEO_PATH = os.path.join(SCRIPT_DIR, "DJI_0003-002.MP4")
 SCENARIOS_DIR = os.path.join(SCRIPT_DIR, "Scenariosssss")
 
 # First strictly unique 100% in-box scenarios for the 5 behaviors
@@ -49,63 +50,21 @@ TARGET_SCENARIOS = {
     "Overtaking Right": {"ego_id": 10, "other_ids": [163], "start_frame": 62, "end_frame": 79},
 }
 
-def render_real_drone_video(scenario_dir, summary_data, annotation_parser):
-    """Render real drone map video with EGO vehicle clearly highlighted in Neon Green and only active vehicles drawn."""
-    start_frame, end_frame, vehicle_ids, highlight_ids, ego_id = summary_data
+def render_real_drone_video(scenario_dir):
+    """Render real moving drone MP4 video (DJI_0003-002.MP4) with real camera footage and vehicle bounding boxes overlaid."""
     out_video_path = os.path.join(scenario_dir, "real_drone_video.mp4")
-    print(f"  Rendering Real Drone Video -> {os.path.basename(out_video_path)}...")
-
-    if not os.path.exists(DRONE_MAP_PATH):
-        print(f"Error: Map image not found at {DRONE_MAP_PATH}")
-        return
-
-    base_map = cv2.imread(DRONE_MAP_PATH)
-    orig_h, orig_w = base_map.shape[:2]
-
-    # Target render dimensions (1280x720)
-    target_w, target_h = 1280, 720
-    fourcc = cv2.VideoWriter_fourcc(*"mp4v")
-    video_writer = cv2.VideoWriter(out_video_path, fourcc, 10.0, (target_w, target_h))
-
-    for frame in range(start_frame, end_frame + 1):
-        frame_img = base_map.copy()
-
-        # Render active participating vehicles for this frame ONLY
-        for tid in vehicle_ids:
-            if tid in annotation_parser.track_data:
-                t_dict = annotation_parser.track_data[tid]
-                traj = t_dict.get("trajectory", {})
-                # FIX: Only draw vehicle if it is actively present on this exact frame!
-                if frame in traj:
-                    mx, my_neg = traj[frame]
-                    my = -my_neg  # Image space Y is positive downwards
-                    u, v = int(round(mx)), int(round(my))
-
-                    is_ego = (tid == ego_id)
-                    color = (0, 255, 0) if is_ego else (0, 165, 255)  # Green for EGO, Orange for others
-                    box_size = 35 if is_ego else 22
-                    thickness = 4 if is_ego else 2
-
-                    # Draw Bounding Box
-                    x1, y1 = max(0, u - box_size), max(0, v - box_size)
-                    x2, y2 = min(orig_w - 1, u + box_size), min(orig_h - 1, v + box_size)
-                    cv2.rectangle(frame_img, (x1, y1), (x2, y2), color, thickness)
-                    cv2.circle(frame_img, (u, v), 6 if is_ego else 4, color, -1)
-
-                    # Label text
-                    lbl = f"EGO vehicle_{tid}" if is_ego else f"vehicle_{tid}"
-                    cv2.rectangle(frame_img, (x1 - 2, y1 - 22), (x1 + len(lbl)*11, y1), (0, 0, 0), -1)
-                    cv2.putText(frame_img, lbl, (x1, y1 - 6), cv2.FONT_HERSHEY_SIMPLEX, 0.55 if is_ego else 0.45, color, 2 if is_ego else 1, cv2.LINE_AA)
-
-        # Header status banner
-        cv2.rectangle(frame_img, (20, 20), (850, 80), (20, 20, 30), -1)
-        cv2.rectangle(frame_img, (20, 20), (850, 80), (0, 255, 0), 2)
-        cv2.putText(frame_img, f"REAL DRONE VIDEO | Frame {frame} | EGO VEHICLE: vehicle_{ego_id}", (35, 58), cv2.FONT_HERSHEY_SIMPLEX, 0.75, (0, 255, 0), 2, cv2.LINE_AA)
-
-        resized_frame = cv2.resize(frame_img, (target_w, target_h))
-        video_writer.write(resized_frame)
-
-    video_writer.release()
+    summary_path = os.path.join(scenario_dir, "scenario_0001_summary.txt")
+    
+    print(f"  Rendering Real Drone MP4 Video -> {os.path.basename(out_video_path)}...")
+    cmd = [
+        sys.executable,
+        os.path.join(SCRIPT_DIR, "overlay_scenario_bboxes.py"),
+        "--summary", summary_path,
+        "--annotations", STABILIZE_EKF_CSV,
+        "--video", REAL_DRONE_VIDEO_PATH,
+        "--output", out_video_path
+    ]
+    subprocess.run(cmd, check=True)
     print(f"  Saved {os.path.basename(out_video_path)}")
 
 def main():
@@ -134,14 +93,18 @@ def main():
         print(f"  Ego ID: {ego_id}, Others: {other_ids}, Frames: [{sf} .. {ef}]")
         print(f"=======================================================")
 
-        # Create scenario_0001_summary.txt
+        # Create scenario_0001_summary.txt in standard format for overlay_scenario_bboxes.py
         summary_txt = os.path.join(sc_folder, "scenario_0001_summary.txt")
         with open(summary_txt, "w") as f:
             f.write(f"Start Frame: {sf}\n")
             f.write(f"End Frame: {ef}\n")
-            f.write(f"All Vehicle IDs: {all_ids}\n")
-            f.write(f"Highlight Vehicle IDs: {all_ids}\n")
-            f.write(f"Ego Vehicle ID: {ego_id}\n")
+            f.write(f"Ego ID: {ego_id}\n\n")
+            f.write("Highlight IDs:\n")
+            for v_id in all_ids:
+                f.write(f"- {v_id}\n")
+            f.write("\nVehicles:\n")
+            for v_id in all_ids:
+                f.write(f"- {v_id}\n")
 
         summary_data = (sf, ef, all_ids, all_ids, ego_id)
 
@@ -154,17 +117,17 @@ def main():
         # Stage 3: Spawn Extraction
         run_stage_3_spawns(sc_folder, summary_data, parser, dji_spawn_params=None, world=world)
 
-        # Stage 4: Real Drone Video & Visual Plots
-        render_real_drone_video(sc_folder, summary_data, parser)
+        # Stage 4: Real Moving Drone MP4 Video Overlay (DJI_0003-002.MP4)
+        render_real_drone_video(sc_folder)
 
-        # Stage 4: Top-Down CARLA Video (Without Avoidance only as requested)
+        # Stage 4: Top-Down CARLA Video
         render_trajectory_comparison_map(client, world, sc_folder, summary_data)
         render_carla_simulation_video(
             client, world, sc_folder, summary_txt, summary_data,
             parser, dji_spawn_params=None, enable_avoidance=False
         )
 
-    print("\nAll 5 first behavior scenarios successfully generated!")
+    print("\nAll 5 first behavior scenarios successfully generated with real drone MP4 video footage!")
 
 if __name__ == "__main__":
     main()
