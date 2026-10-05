@@ -3,24 +3,57 @@ import numpy as np
 import json
 import os
 
-# Precomputed affine transformation matrices for each region
+# --- OLD 4-REGION MATRICES (COMMENTED OUT AS REQUESTED) ---
+# transformation_matrices_old = {
+#     'East': np.array([[-0.00961, 0.0874, 37.558], [0.128, -0.0169, -159.376]]),
+#     'West': np.array([[0.0248, 0.069, -29.205], [0.1209, -0.0678, -183.564]]),
+#     'North': np.array([[0.00135, 0.138, 54.305], [0.1505, 0.0006, -180.504]]),
+#     'South': np.array([[0.01824, 0.1271, 25.640], [0.1369, -0.0033, -168.171]]),
+#     'Center Intersection': np.array([
+#         [-0.045097, 0.103548, 99.947758],
+#         [0.174581, -0.022419, -230.880645]
+#     ])
+# }
+
+# --- NEW 6-REGION MATRICES ---
 transformation_matrices = {
-    'East': np.array([[-0.00961, 0.0874, 37.558], [0.128, -0.0169, -159.376]]),
-    'West': np.array([[0.0248, 0.069, -29.205], [0.1209, -0.0678, -183.564]]),
-    'North': np.array([[0.00135, 0.138, 54.305], [0.1505, 0.0006, -180.504]]),
-    'South': np.array([[0.01824, 0.1271, 25.640], [0.1369, -0.0033, -168.171]]),
-    'Center Intersection': np.array([
-        [-0.045097, 0.103548, 99.947758],
-        [0.174581, -0.022419, -230.880645]
+    'Region_1': np.array([
+        [ 9.15789638e-16, -1.62601626e-01, -1.76328455e+02],
+        [ 1.41000000e-01,  7.18861789e-03, -1.45854187e+02]
+    ]),
+    'Region_2': np.array([
+        [-4.99830858e-16, -1.62074554e-01, -1.75370502e+02],
+        [ 1.32966643e-01, -5.79459667e-03, -1.74976481e+02]
+    ]),
+    'Region_3': np.array([
+        [-1.84595207e-02,  1.58203852e-01,  9.58468818e+01],
+        [-1.50247737e-01, -1.15397598e-02,  2.11009803e+02]
+    ]),
+    'Region_4': np.array([
+        [-1.75309936e-02,  1.49335088e-01,  1.04903592e+02],
+        [-1.49625364e-01, -1.42148462e-02,  2.07787633e+02]
+    ]),
+    'Region_5': np.array([
+        [ 7.67514596e-02,  1.35989693e-01, -5.03501531e+01],
+        [-1.37220307e-01,  6.20209705e-02,  2.38349570e+02]
+    ]),
+    'Region_6': np.array([
+        [ 8.02705481e-02,  1.40459425e-01, -3.21354719e+01],
+        [-1.38938860e-01,  5.93620991e-02,  2.37906466e+02]
     ])
 }
 
 region_definitions = {
-    'West': [(1212, -605), (1125, -760), (0, -130), (100, 0), (1212, -605)],
-    'South': [(1200, -890), (1450, -890), (1450, -1512), (1200, -1512), (1200, -890)],
-    'East': [(1425, -885), (1425, -690), (2688, -580), (2688, -730), (1425, -885)],
-    'North': [(1425, -680), (1220, -635), (1280, 0), (1430, 0), (1425, -680)]
+    'Region_1': [(1243, -895), (1293, -895), (1324, -1510), (1274, -1510), (1243, -895)],
+    'Region_2': [(1363, -892), (1413, -892), (1394, -1509), (1338, -1509), (1363, -892)],
+    'Region_3': [(1432, -735), (1435, -785), (1943, -724), (1938.5, -677), (1432, -735)],
+    'Region_4': [(1435, -798), (1440, -848), (1948, -788), (1943.5, -738), (1435, -798)],
+    'Region_5': [(1190, -644), (1166, -696), (548, -344), (569.5, -297), (1190, -644)],
+    'Region_6': [(1159, -704), (1137, -755), (520.5, -401), (541, -352.5), (1159, -704)]
 }
+
+center_x, center_y = 1344, -756
+center_radius = 220
 
 def point_in_polygon(point, polygon):
     x, y = point
@@ -43,9 +76,8 @@ def classify_point(point):
         if point_in_polygon(point, polygon):
             return region
     # Center intersection check
-    cx, cy = (1344, -756)
-    distance = math.hypot(point[0]-cx, point[1]-cy)
-    return 'Center Intersection' if distance <= 200 else 'Unclassified'
+    distance = math.hypot(point[0]-center_x, point[1]-center_y)
+    return 'Center' if distance <= center_radius else 'Unclassified'
 
 def transform_to_carla(real_point):
     region = classify_point(real_point)
@@ -99,5 +131,5 @@ def process_track_id_bboxes(input_file, target_track_id):
                     print(f"  Midpoint (real): {real_coord}")
                     print(f"  Transformed (CARLA): {carla_coord}\n")
 
-# Example usage:
-process_track_id_bboxes('selected_annotations.json', 1162)
+if __name__ == '__main__':
+    process_track_id_bboxes('selected_annotations.json', 1162)

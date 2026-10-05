@@ -19,15 +19,16 @@ import queue
 from functools import reduce
 from itertools import combinations
 
-# Add CARLA egg path if needed
-egg_path = "/home/raj/CARLA_0.9.15/PythonAPI/carla/dist/carla-0.9.15-py3.7-linux-x86_64.egg"
-if os.path.exists(egg_path) and egg_path not in sys.path:
-    sys.path.insert(0, egg_path)
+# Add CARLA egg path if needed (only for legacy Python < 3.8)
+if sys.version_info < (3, 8):
+    egg_path = "/home/raj/CARLA_0.9.15/PythonAPI/carla/dist/carla-0.9.15-py3.7-linux-x86_64.egg"
+    if os.path.exists(egg_path) and egg_path not in sys.path:
+        sys.path.insert(0, egg_path)
 
 sys.path.insert(0, "/home/raj/Desktop/carlascripts")
 
 from overlay_scenario_bboxes import parse_summary_file
-from newtimemethod import (
+from timemethod import (
     transform_trajectory_with_analysis,
     classify_point,
     transformation_matrices,
@@ -61,11 +62,11 @@ SNAP_FALLBACK_DISTANCE = 1.5
 LATERAL_SHIFT_OPTIONS = [2.0, -2.0, 4.0, -4.0]
 Z_ELEVATION_OFFSETS = [0.0, 0.2, 0.5, 1.0, 1.5, 2.0]
 
-# --- Real-time Avoidance Configuration (Identical to scenario_new4.py) ---
+# --- Real-time Avoidance Configuration ---
 AVOIDANCE_HORIZON_S = 3.5
 AVOIDANCE_IMMINENT_TTC_S = 1.5
-AVOIDANCE_SAFETY_RADIUS_M = 3.0
-AVOIDANCE_FRONT_COS_THRESHOLD = 0.30
+AVOIDANCE_SAFETY_RADIUS_M = 4.0
+AVOIDANCE_FRONT_COS_THRESHOLD = -0.50
 AVOIDANCE_DEBUG = True
 AVOIDANCE_LOG_INTERVAL_S = 1.0
 
@@ -219,8 +220,10 @@ def safe_next_target(world, ego, base_target_loc, base_target_speed, horizon=AVO
             safety_r=dynamic_safety_r,
             horizon=horizon,
         )
-        if ttc is not None and closing_speed_mps > 0.05:
-            threats.append((ttc, a, a_loc, dist, closing_speed_mps, ahead_cos, dynamic_safety_r))
+        # Detect threat if vehicle is within dynamic safety radius OR predicted TTC within horizon
+        if dist < dynamic_safety_r or (ttc is not None and closing_speed_mps > 0.01):
+            effective_ttc = ttc if (ttc is not None and closing_speed_mps > 0.01) else (dist / 5.0)
+            threats.append((effective_ttc, a, a_loc, dist, closing_speed_mps, ahead_cos, dynamic_safety_r))
 
     if not threats:
         return base_target_loc, base_target_speed, False, {
@@ -246,7 +249,7 @@ def safe_next_target(world, ego, base_target_loc, base_target_speed, horizon=AVO
         "threat_speed_kmh": threat_speed_kmh,
     }
 
-    nudged = avoidance_adjustment(world, ego, base_target_loc, threat_loc, max_offset=0.8)
+    nudged = avoidance_adjustment(world, ego, base_target_loc, threat_loc, max_offset=1.5)
 
     if nudged:
         nudge_is_safe = True
@@ -273,14 +276,14 @@ def safe_next_target(world, ego, base_target_loc, base_target_speed, horizon=AVO
 
         if nudge_is_safe:
             debug_info["reason"] = "nudge_safe_slowdown"
-            return nudged, max(0.833, 0.5*base_target_speed), True, debug_info
+            return nudged, max(0.0, 0.2*base_target_speed), True, debug_info
 
-    if ttc < AVOIDANCE_IMMINENT_TTC_S:
-        debug_info["reason"] = "imminent_ttc_stop"
+    if threat_dist < primary_safety_r or ttc < AVOIDANCE_IMMINENT_TTC_S:
+        debug_info["reason"] = "imminent_proximity_stop"
         return base_target_loc, 0.0, True, debug_info
 
     debug_info["reason"] = "slowdown_no_safe_nudge"
-    return base_target_loc, max(0.833, 0.5*base_target_speed), True, debug_info
+    return base_target_loc, max(0.0, 0.2*base_target_speed), True, debug_info
 
 
 def blend_back(current_loc, annotated_loc, alpha=0.2):
@@ -461,8 +464,9 @@ class AnnotationParser:
 
 
 class CapturingVehicle(SimVehicle):
-    def __init__(self, world, bp, name, start, yaw, output_path, start_delay=0, start_capture_time=0, end_capture_time=float("inf")):
+    def __init__(self, world, bp, name, start, yaw, output_path, start_delay=0, start_capture_time=0, end_capture_time=float("inf"), enable_avoidance=True):
         super().__init__(world, bp, name, start, yaw, start_delay)
+        self.enable_avoidance = enable_avoidance
         self.collision_sensor = None
         self.has_collided = False
         self._recent_risky = 0
@@ -486,7 +490,7 @@ class CapturingVehicle(SimVehicle):
             self.has_collided = True
             logging.warning(f"!!! Collision DETECTED for {self.name} with {event.other_actor.type_id}")
 
-    # --- Standard Clean Avoidance Execution (Identical to scenario_new4.py) ---
+    # --- Standard Clean Avoidance Execution ---
     def _apply_avoidance(self, simulation_time):
         if not hasattr(self, "dense_route") or not self.vehicle or not self.vehicle.is_alive or self.wp_index >= len(self.dense_route):
             return
@@ -500,22 +504,39 @@ class CapturingVehicle(SimVehicle):
         )
 
         if risky:
-            action = "halt" if adj_spd == 0.0 else "adjust"
-            state = f"{action}:{dbg.get('reason')}"
-            self.dense_route[self.wp_index] = (DummyWaypoint(carla.Transform(adj_loc, original_wp.transform.rotation)), adj_spd)
+            action = "halt" if adj_spd <= 1.0 else "adjust"
+            threat_name = dbg.get("primary_threat_name", "vehicle")
+            self.last_avoidance_event = f"{self.name}: {action} (Threat: {threat_name})"
+            if simulation_time - self._last_avoidance_log_time >= AVOIDANCE_LOG_INTERVAL_S:
+                print(f"  [AVOIDANCE ACTIVATED] {self.name}: {action} target speed from {original_spd:.1f} to {adj_spd:.1f} km/h (Threat: {threat_name})")
+                self._last_avoidance_log_time = simulation_time
+
+            # Update upcoming waypoints in dense_route slice so avoidance speed & location persist!
+            end_idx = min(len(self.dense_route), self.wp_index + 40)
+            for idx in range(self.wp_index, end_idx):
+                old_wp, _ = self.dense_route[idx]
+                self.dense_route[idx] = (DummyWaypoint(carla.Transform(adj_loc, old_wp.transform.rotation)), adj_spd)
+
+            # Apply immediate strong brake control to physically decelerate the CARLA vehicle
+            self.vehicle.apply_control(carla.VehicleControl(throttle=0.0, brake=0.9, hand_brake=(adj_spd <= 1.0)))
+
             self._recent_risky = 0
-        elif 0 < self._recent_risky < self._safe_frames_to_blend:
-            blended = blend_back(self.vehicle.get_transform().location, original_wp.transform.location, self._blend_alpha)
-            self.dense_route[self.wp_index] = (DummyWaypoint(carla.Transform(blended, original_wp.transform.rotation)), original_spd)
-            self._recent_risky += 1
         else:
-            self._recent_risky = max(self._recent_risky, self._safe_frames_to_blend + 1)
+            self.last_avoidance_event = None
+            if 0 < self._recent_risky < self._safe_frames_to_blend:
+                blended = blend_back(self.vehicle.get_transform().location, original_wp.transform.location, self._blend_alpha)
+                self.dense_route[self.wp_index] = (DummyWaypoint(carla.Transform(blended, original_wp.transform.rotation)), original_spd)
+                self._recent_risky += 1
+            else:
+                self._recent_risky = max(self._recent_risky, self._safe_frames_to_blend + 1)
 
     def update(self, simulation_time, sim_vehicles):
-        try:
-            self._apply_avoidance(simulation_time)
-        except Exception:
-            pass
+        if self.enable_avoidance:
+            try:
+                self._apply_avoidance(simulation_time)
+            except Exception as e:
+                logging.error(f"Avoidance error for {self.name} at time {simulation_time:.2f}s: {e}", exc_info=True)
+                raise e
         return super().update(simulation_time, sim_vehicles)
 
     def destroy(self):
