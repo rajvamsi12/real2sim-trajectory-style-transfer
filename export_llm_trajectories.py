@@ -2,7 +2,8 @@ import json
 import math
 import os
 
-INPUT_FILE = "/home/raj/Desktop/carlascripts/default.json"
+STABILIZE_EKF_CSV = "/home/raj/Desktop/carlascripts/stabilize_ekf_final2.csv"
+INPUT_FILE = STABILIZE_EKF_CSV if os.path.exists(STABILIZE_EKF_CSV) else "/home/raj/Desktop/carlascripts/default.json"
 TIDS_FILE = "/home/raj/Desktop/carlascripts/tids.txt"
 JSON_OUTPUT = "/home/raj/Desktop/carlascripts/llm_trajectory_prompts.json"
 
