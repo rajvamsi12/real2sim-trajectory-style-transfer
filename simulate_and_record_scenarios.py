@@ -55,9 +55,9 @@ DEFAULT_Z = 0.6
 REAL_WORLD_FPS = 4.27
 SPEED_CORRECTION_FACTOR = 1.0
 
-# --- Spawn Retraction Configuration (Identical to scenario_new4.py) ---
-SPAWN_SAFETY_MARGIN = 3.5
-MAX_RETRACTION_ATTEMPTS = 10
+# --- Spawn Retraction Configuration (Enhanced for tight Cut-In/Overtaking scenarios) ---
+SPAWN_SAFETY_MARGIN = 2.5
+MAX_RETRACTION_ATTEMPTS = 25
 RETRACTION_STEP = 0.5
 SNAP_FALLBACK_DISTANCE = 1.5
 LATERAL_SHIFT_OPTIONS = [2.0, -2.0, 4.0, -4.0]
@@ -74,9 +74,10 @@ AVOIDANCE_LOG_INTERVAL_S = 1.0
 # --- Vehicle Label Mapping ---
 LABEL_BLUEPRINT_MAP = {
     0: "vehicle.micro.microlino",    # 3-wheeler
-    1: "vehicle.bmw.grandtourer",    # 4-wheeler
-    2: "vehicle.kawasaki.ninja",     # 2-wheeler
+    1: "vehicle.bmw.grandtourer",    # 4-wheeler / Car
+    2: "vehicle.kawasaki.ninja",     # 2-wheeler / Motorcycle
     3: "vehicle.volkswagen.t2",      # Bus
+    4: "vehicle.bmw.grandtourer",    # Unknown -> default to Car
     5: "vehicle.mercedes.sprinter"   # Truck
 }
 
@@ -355,9 +356,9 @@ def build_spawn_search_transforms(world, base_spawn_point, initial_yaw, annotati
                 p_pt = traj_dict[p_frame]
                 next_pt = traj_dict.get(p_frame + 1, p_pt)
                 carla_p_pts = transform_trajectory_with_analysis([p_pt, next_pt])
-                if len(carla_p_pts) >= 1:
+                if len(carla_p_pts) >= 1 and carla_p_pts[0] is not None:
                     p_loc = carla.Location(x=carla_p_pts[0][0], y=carla_p_pts[0][1], z=base_spawn_point.z)
-                    p_yaw = estimate_trajectory_yaw(carla_p_pts) if len(carla_p_pts) >= 2 else initial_yaw
+                    p_yaw = estimate_trajectory_yaw([pt for pt in carla_p_pts if pt is not None]) if len([pt for pt in carla_p_pts if pt is not None]) >= 2 else initial_yaw
                     add_raw_candidate(p_loc, p_yaw, f"traj_retract_frame_{p_frame}")
 
     # 3. Vector-based Backward Retraction
