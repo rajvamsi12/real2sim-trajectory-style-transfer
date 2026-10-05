@@ -352,7 +352,9 @@ def run_stage_3_spawns(scenario_dir, summary_data, annotation_parser, dji_spawn_
         if carla_yaw is None:
             carla_yaw = traj_hint if traj_hint is not None else 0.0
 
-        label_id = t_data.get("label", 1)
+        label_id = t_data.get("label_id", t_data.get("label", 1))
+        if label_id is None:
+            label_id = 1
         bp_name = LABEL_BLUEPRINT_MAP.get(label_id, "vehicle.bmw.grandtourer")
 
         # RAW SPAWN (Without Retraction)
