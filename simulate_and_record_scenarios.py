@@ -38,7 +38,8 @@ from scc import SimVehicle, DummyWaypoint
 # --- Configuration (Identical to scenario_new4.py) ---
 SIM_FPS = 20
 
-INPUT_FILE = "/home/raj/Desktop/carlascripts/default.json"
+STABILIZE_EKF_CSV = "/home/raj/Desktop/carlascripts/stabilize_ekf_final2.csv"
+INPUT_FILE = STABILIZE_EKF_CSV if os.path.exists(STABILIZE_EKF_CSV) else "/home/raj/Desktop/carlascripts/default.json"
 TIDS_FILE = "/home/raj/Desktop/carlascripts/tids.txt"
 DJI_DATA_FILE = "/home/raj/Desktop/carlascripts/dji0003_data.csv"
 OUTPUT_DIR = "/home/raj/Desktop/carlascripts/_scenario_output"
@@ -417,28 +418,63 @@ class AnnotationParser:
         if not os.path.exists(filepath):
             logging.error(f"Annotation file not found at {filepath}")
             return
-        with open(filepath, "r") as f:
-            data = json.load(f)
 
-        for frame_idx, item in enumerate(data.get("items", [])):
-            self.frame_data[frame_idx] = []
-            for ann in item.get("annotations", []):
-                attributes = ann.get("attributes", {})
-                tid = attributes.get("track_id")
-                label_id = ann.get("label_id")
+        if filepath.endswith(".csv"):
+            import pandas as pd
+            print(f"Loading EKF dataset from CSV: {filepath}...")
+            df = pd.read_csv(filepath)
+            for row in df.itertuples():
+                tid = int(row.trackID)
+                fr_str = str(row.frameID)
+                fr = int(fr_str.split('_')[-1]) if 'frame_' in fr_str else int(fr_str)
+                label_id = int(row.labelID)
 
-                if tid is not None:
-                    if tid not in self.track_data:
-                        self.track_data[tid] = {"label_id": label_id, "trajectory": {}}
+                if tid not in self.track_data:
+                    self.track_data[tid] = {
+                        "label_id": label_id,
+                        "trajectory": {},
+                        "headings": {},
+                        "speeds": {},
+                    }
 
-                    bbox = ann.get("bbox")
-                    if bbox and len(bbox) == 4:
-                        x, y, w, h = bbox
-                        center_x = x + w / 2.0
-                        center_y = -(y + h / 2.0)
-                        self.track_data[tid]["trajectory"][frame_idx] = (center_x, center_y)
+                cx = float(row.kf_cx_pixel)
+                cy = -float(row.kf_cy_pixel)
+                self.track_data[tid]["trajectory"][fr] = (cx, cy)
+                self.track_data[tid]["headings"][fr] = float(row.heading_angle)
+                self.track_data[tid]["speeds"][fr] = float(row.linear_speed_meter_per_sec)
 
-                    self.frame_data[frame_idx].append(tid)
+                if fr not in self.frame_data:
+                    self.frame_data[fr] = []
+                self.frame_data[fr].append(tid)
+            print(f"Loaded {len(self.track_data)} track IDs from EKF CSV dataset.")
+        else:
+            with open(filepath, "r") as f:
+                data = json.load(f)
+
+            for frame_idx, item in enumerate(data.get("items", [])):
+                self.frame_data[frame_idx] = []
+                for ann in item.get("annotations", []):
+                    attributes = ann.get("attributes", {})
+                    tid = attributes.get("track_id")
+                    label_id = ann.get("label_id")
+
+                    if tid is not None:
+                        if tid not in self.track_data:
+                            self.track_data[tid] = {
+                                "label_id": label_id,
+                                "trajectory": {},
+                                "headings": {},
+                                "speeds": {},
+                            }
+
+                        bbox = ann.get("bbox")
+                        if bbox and len(bbox) == 4:
+                            x, y, w, h = bbox
+                            center_x = x + w / 2.0
+                            center_y = -(y + h / 2.0)
+                            self.track_data[tid]["trajectory"][frame_idx] = (center_x, center_y)
+
+                        self.frame_data[frame_idx].append(tid)
 
     def get_sliced_trajectory_coords(self, tid, start_frame, num_frames):
         coords = []

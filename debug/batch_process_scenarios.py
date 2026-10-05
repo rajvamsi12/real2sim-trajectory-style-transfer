@@ -69,7 +69,8 @@ except ImportError:
     print("Warning: carla library not found in Python environment.")
 
 DEFAULT_SCENARIOS_DIR = os.path.join(BASE_DIR, "Scenariosssss")
-DEFAULT_JSON = os.path.join(BASE_DIR, "default.json")
+STABILIZE_EKF_CSV = os.path.join(BASE_DIR, "stabilize_ekf_final2.csv")
+DEFAULT_JSON = STABILIZE_EKF_CSV if os.path.exists(STABILIZE_EKF_CSV) else os.path.join(BASE_DIR, "default.json")
 DEFAULT_DJI_DATA = os.path.join(BASE_DIR, "dji0003_data.csv")
 
 
