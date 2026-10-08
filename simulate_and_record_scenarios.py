@@ -81,12 +81,14 @@ LABEL_BLUEPRINT_MAP = {
     5: "vehicle.mercedes.sprinter"   # Truck (Real avg length: 3.90m, CARLA: 5.92m)
 }
 
+# Real Dataset Dimension Override Table (Radius = Half Length)
 APPROX_BLUEPRINT_CLEARANCE_RADII = {
-    "vehicle.kawasaki.ninja": 1.3,
-    "vehicle.micro.microlino": 1.6,
-    "vehicle.bmw.grandtourer": 2.0,
-    "vehicle.mercedes.sprinter": 2.5,
-    "vehicle.volkswagen.t2": 2.7,
+    "vehicle.kawasaki.ninja": 0.95,    # 1.90m / 2 (Real Motorcycle length)
+    "vehicle.micro.microlino": 1.05,   # 2.11m / 2 (Real 3-wheeler length)
+    "vehicle.nissan.micra": 1.35,      # 2.70m / 2 (Real 4-wheeler car length override)
+    "vehicle.bmw.grandtourer": 1.35,   # 2.70m / 2 (Real 4-wheeler car length override)
+    "vehicle.mercedes.sprinter": 1.95, # 3.90m / 2 (Real Truck length)
+    "vehicle.volkswagen.t2": 2.24,     # 4.48m / 2 (Real Bus length)
 }
 
 
