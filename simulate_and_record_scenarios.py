@@ -71,14 +71,14 @@ AVOIDANCE_FRONT_COS_THRESHOLD = -0.50
 AVOIDANCE_DEBUG = True
 AVOIDANCE_LOG_INTERVAL_S = 1.0
 
-# --- Vehicle Label Mapping ---
+# --- Vehicle Label Mapping (DJI_003 Dataset Rule: Label 4 is Pedestrian -> EXCLUDED) ---
 LABEL_BLUEPRINT_MAP = {
-    0: "vehicle.micro.microlino",    # 3-wheeler
-    1: "vehicle.bmw.grandtourer",    # 4-wheeler / Car
-    2: "vehicle.kawasaki.ninja",     # 2-wheeler / Motorcycle
-    3: "vehicle.volkswagen.t2",      # Bus
-    4: "vehicle.bmw.grandtourer",    # Unknown -> default to Car
-    5: "vehicle.mercedes.sprinter"   # Truck
+    0: "vehicle.micro.microlino",    # 3-wheeler (Real avg length: 2.11m, CARLA: 2.21m)
+    1: "vehicle.nissan.micra",       # 4-wheeler (Real avg length: 2.70m, CARLA: 3.63m)
+    2: "vehicle.kawasaki.ninja",     # 2-wheeler (Real avg length: 1.90m, CARLA: 2.04m)
+    3: "vehicle.volkswagen.t2",      # Bus (CARLA: 4.48m)
+    4: None,                         # Pedestrian -> STRICTLY EXCLUDED FROM VEHICLE SCENARIOS
+    5: "vehicle.mercedes.sprinter"   # Truck (Real avg length: 3.90m, CARLA: 5.92m)
 }
 
 APPROX_BLUEPRINT_CLEARANCE_RADII = {
