@@ -41,7 +41,8 @@ def parse_args():
     p.add_argument("--scenarios", help="Category or category/scenario folder under Scenariosssss, or 'all'.")
     p.add_argument("--audit-csv", help="overtaking.csv to audit row by row.")
     p.add_argument("--limit", type=int, default=None, help="Audit only the first N rows.")
-    p.add_argument("--sample", type=int, default=None, help="Audit a random sample of N unique windows (seed 0).")
+    p.add_argument("--sample", type=int, default=None, help="Audit a random sample of N unique windows.")
+    p.add_argument("--seed", type=int, default=0, help="Random seed for --sample.")
     p.add_argument("--csv", default=sc.DEFAULT_CSV, help="EKF dataset CSV.")
     p.add_argument("--carla", action="store_true", help="Also replay headless in CARLA and count collisions.")
     p.add_argument("--modes", default="expert,pid,pid_avoid", help="CARLA modes to run.")
@@ -118,7 +119,7 @@ def audit_csv(args):
             for r in df.itertuples()]
     unique = sc.dedupe_windows(rows)
     if args.sample and args.sample < len(unique):
-        unique = random.Random(0).sample(unique, args.sample)
+        unique = random.Random(args.seed).sample(unique, args.sample)
     ids = {r["ego"] for r in unique} | {r["other"] for r in unique if r["other"] is not None}
     print(f"{len(rows)} rows, {len(unique)} after removing overlapping duplicates of the same pair. "
           f"Loading {len(ids)} tracks ...")
