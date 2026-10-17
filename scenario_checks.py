@@ -2,16 +2,18 @@
 """
 scenario_checks.py
 
-Offline sanity checks for a two-vehicle scenario BEFORE it is replayed in CARLA.
+Offline sanity checks for a scenario BEFORE it is replayed in CARLA: check_pair for
+two-vehicle behaviours (cut-in/out, overtaking), check_single for one-vehicle ones (U-turn).
 No CARLA server is needed (timemethod only imports the carla module for types).
 
 A scenario is rejected when:
   1. Either track is a pedestrian (label_id 4).
   2. The real-world EKF boxes already touch/overlap  -> any exact replay must collide.
   3. A track "teleports" (speed or heading jumps)     -> tracking / ID-switch glitch.
-  4. The "overtake" never puts the two vehicles side by side with clearance
+  4. (overtaking only) The "overtake" never puts the two vehicles side by side with clearance
      (fixes the slide-16 rule, which accepted lateral separation < vehicle width).
-  5. The CARLA blueprints, placed on the transformed paths, overlap or come
+  5. A path is trimmed (vehicle leaves the 6 calibrated regions) inside the window.
+  6. The CARLA blueprints, placed on the transformed paths, overlap or come
      closer than MIN_SIM_GAP_M (PID tracking needs some margin).
 
 See BUG_COLLISIONS.md for the evidence behind each threshold.
@@ -154,6 +156,47 @@ def path_yaw_deg(carla_pts, k=3):
 # ==========================================
 # CHECKS
 # ==========================================
+def track_glitches(tid, w):
+    """Speed jumps / heading flips inside one track's window (ID switches, detector noise)."""
+    reasons = []
+    sp = w["linear_speed_meter_per_sec"].to_numpy()
+    jump = float(np.max(np.abs(np.diff(sp)))) if len(sp) > 1 else 0.0
+    if jump > MAX_SPEED_JUMP_MPS:
+        reasons.append(f"track {tid} speed jumps {jump:.1f} m/s in one frame")
+    yaw = np.degrees(path_yaws(w[["kf_cx_meter", "kf_cy_meter"]].to_numpy()))
+    dyaw = np.abs((np.diff(yaw) + 180) % 360 - 180)
+    moving = sp[1:] > HEADING_CHECK_MIN_SPEED_MPS
+    if len(dyaw) and np.any(dyaw[moving] > MAX_HEADING_JUMP_DEG):
+        reasons.append(f"track {tid} heading flips {float(np.max(dyaw[moving])):.0f} deg in one frame")
+    return reasons
+
+
+def path_coverage(tid, path, frames):
+    """A track trimmed early (left the 6 regions) stops dead in the replay and gets driven into,
+    so it must keep MIN_PATH_COVERAGE of the window, starting at the window start."""
+    kept = [f for f in frames if path.get(f) is not None]
+    if len(kept) < MIN_PATH_COVERAGE * len(frames) or not kept or kept[0] != frames[0]:
+        return [f"track {tid} path trimmed outside the 6 regions ({len(kept)}/{len(frames)} frames kept)"]
+    return []
+
+
+def check_single(store, tid, start, end):
+    """Checks for a one-vehicle scenario (U-turn): pedestrian, glitches, path coverage."""
+    m = {"ego": tid, "other": None, "start": start, "end": end}
+    if tid not in store.tracks:
+        return False, m, [f"track {tid} missing from CSV"]
+    reasons = []
+    if store.label(tid) == PEDESTRIAN_LABEL:
+        reasons.append(f"track {tid} is a pedestrian (label 4)")
+    w = store.window(tid, start, end)
+    frames = list(w.index)
+    if len(frames) < 0.8 * (end - start + 1):
+        return False, m, reasons + [f"only {len(frames)} frames in window"]
+    reasons += track_glitches(tid, w)
+    reasons += path_coverage(tid, store.carla_path(tid), frames)
+    return not reasons, m, reasons
+
+
 def check_pair(store, ego, other, start, end, ego_bp="vehicle.nissan.micra", other_bp="vehicle.nissan.micra",
                overtake=True, footprints=None):
     """Returns (ok, metrics, reasons) for one ego/other scenario window."""
@@ -184,17 +227,7 @@ def check_pair(store, ego, other, start, end, ego_bp="vehicle.nissan.micra", oth
 
     # 3. tracking glitches
     for tid, w in ((ego, we), (other, wo)):
-        w = w.loc[frames]
-        sp = w["linear_speed_meter_per_sec"].to_numpy()
-        jump = float(np.max(np.abs(np.diff(sp)))) if len(sp) > 1 else 0.0
-        if jump > MAX_SPEED_JUMP_MPS:
-            reasons.append(f"track {tid} speed jumps {jump:.1f} m/s in one frame")
-        xy = w[["kf_cx_meter", "kf_cy_meter"]].to_numpy()
-        yaw = np.degrees(path_yaws(xy))
-        dyaw = np.abs((np.diff(yaw) + 180) % 360 - 180)
-        moving = sp[1:] > HEADING_CHECK_MIN_SPEED_MPS
-        if len(dyaw) and np.any(dyaw[moving] > MAX_HEADING_JUMP_DEG):
-            reasons.append(f"track {tid} heading flips {float(np.max(dyaw[moving])):.0f} deg in one frame")
+        reasons += track_glitches(tid, w.loc[frames])
 
     # 4. overtake geometry (side-by-side phase needs lateral clearance)
     if overtake:
@@ -224,13 +257,8 @@ def check_pair(store, ego, other, start, end, ego_bp="vehicle.nissan.micra", oth
                 reasons.append("no side-by-side phase sampled (passes through the other vehicle between frames)")
 
     # 5. CARLA blueprint gap along the transformed paths
-    # A track trimmed early (left the 6 regions) stops dead in the replay and gets driven into,
-    # so each track must keep MIN_PATH_COVERAGE of the window, starting at the window start.
     ce, co = store.carla_path(ego), store.carla_path(other)
-    for tid, path in ((ego, ce), (other, co)):
-        kept = [f for f in frames if path.get(f) is not None]
-        if len(kept) < MIN_PATH_COVERAGE * len(frames) or not kept or kept[0] != frames[0]:
-            reasons.append(f"track {tid} path trimmed outside the 6 regions ({len(kept)}/{len(frames)} frames kept)")
+    reasons += path_coverage(ego, ce, frames) + path_coverage(other, co, frames)
     sim_frames = [f for f in frames if ce.get(f) is not None and co.get(f) is not None]
     if len(sim_frames) >= 2:
         ye = path_yaws([ce[f] for f in sim_frames])
@@ -245,10 +273,22 @@ def check_pair(store, ego, other, start, end, ego_bp="vehicle.nissan.micra", oth
     return not reasons, m, reasons
 
 
+def offroad_points(world, points):
+    """Number of path points that are not on a CARLA driving lane (needs a running CARLA world).
+    The region matrices can put a path on a median or shoulder that has no road in Town10HD
+    (e.g. a U-turn through a median gap that only exists in Gwalior)."""
+    import carla
+    carla_map = world.get_map()
+    return sum(1 for x, y in points
+               if carla_map.get_waypoint(carla.Location(x=float(x), y=float(y), z=0.0),
+                                         project_to_road=False, lane_type=carla.LaneType.Driving) is None)
+
+
 def dedupe_windows(rows):
-    """Drop rows whose (ego, other) pair overlaps an earlier kept window. rows: dicts with ego/other/start/end."""
+    """Drop rows whose (ego, other) pair overlaps an earlier kept window. rows: dicts with ego/other/start/end
+    (other may be None for one-vehicle scenarios)."""
     kept, last_end = [], {}
-    for r in sorted(rows, key=lambda r: (r["ego"], r["other"], r["start"])):
+    for r in sorted(rows, key=lambda r: (r["ego"], r["other"] if r["other"] is not None else -1, r["start"])):
         key = (r["ego"], r["other"])
         if key in last_end and r["start"] <= last_end[key]:
             continue
