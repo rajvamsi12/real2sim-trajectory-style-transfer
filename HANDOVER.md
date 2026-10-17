@@ -42,8 +42,8 @@ Autopilot vs a learned policy.
   | 4 | **pedestrian** | 1.5 × 1.5 m, p90 speed 0.6 m/s | excluded | — |
   | 5 | truck | 6.0 × 2.4 m | `mercedes.sprinter` | 5.92 × 1.99 |
 
-- **Most candidates are not usable.** Of 6,549 unique overtaking candidates, 3,270 include a pedestrian and most of the rest have real boxes that overlap. Passing per behaviour: Cut In 0/8, Cut Out 7/27, U-turn 25/33, Overtaking Left 25/3,995, Overtaking Right 15/2,554. Details are in `BUG_COLLISIONS.md`.
-- **Collision-free scenario sets** (checked in CARLA, all 3 modes): `Scenariosssss/<Behaviour> Validated/`. There are 34: Cut Out 4, U-turn 10, Overtaking Left 10, Overtaking Right 10. Use these, not the old hand-picked folders.
+- **Most candidates are not usable.** Of 6,549 unique overtaking candidates, 3,270 include a pedestrian and most of the rest have real boxes that overlap. Passing per behaviour (relaxed rules): Cut In 1/8, Cut Out 8/27, U-turn 29/33, Overtaking Left 73/3,995, Overtaking Right 51/2,554. Details are in `BUG_COLLISIONS.md`.
+- **Validated scenario sets:** `Scenariosssss/<Behaviour> Validated/`, 37 in total: Cut In 1, Cut Out 6, U-turn 10, Overtaking Left 10, Overtaking Right 10. Use these, not the old hand-picked folders. The ones without warnings are all clean in CARLA; the per-scenario results are in `BUG_COLLISIONS.md`.
 - **Vehicle Following** exists only as an empty folder: there is no CSV and there are no scenarios yet.
 - **`cut_in_out.csv`** in `Cut In/` and `Cut Out/` is the same file, as is `overtaking.csv` in `Overtaking Left/` and `Overtaking Right/`. The `cut_type` and `direction` columns split them.
 - **Overtaking geometry:** side by side needs `lateral ≥ (W1+W2)/2 + margin`. Slide 16's `< W_avg` is wrong.
@@ -52,7 +52,10 @@ Autopilot vs a learned policy.
 
 ## Rules (constraints)
 
-1. Never render or benchmark a scenario that fails `scenario_checks.check_pair` unless you are deliberately showing a failure (`--force`).
+1. Never render or benchmark a scenario that fails `scenario_checks.check_pair` / `check_single` unless you are deliberately showing a failure (`--force`).
+   - Rejecting checks: pedestrian; missing frames; real gap < 0.2 m; CARLA gap < 0.3 m; no CARLA path.
+   - Warnings only (Raj, 2026-10-18): glitches, trimmed paths, overtaking geometry. There is no on-road check.
+   - Look at the warnings before using a scenario: every replay problem so far was in a scenario with warnings.
 2. Label 4 is a pedestrian: never spawn it as a vehicle.
 3. Spawn yaw comes from the CARLA path (`path_yaw_deg`), not from the EKF `heading_angle`.
 4. Replays run in synchronous mode at 20 Hz (the PID gains assume `dt = 0.05`).
