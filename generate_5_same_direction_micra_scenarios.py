@@ -24,7 +24,8 @@ import carla
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, SCRIPT_DIR)
 
-from simulate_and_record_scenarios import AnnotationParser
+from simulate_and_record_scenarios import AnnotationParser, SIM_FPS
+from scenario_checks import TrackStore, check_pair
 from debug.batch_process_scenarios import (
     run_stage_1_matrix,
     run_stage_2_time_method,
@@ -108,6 +109,22 @@ def render_real_drone_video(scenario_dir, summary_txt_path):
     print(f"  Saved {os.path.basename(out_video_path)}")
 
 def main():
+    force = "--force" in sys.argv
+
+    # Reject scenarios an exact replay cannot survive (overlapping real boxes, tracking glitches,
+    # no side-by-side clearance). --force renders them anyway, e.g. to show the failure.
+    store = TrackStore(STABILIZE_EKF_CSV, track_ids={i for s in TARGET_SCENARIOS for i in (s["ego"], s["other"])})
+    runnable = []
+    for sc in TARGET_SCENARIOS:
+        ok, _, reasons = check_pair(store, sc["ego"], sc["other"], sc["start"], sc["end"])
+        if ok or force:
+            runnable.append(sc)
+        if not ok:
+            print(f"{'FORCED' if force else 'SKIPPED'} {sc['label']}: " + "; ".join(reasons))
+    if not runnable:
+        print("No scenario passed scenario_checks.check_pair (use --force to render anyway).")
+        return
+
     print("Loading EKF dataset from CSV...")
     parser = AnnotationParser(STABILIZE_EKF_CSV)
 
@@ -116,8 +133,13 @@ def main():
     client.set_timeout(15.0)
     world = client.load_world("Town10HD")
     world.set_weather(carla.WeatherParameters.ClearNoon)
+    # The replay ticks the world itself at a fixed 20 Hz (the PID gains assume dt = 1/20 s)
+    settings = world.get_settings()
+    settings.synchronous_mode = True
+    settings.fixed_delta_seconds = 1.0 / SIM_FPS
+    world.apply_settings(settings)
 
-    for sc in TARGET_SCENARIOS:
+    for sc in runnable:
         sc_folder = os.path.join(SCENARIOS_DIR, "Overtaking Left", sc["folder"])
         os.makedirs(sc_folder, exist_ok=True)
 
