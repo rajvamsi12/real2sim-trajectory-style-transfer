@@ -7,6 +7,8 @@
 
 Official repository for the research paper: **"While in London do as the Gwaliorites do: Style Transfer of Trajectories across Traffic Domains in Real-to-Sim"** by **Dasari Raj Vamsi** and **Rahul Kala** (*Center for Autonomous Systems, ABV-Indian Institute of Information Technology and Management Gwalior, India*).
 
+> **Working on this repo?** Start with [`HANDOVER.md`](HANDOVER.md) (current state, rules, open questions), then [`TEST_CHECKLIST.md`](TEST_CHECKLIST.md). The collision investigation is in [`BUG_COLLISIONS.md`](BUG_COLLISIONS.md).
+
 ---
 
 ## 📌 Abstract & Overview
