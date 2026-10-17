@@ -14,6 +14,7 @@ Needs a CARLA server for Stage 3 (spawn dry-runs); -nullrhi is enough.
 
 import argparse
 import json
+import random
 import os
 import sys
 
@@ -32,11 +33,21 @@ DEFAULT_INPUT = os.path.join(SCENARIOS_DIR, "Overtaking Left", "overtaking_valid
 def main():
     p = argparse.ArgumentParser()
     p.add_argument("--input", default=DEFAULT_INPUT)
-    p.add_argument("--count", type=int, default=10, help="Scenarios per behaviour.")
+    p.add_argument("--count", type=int, default=10, help="Scenarios per behaviour (0 = all, no one-per-ego limit).")
+    p.add_argument("--min-inbox", type=float, default=0.8, help="Minimum share of points inside the 6 regions/Center.")
+    p.add_argument("--sample", type=int, default=None, help="Pick N random candidates per behaviour (seed 0) instead of the first ones.")
     args = p.parse_args()
 
     with open(args.input) as f:
         candidates = json.load(f)
+    if args.sample:
+        candidates = [c for c in candidates if c.get("inbox_ratio", 1.0) >= args.min_inbox]
+        by_b = {}
+        for c in candidates:
+            by_b.setdefault(c.get("behaviour", "Overtaking"), []).append(c)
+        rng = random.Random(0)
+        candidates = [c for b in sorted(by_b) for c in rng.sample(by_b[b], min(args.sample, len(by_b[b])))]
+        args.count = 0
     parser = AnnotationParser(STABILIZE_EKF_CSV)
     client = carla.Client("localhost", 2000)
     client.set_timeout(30.0)
@@ -52,7 +63,9 @@ def main():
     seen, per_behaviour = set(), {}
     for c in candidates:
         b = c.get("behaviour", "Overtaking")
-        if (b, c["ego"]) in seen or per_behaviour.get(b, 0) >= args.count:
+        if c.get("inbox_ratio", 1.0) < args.min_inbox:
+            continue
+        if args.count and ((b, c["ego"]) in seen or per_behaviour.get(b, 0) >= args.count):
             continue
         seen.add((b, c["ego"]))
         ids = [c["ego"]] + ([c["other"]] if c.get("other") is not None else [])

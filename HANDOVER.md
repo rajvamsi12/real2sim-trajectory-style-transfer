@@ -53,8 +53,9 @@ Autopilot vs a learned policy.
 ## Rules (constraints)
 
 1. Never render or benchmark a scenario that fails `scenario_checks.check_pair` / `check_single` unless you are deliberately showing a failure (`--force`).
-   - Rejecting checks: pedestrian; missing frames; real gap < 0.2 m; CARLA gap < 0.3 m; no CARLA path.
-   - Warnings only (Raj, 2026-10-18): glitches, trimmed paths, overtaking geometry. There is no on-road check.
+   - Rejecting checks: pedestrian; missing frames; no CARLA path.
+   - Warnings only (Raj, 2026-10-18): real box gap < 0.2 m, CARLA box gap < 0.3 m, glitches, trimmed paths, overtaking geometry. There is no on-road check.
+   - Random sample of 16 scenarios at least 80% in-box, PID mode: 8 clean, 3 vehicle collisions, 3 with static hits (both U-turns went off-road), 1 overlap without a sensor event, 1 failed to spawn. Every collision had a real box gap below −0.5 m; the clean ones were at −0.32 m or better.
    - Look at the warnings before using a scenario: every replay problem so far was in a scenario with warnings.
 2. Label 4 is a pedestrian: never spawn it as a vehicle.
 3. Spawn yaw comes from the CARLA path (`path_yaw_deg`), not from the EKF `heading_angle`.

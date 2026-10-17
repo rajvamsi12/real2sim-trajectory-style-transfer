@@ -22,6 +22,7 @@ import collections
 import glob
 import json
 import os
+import random
 import sys
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -40,6 +41,7 @@ def parse_args():
     p.add_argument("--scenarios", help="Category or category/scenario folder under Scenariosssss, or 'all'.")
     p.add_argument("--audit-csv", help="overtaking.csv to audit row by row.")
     p.add_argument("--limit", type=int, default=None, help="Audit only the first N rows.")
+    p.add_argument("--sample", type=int, default=None, help="Audit a random sample of N unique windows (seed 0).")
     p.add_argument("--csv", default=sc.DEFAULT_CSV, help="EKF dataset CSV.")
     p.add_argument("--carla", action="store_true", help="Also replay headless in CARLA and count collisions.")
     p.add_argument("--modes", default="expert,pid,pid_avoid", help="CARLA modes to run.")
@@ -115,6 +117,8 @@ def audit_csv(args):
              "start": frame(r.start_frame), "end": frame(r.end_frame), "behaviour": behaviour_of(r)}
             for r in df.itertuples()]
     unique = sc.dedupe_windows(rows)
+    if args.sample and args.sample < len(unique):
+        unique = random.Random(0).sample(unique, args.sample)
     ids = {r["ego"] for r in unique} | {r["other"] for r in unique if r["other"] is not None}
     print(f"{len(rows)} rows, {len(unique)} after removing overlapping duplicates of the same pair. "
           f"Loading {len(ids)} tracks ...")
@@ -181,6 +185,7 @@ def run_carla(args, store, results):
     parser = AnnotationParser(args.csv)
     modes = [m.strip() for m in args.modes.split(",") if m.strip()]
     failed = False
+    totals = {m: collections.Counter() for m in modes}
     print(f"\n{'scenario':40s} {'valid':5s} " + " ".join(f"{m:>22s}" for m in modes))
     for name in sorted({r[0] for r in results}):
         valid = all(ok for n, ok, _, _ in results if n == name)
@@ -191,15 +196,27 @@ def run_carla(args, store, results):
             metrics = render_carla_simulation_video(client, world, sc_dir, summary, parse_summary_file(summary),
                                                     parser, None, enable_avoidance=(mode == "pid_avoid"),
                                                     mode=mode, render=False)
+            t = totals[mode]
+            t["scenarios"] += 1
             if not metrics:
                 cells.append("spawn failed")
+                t["spawn failed"] += 1
                 failed = True
                 continue
+            t["vehicle collision"] += 1 if metrics["collision_events"] else 0
+            t["static hit"] += 1 if metrics["static_collisions"] else 0
+            t["box overlap (gap < 0)"] += 1 if metrics["min_box_gap_m"] < 0 else 0
+            t["progress < 85%"] += 1 if metrics["min_progress"] < 0.85 else 0
+            clean = not (metrics["collision_events"] or metrics["static_collisions"] or metrics["min_box_gap_m"] < 0)
+            t["clean (no collision, no overlap)"] += 1 if clean else 0
             cells.append(f"col={metrics['collision_events']}/{metrics['static_collisions']} "
                          f"gap={metrics['min_box_gap_m']:+.2f} prog={metrics['min_progress']:.0%}")
             if valid and (metrics["collision_events"] or metrics["static_collisions"]):
                 failed = True
         print(f"{name:40s} {'yes' if valid else 'no':5s} " + " ".join(f"{c:>22s}" for c in cells))
+    print("\nSummary (scenarios per mode):")
+    for mode in modes:
+        print(f"  {mode:10s} " + ", ".join(f"{k}: {v}" for k, v in totals[mode].items()))
     return failed
 
 

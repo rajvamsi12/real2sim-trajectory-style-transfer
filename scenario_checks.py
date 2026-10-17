@@ -8,11 +8,12 @@ No CARLA server is needed (timemethod only imports the carla module for types).
 
 A scenario is REJECTED (reasons) when:
   - a track is a pedestrian (label_id 4), or missing / present in < 80% of the window;
-  - the real-world EKF boxes come closer than MIN_REAL_GAP_M (an exact replay must collide);
-  - the CARLA blueprint boxes on the transformed paths come closer than MIN_SIM_GAP_M,
-    or there is no CARLA path to replay at all.
+  - there is no CARLA path to replay at all.
 
 Everything else is only a WARNING (metrics["warnings"]); the scenario stays valid:
+  - the real-world EKF boxes come closer than MIN_REAL_GAP_M (an exact replay will likely collide;
+    the EKF boxes are also wider than the vehicles, e.g. 1.2 m for a 2-wheeler);
+  - the CARLA blueprint boxes on the transformed paths come closer than MIN_SIM_GAP_M;
   - speed / heading jumps (tracking or ID-switch glitches);
   - path trimmed outside the 6 calibrated regions;
   - (overtaking) ego not moving past the other, no behind->ahead flip, or a side-by-side
@@ -182,6 +183,17 @@ def path_coverage(tid, path, frames):
     return []
 
 
+def inbox_ratio(store, track_ids, start, end):
+    """Share of the window's points (all given tracks together) inside Region_1..6 or Center,
+    the "% in-box" used in the MTP scenario audit."""
+    import timemethod
+    inside = []
+    for tid in track_ids:
+        w = store.window(tid, start, end)
+        inside += [timemethod.classify_point((x, -y)) != "Unclassified" for x, y in zip(w["kf_cx_pixel"], w["kf_cy_pixel"])]
+    return float(np.mean(inside)) if inside else 0.0
+
+
 def check_single(store, tid, start, end):
     """Checks for a one-vehicle scenario (U-turn). Returns (ok, metrics, reasons);
     non-blocking findings are in metrics["warnings"]."""
@@ -195,6 +207,7 @@ def check_single(store, tid, start, end):
     frames = list(w.index)
     if len(frames) < 0.8 * (end - start + 1):
         return False, m, reasons + [f"only {len(frames)} frames in window"]
+    m["inbox_ratio"] = round(inbox_ratio(store, [tid], start, end), 3)
     path = store.carla_path(tid)
     if sum(1 for f in frames if path.get(f) is not None) < 2:
         reasons.append(f"track {tid} has no CARLA path to replay (outside the 6 regions)")
@@ -221,7 +234,9 @@ def check_pair(store, ego, other, start, end, ego_bp="vehicle.nissan.micra", oth
     if len(frames) < 0.8 * (end - start + 1):
         return False, m, reasons + [f"only {len(frames)} shared frames"]
 
-    # Real-world box gap (blocking)
+    m["inbox_ratio"] = round(inbox_ratio(store, [ego, other], start, end), 3)
+
+    # Real-world box gap (warning)
     gaps, dims_e, dims_o = [], [], []
     for f in frames:
         be, bo = parse_obbox(we.at[f, "kf_obbox_coord_meter"]), parse_obbox(wo.at[f, "kf_obbox_coord_meter"])
@@ -230,7 +245,7 @@ def check_pair(store, ego, other, start, end, ego_bp="vehicle.nissan.micra", oth
         dims_o.append(obbox_dims(bo))
     m["min_real_gap_m"] = round(min(gaps), 2)
     if min(gaps) < MIN_REAL_GAP_M:
-        reasons.append(f"real boxes overlap/touch (min gap {min(gaps):.2f} m at frame {frames[int(np.argmin(gaps))]})")
+        warnings.append(f"real boxes overlap/touch (min gap {min(gaps):.2f} m at frame {frames[int(np.argmin(gaps))]})")
 
     # Tracking glitches (warning)
     for tid, w in ((ego, we), (other, wo)):
@@ -263,7 +278,7 @@ def check_pair(store, ego, other, start, end, ego_bp="vehicle.nissan.micra", oth
             else:
                 warnings.append("no side-by-side phase sampled (passes through the other vehicle between frames)")
 
-    # CARLA blueprint gap along the transformed paths (blocking); trimmed paths only warn
+    # CARLA blueprint gap along the transformed paths and trimmed paths (warnings)
     ce, co = store.carla_path(ego), store.carla_path(other)
     warnings += path_coverage(ego, ce, frames) + path_coverage(other, co, frames)
     sim_frames = [f for f in frames if ce.get(f) is not None and co.get(f) is not None]
@@ -277,7 +292,7 @@ def check_pair(store, ego, other, start, end, ego_bp="vehicle.nissan.micra", oth
                     for i, f in enumerate(sim_frames)]
         m["min_sim_gap_m"] = round(min(sim_gaps), 2)
         if min(sim_gaps) < MIN_SIM_GAP_M:
-            reasons.append(f"CARLA boxes come within {min(sim_gaps):.2f} m (< {MIN_SIM_GAP_M} m)")
+            warnings.append(f"CARLA boxes come within {min(sim_gaps):.2f} m (< {MIN_SIM_GAP_M} m)")
 
     return not reasons, m, reasons
 
