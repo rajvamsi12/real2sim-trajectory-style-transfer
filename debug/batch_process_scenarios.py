@@ -57,7 +57,10 @@ try:
         TOWN,
         DEFAULT_Z,
         SPAWN_SAFETY_MARGIN,
+        REAL_WORLD_FPS,
+        actor_box,
     )
+    from scenario_checks import box_gap, path_yaw_deg
 except ImportError as e:
     print(f"Warning loading codebase modules: {e}")
 
@@ -338,19 +341,12 @@ def run_stage_3_spawns(scenario_dir, summary_data, annotation_parser, dji_spawn_
         if carla_pt is None:
             continue
 
-        real_heading = headings_dict.get(init_frame, 0.0)
-        
-        traj_hint = None
-        if init_idx + 1 < len(all_carla_coords):
-            pt2 = all_carla_coords[init_idx + 1]
-            if pt2:
-                dx = pt2[0] - carla_pt[0]
-                dy = pt2[1] - carla_pt[1]
-                traj_hint = math.degrees(math.atan2(dy, dx))
-
-        carla_yaw = convert_real_heading_to_carla_yaw(real_heading, real_pt, trajectory_yaw_hint=traj_hint)
+        # Spawn heading from the CARLA path over the next few frames. The EKF heading conversion
+        # (convert_real_heading_to_carla_yaw) was 60-74 deg off for slow vehicles in 0528/0532,
+        # so cars spawned pointing across their neighbour.
+        carla_yaw = path_yaw_deg(all_carla_coords[init_idx:init_idx + 8])
         if carla_yaw is None:
-            carla_yaw = traj_hint if traj_hint is not None else 0.0
+            carla_yaw = 0.0
 
         label_id = t_data.get("label_id", t_data.get("label", 1))
         if label_id is None:
@@ -382,13 +378,17 @@ def run_stage_3_spawns(scenario_dir, summary_data, annotation_parser, dji_spawn_
             chosen_tf = None
             bp = world.get_blueprint_library().find(bp_name)
             for cand_tf, strategy in candidates:
+                # Lateral shifts (+-2/4 m) put the car beside its own path, so the PID then steers
+                # diagonally across the neighbouring lane. Only retract along the path.
+                if strategy.startswith("lateral"):
+                    continue
                 test_actor = world.try_spawn_actor(bp, cand_tf)
                 if test_actor is not None:
                     chosen_tf = cand_tf
                     stage3_test_actors.append(test_actor)
                     break
-            if chosen_tf is None and candidates:
-                chosen_tf = candidates[0][0]
+            if chosen_tf is None:
+                print(f"  [Stage 3] vehicle_{tid}: no collision-free spawn along its path; not spawned")
         else:
             chosen_tf = None
 
@@ -409,8 +409,6 @@ def run_stage_3_spawns(scenario_dir, summary_data, annotation_parser, dji_spawn_
     for act in stage3_test_actors:
         if act and act.is_alive:
             act.destroy()
-        else:
-            retracted_spawns[str(tid)] = raw_spawns[str(tid)]
 
     raw_path = os.path.join(scenario_dir, "spawn_positions_raw.json")
     with open(raw_path, "w") as f:
@@ -1054,47 +1052,78 @@ def render_trajectory_comparison_map(client, world, scenario_dir, summary_data):
     except Exception: pass
 
 
-def render_carla_simulation_video(client, world, scenario_dir, summary_path, summary_data, annotation_parser, dji_spawn_params, enable_avoidance):
+SIM_MODES = ("expert", "pid", "pid_avoid")
+SETTLE_TICKS = 20  # 1 s at 20 Hz before the scenario clock starts
+VIDEO_NAMES = {
+    "expert": "trajectory_video_expert_replay.mp4",
+    "pid": "trajectory_video_without_avoidance.mp4",
+    "pid_avoid": "trajectory_video_with_avoidance.mp4",
+}
+
+
+def build_timed_route(tid_str, t_data, start_frame):
+    """(times_s, xy, speeds_mps) from the Stage 2 trajectory, keyed by real frame number (gaps allowed)."""
+    pts = t_data.get(tid_str, {}).get("carla_coordinates", [])
+    if len(pts) < 2:
+        return None
+    times = np.array([(p["frame"] - start_frame) / REAL_WORLD_FPS for p in pts])
+    xy = np.array([(p["x"], p["y"]) for p in pts])
+    # Central difference over +-2 frames: speed consistent with the CARLA path the car must follow
+    k = 2
+    speeds = []
+    for i in range(len(xy)):
+        lo, hi = max(0, i - k), min(len(xy) - 1, i + k)
+        dt = times[hi] - times[lo]
+        speeds.append(float(np.linalg.norm(xy[hi] - xy[lo]) / dt) if dt > 0 else 0.0)
+    return times, xy, np.array(speeds)
+
+
+def render_carla_simulation_video(client, world, scenario_dir, summary_path, summary_data, annotation_parser,
+                                  dji_spawn_params, enable_avoidance, mode=None, render=True):
     """
-    Renders top-down CARLA simulation video with or without collision avoidance.
-    Outputs: trajectory_video_with_avoidance.mp4 or trajectory_video_without_avoidance.mp4
+    Replays a scenario in CARLA and (optionally) records a top-down video.
+
+    mode:
+      "expert"    - kinematic replay: physics off, set_transform to the real position every tick.
+                    Any box overlap here is in the data itself, not caused by the controller.
+      "pid"       - PID tracking of the time-indexed real trajectory, no avoidance.
+      "pid_avoid" - same, plus box-based follower avoidance.
+    If mode is None it follows enable_avoidance (pid_avoid / pid), as the existing callers expect.
+
+    Returns a metrics dict (also saved as sim_metrics_<mode>.json) or None if nothing spawned.
     """
     if not CARLA_AVAILABLE:
         print("  Skipping CARLA video render: carla library not available.")
-        return
+        return None
 
-    mode_str = "with_avoidance" if enable_avoidance else "without_avoidance"
-    out_video_name = f"trajectory_video_{mode_str}.mp4"
+    mode = mode or ("pid_avoid" if enable_avoidance else "pid")
+    assert mode in SIM_MODES, mode
+    out_video_name = VIDEO_NAMES[mode]
     output_video_path = os.path.join(scenario_dir, out_video_name)
+    print(f"  Replaying in CARLA ({mode})" + (f" -> {out_video_name}..." if render else " (headless)..."))
 
-    print(f"  Rendering top-down CARLA video ({mode_str}) -> {out_video_name}...")
-
-    # Both video runs use the exact same input files (retracted spawns + time-variant trajectories)
-    # so enable_avoidance is the single isolated variable.
+    # Every mode uses the same inputs (retracted spawns + time-variant trajectories)
     spawns_path = os.path.join(scenario_dir, "spawn_positions_retracted.json")
     traj_path = os.path.join(scenario_dir, "time_variant_trajectories.json")
-
     if not os.path.exists(spawns_path):
         spawns_path = os.path.join(scenario_dir, "spawn_positions_raw.json")
     if not os.path.exists(spawns_path):
         print("  Error: No spawn position JSON found to spawn vehicles.")
-        return
+        return None
 
     with open(spawns_path, "r") as f:
         spawns_data = json.load(f)
-
     t_data = {}
     if os.path.exists(traj_path):
         with open(traj_path, "r") as tf_file:
             t_data = json.load(tf_file)
 
     start_frame, end_frame, vehicle_ids, highlight_ids, ego_id = summary_data
-    total_frames = end_frame - start_frame + 1
-    scenario_duration_sec = total_frames / 4.27
+    scenario_duration_sec = (end_frame - start_frame + 1) / REAL_WORLD_FPS
     total_sim_ticks = int(scenario_duration_sec * SIM_FPS)
     dt = 1.0 / SIM_FPS
 
-    for actor in world.get_actors().filter("vehicle.*"):
+    for actor in list(world.get_actors().filter("vehicle.*")) + list(world.get_actors().filter("sensor.*")):
         try: actor.destroy()
         except Exception: pass
 
@@ -1104,141 +1133,171 @@ def render_carla_simulation_video(client, world, scenario_dir, summary_path, sum
 
     for tid_str, s_info in spawns_data.items():
         tid = int(tid_str)
-        bp_name = s_info.get("blueprint", "vehicle.bmw.grandtourer")
-        bp = blueprint_library.find(bp_name)
-
+        route = build_timed_route(tid_str, t_data, start_frame)
+        if route is None:
+            print(f"  Skipping vehicle_{tid}: no Stage 2 trajectory")
+            continue
+        bp = blueprint_library.find(s_info.get("blueprint", "vehicle.nissan.micra"))
         vname = f"vehicle_{tid}"
         if bp.has_attribute("role_name"):
             bp.set_attribute("role_name", vname)
 
-        carla_pts = []
-        if tid_str in t_data:
-            carla_pts = [(p["x"], p["y"]) for p in t_data[tid_str].get("carla_coordinates", [])]
-
-        if not carla_pts:
-            carla_pts = [(s_info["x"], s_info["y"]), (s_info["x"] + 0.1, s_info["y"] + 0.1)]
-
-        speeds = calculate_continuous_speeds(carla_pts, 4.27, 1.0) if hasattr(calculate_continuous_speeds, '__call__') else [3.0]*len(carla_pts)
-        dynamic_route = [(pt[0], pt[1], DEFAULT_Z, speed) for pt, speed in zip(carla_pts, speeds)]
-
+        # Heading from the path (see run_stage_3_spawns); also corrects spawn JSONs written before that fix
+        yaw = path_yaw_deg([tuple(p) for p in route[1][:8]])
+        yaw = s_info["yaw"] if yaw is None else yaw
         try:
-            sim_v = CapturingVehicle(
-                world,
-                bp,
-                vname,
-                (s_info["x"], s_info["y"], s_info["z"]),
-                s_info["yaw"],
-                scenario_dir,
-                enable_avoidance=enable_avoidance,
-            )
-            if sim_v and sim_v.vehicle:
-                sim_v.set_dynamic_route(dynamic_route)
-                vehicles[vname] = sim_v
-                spawn_locations.append((s_info["x"], s_info["y"]))
+            sim_v = CapturingVehicle(world, bp, vname, (s_info["x"], s_info["y"], s_info["z"]), yaw,
+                                     scenario_dir, enable_avoidance=(mode == "pid_avoid"))
         except Exception as e:
             print(f"  Failed to spawn {vname}: {e}")
+            continue
+        sim_v.set_timed_route(*route, z=DEFAULT_Z)
+        vehicles[vname] = sim_v
+        spawn_locations.append((s_info["x"], s_info["y"]))
 
     if not vehicles:
         print("  Warning: No vehicles could be spawned in CARLA.")
-        return
+        return None
 
-    avg_x = sum(p[0] for p in spawn_locations) / len(spawn_locations)
-    avg_y = sum(p[1] for p in spawn_locations) / len(spawn_locations)
-
-    cam_bp = blueprint_library.find("sensor.camera.rgb")
-    cam_width, cam_height = 1280, 720
-    cam_bp.set_attribute("image_size_x", str(cam_width))
-    cam_bp.set_attribute("image_size_y", str(cam_height))
-    cam_bp.set_attribute("fov", "90")
-
-    cam_tf = carla.Transform(
-        carla.Location(x=avg_x, y=avg_y, z=55.0),
-        carla.Rotation(pitch=-90.0, yaw=0.0, roll=0.0)
-    )
-
-    camera = world.spawn_actor(cam_bp, cam_tf)
-    img_queue = queue.Queue()
-    camera.listen(img_queue.put)
-
-    fourcc = cv2.VideoWriter_fourcc(*"mp4v")
-    writer = cv2.VideoWriter(output_video_path, fourcc, float(SIM_FPS), (cam_width, cam_height))
-
-    for _ in range(5):
+    if mode == "expert":
+        for v in vehicles.values():
+            v.vehicle.set_simulate_physics(False)
         world.tick()
-        try: img_queue.get(timeout=1.0)
-        except queue.Empty: pass
+    else:
+        # Let the cars land and engage 1st gear before the clock starts, then launch them at their
+        # real speed. Without this they lost ~1.5 s of a ~4 s scenario sitting in gear 0.
+        for v in vehicles.values():
+            v.hold_in_gear()
+        for _ in range(SETTLE_TICKS):
+            world.tick()
+        for v in vehicles.values():
+            v.set_initial_speed(float(v.timed_route[2][0]))
+
+    camera, img_queue, writer = None, None, None
+    cam_width, cam_height = 1280, 720
+    if render:
+        avg_x = sum(p[0] for p in spawn_locations) / len(spawn_locations)
+        avg_y = sum(p[1] for p in spawn_locations) / len(spawn_locations)
+        cam_bp = blueprint_library.find("sensor.camera.rgb")
+        cam_bp.set_attribute("image_size_x", str(cam_width))
+        cam_bp.set_attribute("image_size_y", str(cam_height))
+        cam_bp.set_attribute("fov", "90")
+        cam_tf = carla.Transform(carla.Location(x=avg_x, y=avg_y, z=55.0), carla.Rotation(pitch=-90.0, yaw=0.0, roll=0.0))
+        camera = world.spawn_actor(cam_bp, cam_tf)
+        img_queue = queue.Queue()
+        camera.listen(img_queue.put)
+        writer = cv2.VideoWriter(output_video_path, cv2.VideoWriter_fourcc(*"mp4v"), float(SIM_FPS), (cam_width, cam_height))
+        K_video = get_camera_intrinsic_matrix(cam_width, cam_height, 90.0)
+        for _ in range(5):
+            world.tick()
+            try: img_queue.get(timeout=1.0)
+            except queue.Empty: pass
 
     sim_clock = 0.0
     recorded_frames = 0
+    min_gap, overlap_ticks, avoidance_ticks = float("inf"), 0, 0
+    names = list(vehicles)
 
     for step in range(total_sim_ticks):
         for v in vehicles.values():
-            v.update(sim_clock, vehicles)
+            if mode == "expert":
+                x, y, _, _ = v.reference(sim_clock)
+                xa, ya, _, _ = v.reference(sim_clock + 0.1)
+                xb, yb, _, _ = v.reference(max(0.0, sim_clock - 0.1))
+                yaw_e = math.degrees(math.atan2(ya - yb, xa - xb)) if math.hypot(xa - xb, ya - yb) > 1e-3 \
+                    else v.vehicle.get_transform().rotation.yaw
+                v.vehicle.set_transform(carla.Transform(carla.Location(x=x, y=y, z=DEFAULT_Z), carla.Rotation(yaw=yaw_e)))
+            else:
+                v.update(sim_clock, vehicles)
+                avoidance_ticks += 1 if v.last_avoidance_event else 0
 
         world.tick()
         sim_clock += dt
 
+        # Box-gap bookkeeping works in every mode (the collision sensor needs physics)
+        for i in range(len(names)):
+            for j in range(i + 1, len(names)):
+                g = box_gap(actor_box(vehicles[names[i]].vehicle), actor_box(vehicles[names[j]].vehicle))
+                min_gap = min(min_gap, g)
+                overlap_ticks += 1 if g < 0.0 else 0
+
+        if not render:
+            continue
         try:
             carla_img = img_queue.get(timeout=2.0)
-            arr = np.frombuffer(carla_img.raw_data, dtype=np.dtype("uint8"))
-            arr = np.reshape(arr, (carla_img.height, carla_img.width, 4))
-            frame_bgr = arr[:, :, :3].copy()
-
-            # Draw clear status banner on top of video frames
-            banner_text = "COLLISION AVOIDANCE: ENABLED" if enable_avoidance else "COLLISION AVOIDANCE: DISABLED"
-            banner_bg_color = (30, 160, 30) if enable_avoidance else (30, 30, 200)
-
-            cv2.rectangle(frame_bgr, (20, 20), (540, 65), banner_bg_color, -1)
-            cv2.rectangle(frame_bgr, (20, 20), (540, 65), (255, 255, 255), 2)
-            cv2.putText(frame_bgr, banner_text, (32, 51), cv2.FONT_HERSHEY_SIMPLEX, 0.65, (255, 255, 255), 2, cv2.LINE_AA)
-
-            K_video = get_camera_intrinsic_matrix(cam_width, cam_height, 90.0)
-
-            # Draw vehicle markers & avoidance/collision events on each video frame
-            for vname, vobj in vehicles.items():
-                if hasattr(vobj, 'vehicle') and vobj.vehicle and vobj.vehicle.is_alive:
-                    vloc = vobj.vehicle.get_location()
-                    px = world_to_pixel(vloc, cam_tf, K_video)
-                    if px and 0 <= px[0] < cam_width and 0 <= px[1] < cam_height:
-                        u, v = px
-                        has_collided = getattr(vobj, 'has_collided', False)
-                        has_event = getattr(vobj, 'last_avoidance_event', None)
-
-                        if not enable_avoidance and has_collided:
-                            # CRASH EVENT IN NO-AVOIDANCE VIDEO
-                            cv2.circle(frame_bgr, (u, v), 14, (0, 0, 255), -1)
-                            cv2.circle(frame_bgr, (u, v), 18, (0, 0, 255), 3)
-                            cv2.putText(frame_bgr, f"{vname} [CRASH / IMPACT]", (u + 16, v + 5), cv2.FONT_HERSHEY_SIMPLEX, 0.55, (0, 0, 255), 2, cv2.LINE_AA)
-                        elif enable_avoidance and has_event:
-                            # ACTIVE AVOIDANCE EVENT IN WITH-AVOIDANCE VIDEO
-                            cv2.circle(frame_bgr, (u, v), 14, (0, 255, 255), -1)
-                            cv2.circle(frame_bgr, (u, v), 18, (0, 255, 255), 3)
-                            cv2.putText(frame_bgr, f"{vname} [AVOIDANCE BRAKE ACTIVE]", (u + 16, v + 5), cv2.FONT_HERSHEY_SIMPLEX, 0.55, (0, 255, 255), 2, cv2.LINE_AA)
-                        else:
-                            # NORMAL VEHICLE MARKER
-                            color = (255, 255, 0) if enable_avoidance else (200, 200, 200)
-                            cv2.circle(frame_bgr, (u, v), 7, color, -1)
-                            cv2.putText(frame_bgr, vname, (u + 10, v + 4), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 1, cv2.LINE_AA)
-
-            writer.write(frame_bgr)
-            recorded_frames += 1
         except queue.Empty:
-            pass
+            continue
+        arr = np.frombuffer(carla_img.raw_data, dtype=np.dtype("uint8"))
+        frame_bgr = np.reshape(arr, (carla_img.height, carla_img.width, 4))[:, :, :3].copy()
 
-    writer.release()
-    try: camera.stop(); camera.destroy()
-    except Exception: pass
+        banner_text, banner_bg_color = {
+            "expert": ("EXPERT REPLAY (KINEMATIC, NO PHYSICS)", (160, 90, 30)),
+            "pid": ("COLLISION AVOIDANCE: DISABLED", (30, 30, 200)),
+            "pid_avoid": ("COLLISION AVOIDANCE: ENABLED", (30, 160, 30)),
+        }[mode]
+        cv2.rectangle(frame_bgr, (20, 20), (560, 65), banner_bg_color, -1)
+        cv2.rectangle(frame_bgr, (20, 20), (560, 65), (255, 255, 255), 2)
+        cv2.putText(frame_bgr, banner_text, (32, 51), cv2.FONT_HERSHEY_SIMPLEX, 0.65, (255, 255, 255), 2, cv2.LINE_AA)
 
-    for v in vehicles.values():
-        try:
-            if hasattr(v, 'collision_sensor') and v.collision_sensor:
-                v.collision_sensor.destroy()
-            if hasattr(v, 'vehicle') and v.vehicle:
-                v.vehicle.destroy()
+        for vname, vobj in vehicles.items():
+            if not (vobj.vehicle and vobj.vehicle.is_alive):
+                continue
+            px = world_to_pixel(vobj.vehicle.get_location(), cam_tf, K_video)
+            if not (px and 0 <= px[0] < cam_width and 0 <= px[1] < cam_height):
+                continue
+            u, v = px
+            if vobj.has_collided:
+                # Drawn in every mode; the old code hid crashes in the with-avoidance video
+                cv2.circle(frame_bgr, (u, v), 14, (0, 0, 255), -1)
+                cv2.circle(frame_bgr, (u, v), 18, (0, 0, 255), 3)
+                cv2.putText(frame_bgr, f"{vname} [CRASH / IMPACT]", (u + 16, v + 5), cv2.FONT_HERSHEY_SIMPLEX, 0.55, (0, 0, 255), 2, cv2.LINE_AA)
+            elif vobj.last_avoidance_event:
+                cv2.circle(frame_bgr, (u, v), 14, (0, 255, 255), -1)
+                cv2.circle(frame_bgr, (u, v), 18, (0, 255, 255), 3)
+                cv2.putText(frame_bgr, f"{vname} [AVOIDANCE ACTIVE]", (u + 16, v + 5), cv2.FONT_HERSHEY_SIMPLEX, 0.55, (0, 255, 255), 2, cv2.LINE_AA)
+            else:
+                color = (255, 255, 0) if mode == "pid_avoid" else (200, 200, 200)
+                cv2.circle(frame_bgr, (u, v), 7, color, -1)
+                cv2.putText(frame_bgr, vname, (u + 10, v + 4), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 1, cv2.LINE_AA)
+
+        writer.write(frame_bgr)
+        recorded_frames += 1
+
+    collided_pairs = set()
+    for vname, v in vehicles.items():
+        for _, other_id, _ in v.collision_events:
+            collided_pairs.add(frozenset((v.vehicle.id, other_id)))
+    metrics = {
+        "mode": mode,
+        "vehicles": len(vehicles),
+        "collision_events": len(collided_pairs),
+        "min_box_gap_m": round(min_gap, 3) if min_gap != float("inf") else None,
+        "box_overlap_ticks": overlap_ticks,
+        "avoidance_ticks": avoidance_ticks,
+        # Progress of near-stationary vehicles (route < 3 m) is dominated by noise, so they are left out
+        "min_progress": round(min([v.progress() for v in vehicles.values() if v.route_length() >= 3.0] or [1.0]), 3),
+        "sim_ticks": total_sim_ticks,
+    }
+    if metrics["min_box_gap_m"] is None:
+        metrics["min_box_gap_m"] = float("nan")
+    with open(os.path.join(scenario_dir, f"sim_metrics_{mode}.json"), "w") as f:
+        json.dump(metrics, f, indent=2)
+
+    if writer:
+        writer.release()
+    if camera:
+        try: camera.stop(); camera.destroy()
         except Exception: pass
+    for v in vehicles.values():
+        try: v.destroy()
+        except Exception: pass
+    world.tick()  # flush the destroys so the next run's actor list doesn't contain them
 
-    size_mb = os.path.getsize(output_video_path) / (1024 * 1024) if os.path.exists(output_video_path) else 0.0
-    print(f"  Saved {out_video_name}: {recorded_frames} frames, {size_mb:.2f} MB")
+    if render:
+        size_mb = os.path.getsize(output_video_path) / (1024 * 1024) if os.path.exists(output_video_path) else 0.0
+        print(f"  Saved {out_video_name}: {recorded_frames} frames, {size_mb:.2f} MB")
+    print(f"  Metrics ({mode}): {metrics}")
+    return metrics
 
 
 def main():
