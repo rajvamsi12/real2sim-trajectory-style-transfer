@@ -76,7 +76,7 @@ This is fixed in `scenario_checks.check_pair`. The slide itself still needs corr
 | A | Generators skip failing scenarios (use `--force` to render them anyway) | `generate_5_same_direction_micra_scenarios.py` |
 | C | Spawn yaw comes from the CARLA path. Lateral spawn shifts dropped. Fixed a stale-`tid` bug in the Stage 3 cleanup. | `debug/batch_process_scenarios.py`, `simulate_and_record_scenarios.py` |
 | C | Cars settle in 1st gear for 1 s, then launch at the real speed (held for 0.3 s while the drivetrain catches up) | `scc.py` (`hold_in_gear`, `set_initial_speed`) |
-| A | Validated scenarios whose CARLA path leaves the driving lanes are skipped (`offroad_points`) | `scenario_checks.py`, `debug/make_validated_scenarios.py` |
+| A | (Removed 2026-10-18 at Raj's request) Skipping validated scenarios whose CARLA path leaves the driving lanes | — |
 | D | Speed window divides by `step/fps` | `simulate_and_record_scenarios.py` |
 | D | Time-indexed tracking: the steering target is where the real car is at t + 0.5 s (at least 2.5 m ahead); speed = real speed + 0.8 × along-track lag. The replay uses full throttle; tracking brake is capped at 0.5, and emergency stops use 1.0. | `scc.py` (`set_timed_route`), `CapturingVehicle` |
 | E | Avoidance rewritten. Constant-velocity box prediction over 3 s; only the follower (threat ahead) reacts. Conflict < 1.5 s ahead: full brake, PID skipped that tick. Otherwise: follow the threat's speed, plus a 0.5 m offset only if it stays on a driving lane. The route is never modified. | `simulate_and_record_scenarios.py` |
@@ -109,9 +109,9 @@ Headless CARLA 0.9.15 (`-nullrhi`), Town10HD, 20 Hz. Commands are in `TEST_CHECK
 | Overtaking Right | 2,554 | 15 | 1,306 real boxes overlap, 1,033 pedestrian |
 | Vehicle Following | — | — | folder is empty: no CSV or scenarios exist yet |
 
-`make_validated_scenarios.py` then drops candidates whose CARLA path leaves the driving lanes. This happened to 23 of the passing candidates: U-turns across a median that has a gap only in Gwalior, and vehicles on a shoulder that Town10HD doesn't have. Before this check, they hit vegetation or a traffic sign.
+With the strict rules, `make_validated_scenarios.py` also dropped candidates whose CARLA path leaves the driving lanes (that check has since been removed). This happened to 23 of the passing candidates: U-turns across a median that has a gap only in Gwalior, and vehicles on a shoulder that Town10HD doesn't have. Before this check, they hit vegetation or a traffic sign.
 
-**Closed-loop result** (headless CARLA, final code): **34 validated scenarios**: Cut Out 4, U-turn 10, Overtaking Left 10, Overtaking Right 10.
+**Closed-loop result with the strict rules** (headless CARLA, before the relaxation below): **34 validated scenarios**: Cut Out 4, U-turn 10, Overtaking Left 10, Overtaking Right 10.
 
 | Mode | Vehicle collisions | Static hits | Min box gap | Route covered |
 |---|---|---|---|---|
@@ -122,6 +122,39 @@ Headless CARLA 0.9.15 (`-nullrhi`), Town10HD, 20 Hz. Commands are in `TEST_CHECK
 Overtaking Right was run 3 times in a row with identical results. One earlier run recorded a single `pid_avoid` collision (829) that did not reproduce. It came before the tracking-brake cap (below), so treat it as a possible flake to watch for.
 
 During verification, `max_brake=1.0` made the speed PID swing between full throttle and full brake. Tracking braking is now capped at 0.5; only the emergency stop uses 1.0.
+
+### Relaxed rules (Raj's decision, 2026-10-18)
+
+Only these checks now **reject** a scenario:
+- a pedestrian;
+- a track missing from more than 20% of the window;
+- real boxes closer than 0.2 m;
+- CARLA boxes closer than 0.3 m;
+- no CARLA path at all.
+
+These are now **warnings only**: speed or heading jumps, trimmed paths, and the overtaking geometry (moves past, behind→ahead, side-by-side clearance). The on-road (driving lane) check was removed.
+
+Audit with the relaxed rules:
+
+| Behaviour | Pass | of which with warnings |
+|---|---|---|
+| Cut In | 1 / 8 | 1 |
+| Cut Out | 8 / 27 | 1 |
+| U-turn | 29 / 33 | 4 |
+| Overtaking Left | 73 / 3,995 | 48 |
+| Overtaking Right | 51 / 2,554 | 36 |
+
+CARLA replay of 37 built scenarios (Cut In 1, Cut Out 6, U-turn 10, Overtaking Left 10, Overtaking Right 10):
+- **Clean:** no collision-sensor hits between vehicles in any mode. Every scenario **without** warnings passes all criteria.
+- **Problems, all in scenarios that have warnings:**
+  - **2 cannot spawn** (U-turn 766, Overtaking Right 75): the path starts outside the 6 regions.
+  - **1 static hit** (Overtaking Right 379, off-road), with box overlap of −0.17 m.
+  - **Box overlap with no sensor event** (CARLA's collision shape is smaller than its bounding box):
+    - Overtaking Left 24: −0.31 m (expert);
+    - Overtaking Left 334: −0.12 m (pid);
+    - Overtaking Left 95: −0.55 m (expert) and −0.35 m (pid). Here the other vehicle's path is trimmed to 3 of 18 frames, so it stands still and gets driven into.
+  - **Low route progress** (glitchy or trimmed tracks): Overtaking Right 201 (25%), Overtaking Right 469 (61%), Overtaking Left 24 (76%).
+- **Cut In 135:** only one of its two vehicles spawns (the other starts outside the regions), so it is collision-free trivially.
 
 ## Still open
 

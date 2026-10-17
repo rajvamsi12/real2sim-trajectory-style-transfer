@@ -15,7 +15,6 @@ Needs a CARLA server for Stage 3 (spawn dry-runs); -nullrhi is enough.
 import argparse
 import json
 import os
-import shutil
 import sys
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -25,7 +24,6 @@ sys.path.insert(0, BASE_DIR)
 import carla  # noqa: E402
 from simulate_and_record_scenarios import AnnotationParser, STABILIZE_EKF_CSV, SIM_FPS, TOWN  # noqa: E402
 from debug.batch_process_scenarios import run_stage_1_matrix, run_stage_2_time_method, run_stage_3_spawns  # noqa: E402
-from scenario_checks import offroad_points  # noqa: E402
 
 SCENARIOS_DIR = os.path.join(BASE_DIR, "Scenariosssss")
 DEFAULT_INPUT = os.path.join(SCENARIOS_DIR, "Overtaking Left", "overtaking_validated.json")
@@ -50,8 +48,7 @@ def main():
     settings.fixed_delta_seconds = 1.0 / SIM_FPS
     world.apply_settings(settings)
 
-    # One scenario per ego vehicle and behaviour, so a sample is not dominated by one long track.
-    # Candidates whose CARLA path leaves the driving lanes are dropped and the next one is tried.
+    # One scenario per ego vehicle and behaviour, so a sample is not dominated by one long track
     seen, per_behaviour = set(), {}
     for c in candidates:
         b = c.get("behaviour", "Overtaking")
@@ -67,14 +64,10 @@ def main():
             f.write("".join(f"- {i}\n" for i in ids))
             f.write("\nVehicles:\n" + "".join(f"- {i}\n" for i in ids))
         summary_data = (c["start"], c["end"], ids, ids, c["ego"])
-        print(f"\n{name}: real gap {c.get('min_real_gap_m')} m, sim gap {c.get('min_sim_gap_m')} m")
+        print(f"\n{name}: real gap {c.get('min_real_gap_m')} m, sim gap {c.get('min_sim_gap_m')} m, "
+              f"warnings: {c.get('warnings') or 'none'}")
         run_stage_1_matrix(sc_dir, summary_data, parser)
-        paths = run_stage_2_time_method(sc_dir, summary_data, parser)
-        offroad = {tid: offroad_points(world, [(p["x"], p["y"]) for p in t["carla_coordinates"]]) for tid, t in paths.items()}
-        if any(offroad.values()):
-            print(f"  SKIPPED {name}: CARLA path leaves the driving lanes {offroad}")
-            shutil.rmtree(sc_dir)
-            continue
+        run_stage_2_time_method(sc_dir, summary_data, parser)
         run_stage_3_spawns(sc_dir, summary_data, parser, dji_spawn_params=None, world=world)
         world.tick()
         per_behaviour[b] = per_behaviour.get(b, 0) + 1

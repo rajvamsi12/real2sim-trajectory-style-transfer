@@ -31,7 +31,7 @@ python debug/check_scenarios.py --scenarios "Overtaking Left"
 
 Works for any folder under `Scenariosssss/`. Two-vehicle folders use `check_pair`; one-vehicle folders (U-turn) use `check_single`.
 The original hand-picked folders (Cut In, Cut Out, U-turn, Overtaking Left/Right `scenario_0001`, and 0528/0532/0545/5256/19112) mostly **FAIL**. They are kept as known-bad examples (see `BUG_COLLISIONS.md`).
-A scenario you intend to render must print **PASS**.
+A scenario you intend to render must print **PASS**. Lines starting with `~ warning:` don't block it, but read them: glitches and trimmed paths are the usual cause of replay problems.
 
 ## 3. Candidate audit (no CARLA)
 
@@ -41,7 +41,7 @@ python debug/check_scenarios.py --audit-csv "Scenariosssss/U-turn/u_turn.csv"   
 python debug/check_scenarios.py --audit-csv "Scenariosssss/Overtaking Left/overtaking.csv"  # Left + Right, ~8 min
 ```
 
-Each prints `<Behaviour>: PASS n / m` with a breakdown by first failing check, and writes `<csv>_validated.json`.
+Each prints `<Behaviour>: PASS n / m (k of the passing ones have warnings)` with a breakdown by first failing check, and writes `<csv>_validated.json`. Warnings are stored per candidate.
 Last run's numbers are in `BUG_COLLISIONS.md` → Verification.
 
 ## 4. Closed-loop collision check (CARLA, ~10 s per scenario and mode)

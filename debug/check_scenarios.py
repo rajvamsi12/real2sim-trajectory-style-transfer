@@ -75,8 +75,7 @@ def check_folders(args):
             ok, m, reasons = sc.check_single(store, ego, start, end)
             results.append((name, ok, m, reasons))
             print(f"{'PASS' if ok else 'FAIL'} {name}  ego {ego} (single vehicle)")
-            for r in reasons:
-                print(f"       - {r}")
+            print_findings(reasons, m)
             continue
         overtake = "overtak" in name.lower()
         for other in others:
@@ -85,9 +84,15 @@ def check_folders(args):
             results.append((name, ok, m, reasons))
             print(f"{'PASS' if ok else 'FAIL'} {name}  ego {ego} vs {other}  "
                   f"real gap {m.get('min_real_gap_m')}  sim gap {m.get('min_sim_gap_m')}")
-            for r in reasons:
-                print(f"       - {r}")
+            print_findings(reasons, m)
     return store, results
+
+
+def print_findings(reasons, m):
+    for r in reasons:
+        print(f"       - {r}")
+    for w in m.get("warnings", []):
+        print(f"       ~ warning: {w}")
 
 
 def behaviour_of(row):
@@ -135,8 +140,10 @@ def audit_csv(args):
             print(f"  {i}/{len(unique)} checked, {len(passed)} pass so far")
 
     for behaviour in sorted(totals):
-        n_pass = sum(1 for p in passed if p["behaviour"] == behaviour)
-        print(f"\n{behaviour}: PASS {n_pass} / {totals[behaviour]} unique candidates")
+        mine = [p for p in passed if p["behaviour"] == behaviour]
+        warned = sum(1 for p in mine if p.get("warnings"))
+        print(f"\n{behaviour}: PASS {len(mine)} / {totals[behaviour]} unique candidates "
+              f"({warned} of the passing ones have warnings)")
         for k, v in first_reason.get(behaviour, collections.Counter()).most_common():
             print(f"  {v:6d}  {k}")
     print(f"\nTotal: PASS {len(passed)} / {len(unique)} unique candidates ({len(rows)} rows)")
@@ -149,7 +156,7 @@ def audit_csv(args):
 
 def _reason_key(reason):
     for key in ("pedestrian", "real boxes", "speed jumps", "heading flips", "behind to ahead",
-                "side-by-side lateral", "no side-by-side", "CARLA boxes", "trimmed outside", "shared frames", "frames in window", "does not move past"):
+                "side-by-side lateral", "no side-by-side", "CARLA boxes", "trimmed outside", "shared frames", "frames in window", "does not move past", "no common CARLA path", "no CARLA path"):
         if key in reason:
             return key
     return reason
