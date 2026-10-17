@@ -1263,14 +1263,21 @@ def render_carla_simulation_video(client, world, scenario_dir, summary_path, sum
         writer.write(frame_bgr)
         recorded_frames += 1
 
-    collided_pairs = set()
+    # Vehicle-vehicle collisions counted once per pair; static hits (kerbs, signs, vegetation) separately
+    collided_pairs, static_hits = set(), 0
     for vname, v in vehicles.items():
-        for _, other_id, _ in v.collision_events:
-            collided_pairs.add(frozenset((v.vehicle.id, other_id)))
+        types = {}
+        for _, other_id, other_type in v.collision_events:
+            if other_type.startswith("vehicle."):
+                collided_pairs.add(frozenset((v.vehicle.id, other_id)))
+            else:
+                types[other_type] = True
+        static_hits += len(types)
     metrics = {
         "mode": mode,
         "vehicles": len(vehicles),
         "collision_events": len(collided_pairs),
+        "static_collisions": static_hits,
         "min_box_gap_m": round(min_gap, 3) if min_gap != float("inf") else None,
         "box_overlap_ticks": overlap_ticks,
         "avoidance_ticks": avoidance_ticks,

@@ -6,12 +6,13 @@ Offline (no CARLA needed):
   python debug/check_scenarios.py --scenarios "Overtaking Left"
       Checks every scenario folder (its *_summary.txt) with scenario_checks.check_pair.
   python debug/check_scenarios.py --audit-csv "Scenariosssss/Overtaking Left/overtaking.csv"
-      Runs the same checks over every candidate row and prints how many survive and why the rest fail.
+      Runs the same checks over every candidate row (overtaking.csv, cut_in_out.csv or u_turn.csv)
+      and prints, per behaviour, how many survive and why the rest fail.
 
 In CARLA (server must be running; -nullrhi is enough, no GPU rendering needed):
   python debug/check_scenarios.py --scenarios "Overtaking Left" --carla
       Replays each scenario headless in 3 modes (expert / pid / pid_avoid) and reports
-      collision-sensor events, minimum box gap and route progress.
+      col=<vehicle collisions>/<static hits>, minimum box gap and route progress.
 
 Exit code is 1 if any checked scenario fails, so it can gate a pipeline run.
 """
@@ -67,8 +68,15 @@ def check_folders(args):
     for path, (start, end, vids, _, ego) in parsed:
         name = os.path.relpath(os.path.dirname(path), SCENARIOS_DIR)
         others = [v for v in vids if v != ego]
-        if ego is None or not others:
-            print(f"SKIP {name}: needs an ego and at least one other vehicle")
+        if ego is None:
+            print(f"SKIP {name}: summary has no ego")
+            continue
+        if not others:
+            ok, m, reasons = sc.check_single(store, ego, start, end)
+            results.append((name, ok, m, reasons))
+            print(f"{'PASS' if ok else 'FAIL'} {name}  ego {ego} (single vehicle)")
+            for r in reasons:
+                print(f"       - {r}")
             continue
         overtake = "overtak" in name.lower()
         for other in others:
@@ -82,40 +90,56 @@ def check_folders(args):
     return store, results
 
 
+def behaviour_of(row):
+    """Scenariosssss folder name for one CSV row (overtaking.csv / cut_in_out.csv / u_turn.csv)."""
+    if hasattr(row, "cut_type"):
+        return "Cut In" if str(row.cut_type).strip() == "in" else "Cut Out"
+    if hasattr(row, "other_id"):
+        return "Overtaking Left" if str(row.direction).strip() == "left" else "Overtaking Right"
+    return "U-turn"
+
+
 def audit_csv(args):
     import pandas as pd
 
     df = pd.read_csv(args.audit_csv)
     if args.limit:
         df = df.head(args.limit)
-    rows = [{"ego": int(r.trackID), "other": int(r.other_id),
-             "start": int(str(r.start_frame).split("_")[-1]), "end": int(str(r.end_frame).split("_")[-1])}
+    frame = lambda v: int(str(v).split("_")[-1])
+    rows = [{"ego": int(r.trackID), "other": int(r.other_id) if hasattr(r, "other_id") else None,
+             "start": frame(r.start_frame), "end": frame(r.end_frame), "behaviour": behaviour_of(r)}
             for r in df.itertuples()]
     unique = sc.dedupe_windows(rows)
-    ids = {r["ego"] for r in unique} | {r["other"] for r in unique}
+    ids = {r["ego"] for r in unique} | {r["other"] for r in unique if r["other"] is not None}
     print(f"{len(rows)} rows, {len(unique)} after removing overlapping duplicates of the same pair. "
           f"Loading {len(ids)} tracks ...")
     store = sc.TrackStore(args.csv, track_ids=ids)
 
-    first_reason = collections.Counter()
+    first_reason = {}
+    totals = collections.Counter(r["behaviour"] for r in unique)
     passed = []
     for i, r in enumerate(unique, 1):
-        if r["ego"] not in store.tracks or r["other"] not in store.tracks:
-            first_reason["track missing from CSV"] += 1
-            continue
-        ok, m, reasons = sc.check_pair(store, r["ego"], r["other"], r["start"], r["end"],
-                                       bp_for(store, r["ego"]), bp_for(store, r["other"]))
-        if ok:
-            passed.append(m)
+        if r["other"] is None:
+            ok, m, reasons = sc.check_single(store, r["ego"], r["start"], r["end"])
+        elif r["ego"] not in store.tracks or r["other"] not in store.tracks:
+            ok, m, reasons = False, {}, ["track missing from CSV"]
         else:
-            first_reason[_reason_key(reasons[0])] += 1
+            ok, m, reasons = sc.check_pair(store, r["ego"], r["other"], r["start"], r["end"],
+                                           bp_for(store, r["ego"]), bp_for(store, r["other"]),
+                                           overtake=r["behaviour"].startswith("Overtaking"))
+        if ok:
+            passed.append(dict(m, behaviour=r["behaviour"]))
+        else:
+            first_reason.setdefault(r["behaviour"], collections.Counter())[_reason_key(reasons[0])] += 1
         if i % 1000 == 0:
             print(f"  {i}/{len(unique)} checked, {len(passed)} pass so far")
 
-    print(f"\nPASS {len(passed)} / {len(unique)} unique candidates ({len(rows)} rows)")
-    print("First failing check:")
-    for k, v in first_reason.most_common():
-        print(f"  {v:6d}  {k}")
+    for behaviour in sorted(totals):
+        n_pass = sum(1 for p in passed if p["behaviour"] == behaviour)
+        print(f"\n{behaviour}: PASS {n_pass} / {totals[behaviour]} unique candidates")
+        for k, v in first_reason.get(behaviour, collections.Counter()).most_common():
+            print(f"  {v:6d}  {k}")
+    print(f"\nTotal: PASS {len(passed)} / {len(unique)} unique candidates ({len(rows)} rows)")
     out = os.path.splitext(args.audit_csv)[0] + "_validated.json"
     with open(out, "w") as f:
         json.dump(passed, f, indent=1)
@@ -125,7 +149,7 @@ def audit_csv(args):
 
 def _reason_key(reason):
     for key in ("pedestrian", "real boxes", "speed jumps", "heading flips", "behind to ahead",
-                "side-by-side lateral", "no side-by-side", "CARLA boxes", "trimmed outside", "shared frames", "does not move past"):
+                "side-by-side lateral", "no side-by-side", "CARLA boxes", "trimmed outside", "shared frames", "frames in window", "does not move past"):
         if key in reason:
             return key
     return reason
@@ -164,9 +188,9 @@ def run_carla(args, store, results):
                 cells.append("spawn failed")
                 failed = True
                 continue
-            cells.append(f"col={metrics['collision_events']} gap={metrics['min_box_gap_m']:+.2f} "
-                         f"prog={metrics['min_progress']:.0%}")
-            if valid and metrics["collision_events"]:
+            cells.append(f"col={metrics['collision_events']}/{metrics['static_collisions']} "
+                         f"gap={metrics['min_box_gap_m']:+.2f} prog={metrics['min_progress']:.0%}")
+            if valid and (metrics["collision_events"] or metrics["static_collisions"]):
                 failed = True
         print(f"{name:40s} {'yes' if valid else 'no':5s} " + " ".join(f"{c:>22s}" for c in cells))
     return failed
