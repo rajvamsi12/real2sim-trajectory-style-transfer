@@ -35,7 +35,8 @@ def main():
     p.add_argument("--input", default=DEFAULT_INPUT)
     p.add_argument("--count", type=int, default=10, help="Scenarios per behaviour (0 = all, no one-per-ego limit).")
     p.add_argument("--min-inbox", type=float, default=0.8, help="Minimum share of points inside the 6 regions/Center.")
-    p.add_argument("--sample", type=int, default=None, help="Pick N random candidates per behaviour (seed 0) instead of the first ones.")
+    p.add_argument("--sample", type=int, default=None, help="Pick N random candidates per behaviour instead of the first ones.")
+    p.add_argument("--seed", type=int, default=0, help="Random seed for --sample.")
     args = p.parse_args()
 
     with open(args.input) as f:
@@ -45,7 +46,7 @@ def main():
         by_b = {}
         for c in candidates:
             by_b.setdefault(c.get("behaviour", "Overtaking"), []).append(c)
-        rng = random.Random(0)
+        rng = random.Random(args.seed)
         candidates = [c for b in sorted(by_b) for c in rng.sample(by_b[b], min(args.sample, len(by_b[b])))]
         args.count = 0
     parser = AnnotationParser(STABILIZE_EKF_CSV)
