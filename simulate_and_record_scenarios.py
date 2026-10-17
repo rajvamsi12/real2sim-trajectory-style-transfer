@@ -414,9 +414,10 @@ class AnnotationParser:
 
 class CapturingVehicle(SimVehicle):
     def __init__(self, world, bp, name, start, yaw, output_path, start_delay=0, start_capture_time=0, end_capture_time=float("inf"), enable_avoidance=True):
-        # CARLA's default limits (brake 0.3, throttle 0.75) can neither stop a car within the avoidance
-        # horizon nor match the real accelerations, so the replay uses the full range
-        super().__init__(world, bp, name, start, yaw, start_delay, max_brake=1.0, max_throttle=1.0)
+        # CARLA's default limits (brake 0.3, throttle 0.75) cannot match the real accelerations.
+        # Tracking brake is capped at 0.5 (1.0 made the PID bang-bang between full throttle and full
+        # brake); the avoidance emergency stop applies brake=1.0 directly, bypassing the PID.
+        super().__init__(world, bp, name, start, yaw, start_delay, max_brake=0.5, max_throttle=1.0)
         self.enable_avoidance = enable_avoidance
         self.collision_sensor = None
         self.collision_events = []          # (sim_time, other_actor_id, other_type_id), every event
