@@ -69,10 +69,10 @@ CSV_COLUMNS = [
 class TrackStore:
     """Loads only the columns (and optionally only the tracks) the checks need."""
 
-    def __init__(self, csv_path=DEFAULT_CSV, track_ids=None, chunksize=500_000):
+    def __init__(self, csv_path=DEFAULT_CSV, track_ids=None, chunksize=500_000, extra_columns=()):
         wanted = set(int(t) for t in track_ids) if track_ids is not None else None
         parts = []
-        for chunk in pd.read_csv(csv_path, usecols=CSV_COLUMNS, chunksize=chunksize):
+        for chunk in pd.read_csv(csv_path, usecols=CSV_COLUMNS + list(extra_columns), chunksize=chunksize):
             if wanted is not None:
                 chunk = chunk[chunk["trackID"].isin(wanted)]
             parts.append(chunk)
