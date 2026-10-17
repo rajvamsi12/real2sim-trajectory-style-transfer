@@ -306,8 +306,17 @@ def connect_waypoints_straight(start_wp, end_wp, num_samples=20):
 class SimVehicle:
     """
     A simulation vehicle class that can follow a route with dynamic speeds.
+
+    Two ways to drive it:
+      - set_dynamic_route(): legacy distance-indexed route (next waypoint once within 3 m).
+      - set_timed_route():   time-indexed route; the target is where the real vehicle was at
+                             t + TIMED_LOOKAHEAD_S, so both vehicles of a scenario stay in sync.
     """
-    def __init__(self, world, bp, name, start, yaw, start_delay=0):
+    TIMED_LOOKAHEAD_S = 0.5
+    TIMED_MIN_LOOKAHEAD_M = 2.5
+    TIMED_SPEED_GAIN = 0.8      # m/s of extra target speed per metre of along-track lag
+
+    def __init__(self, world, bp, name, start, yaw, start_delay=0, max_brake=0.3, max_throttle=0.75):
         self.world = world
         self.name = name
         self.start_delay = start_delay
@@ -316,6 +325,12 @@ class SimVehicle:
         # Route and speed variables
         self.dense_route = [] # Will store tuples of (DummyWaypoint, target_speed_kmh)
         self.wp_index = 0
+        self.timed_route = None # (times_s, xy[N,2], speeds_mps) when set_timed_route() is used
+        self._constant_velocity_until = None # sim time at which the launch speed hold ends
+
+        # Per-tick overrides set by an avoidance layer (reset by it every tick)
+        self.speed_cap_mps = None   # upper bound on target speed
+        self.lateral_offset_m = 0.0 # shift of the steering target, + = left of heading (timed route only)
 
         # Spawn the vehicle
         spawn_transform = carla.Transform(
@@ -329,11 +344,116 @@ class SimVehicle:
         print(f"[{self.name}] Spawned at: ({spawn_transform.location.x:.2f}, {spawn_transform.location.y:.2f}) with yaw={yaw:.2f}°")
 
         # Initialize the PID controller
+        # max_brake/max_throttle default to CARLA's 0.3/0.75; the scenario replay passes 1.0 for both
         self.controller = VehiclePIDController(
             self.vehicle,
             args_lateral={'K_P': 1.95, 'K_I': 0.05, 'K_D': 0.2, 'dt': 1.0 / 20.0},
-            args_longitudinal={'K_P': 1.0, 'K_I': 0.05, 'K_D': 0.0, 'dt': 1.0 / 20.0}
+            args_longitudinal={'K_P': 1.0, 'K_I': 0.05, 'K_D': 0.0, 'dt': 1.0 / 20.0},
+            max_brake=max_brake,
+            max_throttle=max_throttle,
         )
+
+    def hold_in_gear(self):
+        """Before the scenario clock starts: hold still in 1st gear while the car drops onto the road.
+        A fresh CARLA vehicle otherwise sits in gear 0 for ~1.2 s and loses any launch velocity."""
+        if self.vehicle:
+            self.vehicle.apply_control(carla.VehicleControl(hand_brake=True, manual_gear_shift=True, gear=1))
+
+    def set_initial_speed(self, speed_mps, hold_s=0.3):
+        """Launch the vehicle at its real speed (after hold_in_gear() + settle ticks).
+        A plain set_target_velocity bleeds off within a few ticks because the wheels are not
+        spinning yet, so the speed is held constant for hold_s while the drivetrain catches up."""
+        if not self.vehicle:
+            return
+        self.vehicle.apply_control(carla.VehicleControl(manual_gear_shift=False))
+        if speed_mps <= 0.0:
+            return
+        self.vehicle.enable_constant_velocity(carla.Vector3D(speed_mps, 0.0, 0.0))  # local frame: forward
+        self._constant_velocity_until = hold_s
+
+    def set_timed_route(self, times_s, points_xy, speeds_mps, z=0.6):
+        """Time-indexed reference: points_xy[i] is where the real vehicle was at times_s[i]."""
+        self.timed_route = (np.asarray(times_s, dtype=float), np.asarray(points_xy, dtype=float),
+                            np.asarray(speeds_mps, dtype=float))
+        self._route_z = z
+        # Cumulative arc length, used to measure how far ahead/behind schedule the vehicle is
+        seg = np.linalg.norm(np.diff(self.timed_route[1], axis=0), axis=1)
+        self._route_s = np.concatenate([[0.0], np.cumsum(seg)])
+
+    def reference(self, t):
+        """(x, y, speed_mps, arc_length) of the real vehicle at time t (clamped to the route)."""
+        times, xy, speeds = self.timed_route
+        x = np.interp(t, times, xy[:, 0])
+        y = np.interp(t, times, xy[:, 1])
+        return x, y, float(np.interp(t, times, speeds)), float(np.interp(t, times, self._route_s))
+
+    def _arc_length_at(self, x, y):
+        """Arc length of the vehicle's projection onto the closest segment of the timed route."""
+        xy, s = self.timed_route[1], self._route_s
+        if len(xy) < 2:
+            return 0.0
+        a, b = xy[:-1], xy[1:]
+        ab = b - a
+        denom = np.maximum((ab ** 2).sum(axis=1), 1e-9)
+        u = np.clip(((np.array([x, y]) - a) * ab).sum(axis=1) / denom, 0.0, 1.0)
+        proj = a + ab * u[:, None]
+        i = int(np.argmin(np.hypot(proj[:, 0] - x, proj[:, 1] - y)))
+        return float(s[i] + u[i] * (s[i + 1] - s[i]))
+
+    def _point_at_arc_length(self, s):
+        """Route point at arc length s; past the end, extend straight along the last segment."""
+        xy, route_s = self.timed_route[1], self._route_s
+        if len(xy) < 2 or s <= route_s[-1]:
+            return float(np.interp(s, route_s, xy[:, 0])), float(np.interp(s, route_s, xy[:, 1]))
+        d = xy[-1] - xy[-2]
+        d = d / max(np.linalg.norm(d), 1e-9)
+        extra = s - route_s[-1]
+        return float(xy[-1, 0] + d[0] * extra), float(xy[-1, 1] + d[1] * extra)
+
+    def route_length(self):
+        return float(self._route_s[-1]) if self.timed_route is not None else 0.0
+
+    def progress(self):
+        """Fraction of the timed route's arc length covered."""
+        if self.timed_route is None or not self.vehicle or self._route_s[-1] < 1e-6:
+            return 1.0
+        loc = self.vehicle.get_location()
+        return self._arc_length_at(loc.x, loc.y) / self._route_s[-1]
+
+    def release_launch_hold(self):
+        """End the constant-velocity launch hold early (e.g. before an emergency brake)."""
+        if self._constant_velocity_until is not None and self.vehicle:
+            self.vehicle.disable_constant_velocity()
+        self._constant_velocity_until = None
+
+    def _timed_update(self, simulation_time):
+        if self._constant_velocity_until is not None and simulation_time >= self._constant_velocity_until:
+            self.release_launch_hold()
+        times = self.timed_route[0]
+        if simulation_time > times[-1]:
+            self.vehicle.apply_control(carla.VehicleControl(throttle=0.0, brake=1.0))
+            return False
+        _, _, ref_speed, ref_s = self.reference(simulation_time)
+        _, _, _, ahead_s = self.reference(simulation_time + self.TIMED_LOOKAHEAD_S)
+        loc = self.vehicle.get_location()
+        own_s = self._arc_length_at(loc.x, loc.y)
+
+        # Steer at a point at least TIMED_MIN_LOOKAHEAD_M ahead along the route; a target closer
+        # than that (slow vehicles) makes the lateral PID steer erratically.
+        tx, ty = self._point_at_arc_length(max(ahead_s, own_s + self.TIMED_MIN_LOOKAHEAD_M))
+        if self.lateral_offset_m:
+            fwd = self.vehicle.get_transform().get_forward_vector()
+            tx -= fwd.y * self.lateral_offset_m
+            ty += fwd.x * self.lateral_offset_m
+        target_wp = DummyWaypoint(carla.Transform(carla.Location(x=tx, y=ty, z=self._route_z)))
+
+        # Speed up when behind schedule, slow down when ahead (along the route, not straight-line)
+        lag_m = ref_s - own_s
+        speed_mps = max(0.0, ref_speed + self.TIMED_SPEED_GAIN * lag_m)
+        if self.speed_cap_mps is not None:
+            speed_mps = min(speed_mps, self.speed_cap_mps)
+        self.vehicle.apply_control(self.controller.run_step(speed_mps * 3.6, target_wp))
+        return True
 
     def set_dynamic_route(self, route_with_speeds):
         """
@@ -376,6 +496,9 @@ class SimVehicle:
         if not self.vehicle or simulation_time < self.start_delay:
             return True # Still running
 
+        if self.timed_route is not None:
+            return self._timed_update(simulation_time)
+
         if self.wp_index >= len(self.dense_route):
             # Route is complete, stop the vehicle
             control = carla.VehicleControl(throttle=0.0, brake=1.0)
@@ -395,6 +518,8 @@ class SimVehicle:
 
         # Get the current target waypoint and its associated speed (km/h)
         target_wp, target_speed_kmh = self.dense_route[self.wp_index]
+        if self.speed_cap_mps is not None:
+            target_speed_kmh = min(target_speed_kmh, self.speed_cap_mps * 3.6)
 
         # Feed the dynamic target speed to the PID controller
         control = self.controller.run_step(target_speed_kmh, target_wp)
