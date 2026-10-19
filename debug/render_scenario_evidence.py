@@ -206,7 +206,7 @@ def replay_and_record(world, sc_dir, start, mode):
         if route is None:
             continue
         bp = lib.find(s["blueprint"])
-        yaw = sc.path_yaw_deg([tuple(p) for p in route[1][:8]]) or s["yaw"]
+        yaw = s["yaw"]  # chosen in run_stage_3_spawns
         v = CapturingVehicle(world, bp, f"vehicle_{tid}", (s["x"], s["y"], s["z"]), yaw, sc_dir, enable_avoidance=False)
         v.set_timed_route(*route, z=DEFAULT_Z)
         vehicles[f"vehicle_{tid}"] = v

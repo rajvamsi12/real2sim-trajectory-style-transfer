@@ -60,7 +60,7 @@ try:
         REAL_WORLD_FPS,
         actor_box,
     )
-    from scenario_checks import box_gap, path_yaw_deg
+    from scenario_checks import box_gap
 except ImportError as e:
     print(f"Warning loading codebase modules: {e}")
 
@@ -301,6 +301,71 @@ def run_stage_2_time_method(scenario_dir, summary_data, annotation_parser):
 
 
 # ==========================================
+# SPAWN YAW
+# ==========================================
+SPAWN_MIN_TRAVEL_M = 1.0       # path direction is taken once the vehicle has moved this far
+SPAWN_HEADING_MIN_SPEED = 1.0  # below this the EKF heading is too noisy to use
+
+
+def _wrap_deg(a):
+    return (a + 180.0) % 360.0 - 180.0
+
+
+def travel_yaw_deg(carla_pts, min_travel=SPAWN_MIN_TRAVEL_M):
+    """Direction from the first point to the first point at least min_travel metres away (None if it never gets there)."""
+    pts = [p for p in carla_pts if p is not None]
+    if len(pts) < 2:
+        return None
+    x0, y0 = pts[0]
+    for x, y in pts[1:]:
+        if math.hypot(x - x0, y - y0) >= min_travel:
+            return math.degrees(math.atan2(y - y0, x - x0))
+    return None
+
+
+def heading_to_carla_yaw(heading_deg, real_pt):
+    """EKF heading_angle -> CARLA yaw through the 2x2 part of the region matrix.
+    heading_angle is atan2(-vy, vx) in image pixels, i.e. y-up like the matrix input (u, -v)."""
+    region = timemethod.classify_point(real_pt)
+    if region not in timemethod.transformation_matrices:
+        region = timemethod.get_closest_region(real_pt)  # Center: use the nearest arm's matrix
+    M = timemethod.transformation_matrices[region]
+    h = math.radians(heading_deg)
+    dx = M[0][0] * math.cos(h) + M[0][1] * math.sin(h)
+    dy = M[1][0] * math.cos(h) + M[1][1] * math.sin(h)
+    return math.degrees(math.atan2(dy, dx))
+
+
+def choose_spawn_yaw(world, carla_pt, carla_path, heading_deg, real_pt, speed_mps):
+    """Spawn yaw (deg) and where it came from.
+    1. On a driving lane outside a junction: the lane direction, flipped 180 deg if it disagrees with the
+       vehicle's travel direction by more than 90 deg (e.g. a wrong-way or oncoming-lane vehicle).
+    2. In a junction or off-road: the EKF heading through the region matrix when the vehicle moves at
+       least SPAWN_HEADING_MIN_SPEED, otherwise the path direction once it has moved SPAWN_MIN_TRAVEL_M.
+    """
+    path_yaw = travel_yaw_deg(carla_path)
+    heading_yaw = heading_to_carla_yaw(heading_deg, real_pt) if heading_deg is not None else None
+    use_heading = heading_yaw is not None and speed_mps >= SPAWN_HEADING_MIN_SPEED
+    travel = path_yaw if path_yaw is not None else heading_yaw
+
+    if world is not None:
+        wp = world.get_map().get_waypoint(carla.Location(x=float(carla_pt[0]), y=float(carla_pt[1]), z=0.0),
+                                          project_to_road=False, lane_type=carla.LaneType.Driving)
+        if wp is not None and not wp.is_junction:
+            yaw = wp.transform.rotation.yaw
+            if travel is not None and abs(_wrap_deg(yaw - travel)) > 90.0:
+                return _wrap_deg(yaw + 180.0), "road (flipped)"
+            return _wrap_deg(yaw), "road"
+    if use_heading:
+        return heading_yaw, "heading x matrix"
+    if path_yaw is not None:
+        return path_yaw, "path direction"
+    if heading_yaw is not None:
+        return heading_yaw, "heading x matrix (slow, vehicle never moves 1 m)"
+    return 0.0, "default 0"
+
+
+# ==========================================
 # STAGE 3: SPAWN POSITIONS (WITH & WITHOUT RETRACTION)
 # ==========================================
 def run_stage_3_spawns(scenario_dir, summary_data, annotation_parser, dji_spawn_params, world=None):
@@ -341,12 +406,11 @@ def run_stage_3_spawns(scenario_dir, summary_data, annotation_parser, dji_spawn_
         if carla_pt is None:
             continue
 
-        # Spawn heading from the CARLA path over the next few frames. The EKF heading conversion
-        # (convert_real_heading_to_carla_yaw) was 60-74 deg off for slow vehicles in 0528/0532,
-        # so cars spawned pointing across their neighbour.
-        carla_yaw = path_yaw_deg(all_carla_coords[init_idx:init_idx + 8])
-        if carla_yaw is None:
-            carla_yaw = 0.0
+        carla_yaw, yaw_source = choose_spawn_yaw(
+            world, carla_pt, all_carla_coords[init_idx:], headings_dict.get(init_frame),
+            real_pt, t_data.get("speeds", {}).get(init_frame, 0.0),
+        )
+        print(f"  [Stage 3] vehicle_{tid}: spawn yaw {carla_yaw:.1f} deg from {yaw_source}")
 
         label_id = t_data.get("label_id", t_data.get("label", 1))
         if label_id is None:
@@ -364,6 +428,7 @@ def run_stage_3_spawns(scenario_dir, summary_data, annotation_parser, dji_spawn_
             "z": DEFAULT_Z,
             "pitch": 0.0,
             "yaw": float(carla_yaw),
+            "yaw_source": yaw_source,
             "roll": 0.0,
         }
 
@@ -378,6 +443,7 @@ def run_stage_3_spawns(scenario_dir, summary_data, annotation_parser, dji_spawn_
             chosen_tf = None
             bp = world.get_blueprint_library().find(bp_name)
             for cand_tf, strategy in candidates:
+                cand_tf.rotation.yaw = carla_yaw  # retraction candidates along the path keep the chosen spawn yaw
                 # Lateral shifts (+-2/4 m) put the car beside its own path, so the PID then steers
                 # diagonally across the neighbouring lane. Only retract along the path.
                 if strategy.startswith("lateral"):
@@ -403,6 +469,7 @@ def run_stage_3_spawns(scenario_dir, summary_data, annotation_parser, dji_spawn_
                 "z": float(chosen_tf.location.z),
                 "pitch": float(chosen_tf.rotation.pitch),
                 "yaw": float(chosen_tf.rotation.yaw),
+                "yaw_source": yaw_source,
                 "roll": float(chosen_tf.rotation.roll),
             }
 
@@ -1146,9 +1213,7 @@ def render_carla_simulation_video(client, world, scenario_dir, summary_path, sum
         if bp.has_attribute("role_name"):
             bp.set_attribute("role_name", vname)
 
-        # Heading from the path (see run_stage_3_spawns); also corrects spawn JSONs written before that fix
-        yaw = path_yaw_deg([tuple(p) for p in route[1][:8]])
-        yaw = s_info["yaw"] if yaw is None else yaw
+        yaw = s_info["yaw"]  # chosen in run_stage_3_spawns (road angle / heading / path, see choose_spawn_yaw)
         try:
             sim_v = CapturingVehicle(world, bp, vname, (s_info["x"], s_info["y"], s_info["z"]), yaw,
                                      scenario_dir, enable_avoidance=(mode == "pid_avoid"))
