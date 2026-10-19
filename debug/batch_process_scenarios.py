@@ -338,10 +338,13 @@ def heading_to_carla_yaw(heading_deg, real_pt):
 
 def choose_spawn_yaw(world, carla_pt, carla_path, heading_deg, real_pt, speed_mps):
     """Spawn yaw (deg) and where it came from.
-    1. On a driving lane outside a junction: the lane direction, flipped 180 deg if it disagrees with the
-       vehicle's travel direction by more than 90 deg (e.g. a wrong-way or oncoming-lane vehicle).
-    2. In a junction or off-road: the EKF heading through the region matrix when the vehicle moves at
-       least SPAWN_HEADING_MIN_SPEED, otherwise the path direction once it has moved SPAWN_MIN_TRAVEL_M.
+    1. Spawn point (real) inside one of the 6 calibrated regions: the direction of the NEAREST CARLA
+       driving lane, even if the mapped point itself lands on a shoulder or a junction edge.
+    2. Otherwise, on a driving lane outside a junction: that lane's direction.
+    In 1 and 2 the lane direction is flipped 180 deg if it disagrees with the vehicle's travel
+    direction by more than 90 deg (e.g. a wrong-way or oncoming-lane vehicle).
+    3. Otherwise (Center/junction, off-road): the EKF heading through the region matrix when the vehicle
+       moves at least SPAWN_HEADING_MIN_SPEED, else the path direction once it has moved SPAWN_MIN_TRAVEL_M.
     """
     path_yaw = travel_yaw_deg(carla_path)
     heading_yaw = heading_to_carla_yaw(heading_deg, real_pt) if heading_deg is not None else None
@@ -349,13 +352,15 @@ def choose_spawn_yaw(world, carla_pt, carla_path, heading_deg, real_pt, speed_mp
     travel = path_yaw if path_yaw is not None else heading_yaw
 
     if world is not None:
-        wp = world.get_map().get_waypoint(carla.Location(x=float(carla_pt[0]), y=float(carla_pt[1]), z=0.0),
-                                          project_to_road=False, lane_type=carla.LaneType.Driving)
-        if wp is not None and not wp.is_junction:
+        loc = carla.Location(x=float(carla_pt[0]), y=float(carla_pt[1]), z=0.0)
+        in_region = timemethod.classify_point(real_pt) in timemethod.transformation_matrices
+        wp = world.get_map().get_waypoint(loc, project_to_road=in_region, lane_type=carla.LaneType.Driving)
+        if wp is not None and (in_region or not wp.is_junction):
             yaw = wp.transform.rotation.yaw
+            source = "nearest lane (in region)" if in_region else "road"
             if travel is not None and abs(_wrap_deg(yaw - travel)) > 90.0:
-                return _wrap_deg(yaw + 180.0), "road (flipped)"
-            return _wrap_deg(yaw), "road"
+                return _wrap_deg(yaw + 180.0), source + " (flipped)"
+            return _wrap_deg(yaw), source
     if use_heading:
         return heading_yaw, "heading x matrix"
     if path_yaw is not None:
