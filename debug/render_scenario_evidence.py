@@ -10,15 +10,18 @@ Builds one scenario folder with everything needed to inspect a replay problem:
     real_world_trajectory.png      both tracks on the drone background map
     real_drone_video.mp4           DJI footage with the EKF boxes (overlay_scenario_bboxes.py)
     closest_moment_real.png        the drone frame where the recorded centres are closest, zoomed
+    closest_moment_zoom.png        raw vs. boxed drone crops just before, at and after that frame
+    frame<N>_all_tracks.png        every tracked box around the pair at that frame (crowding, duplicates)
     centre_distance.png            centre distance over time vs. what real-size vehicles need
-    carla_sim_expert.mp4           top-down CARLA replay, positions set exactly from the data
-    carla_sim_pid.mp4              top-down CARLA replay, PID-driven with physics
     sim_metrics_<mode>.json
 
-The CARLA videos are drawn from the simulated actor states (road from the CARLA map, vehicle
-bounding boxes from the actors), so they work with a headless server (-nullrhi) and no GPU.
+  CARLA videos, with --camera (needs a GPU-rendered server, CarlaUE4.sh -RenderOffScreen):
+    trajectory_video_expert_replay.mp4       bird's-eye camera, positions set exactly from the data
+    trajectory_video_without_avoidance.mp4   bird's-eye camera, PID-driven with physics
+  without --camera (works headless with -nullrhi, no GPU), drawn from the simulated actor states:
+    carla_sim_expert.mp4, carla_sim_pid.mp4
 
-  python debug/render_scenario_evidence.py --category "Overtaking Left" --ego 565 --other 1342 --start 853
+  python debug/render_scenario_evidence.py --category "Overtaking Left" --ego 565 --other 1342 --start 853 --camera
 """
 
 import argparse
@@ -44,6 +47,7 @@ from simulate_and_record_scenarios import (  # noqa: E402
 )
 from debug.batch_process_scenarios import (  # noqa: E402
     run_stage_1_matrix, run_stage_2_time_method, run_stage_3_spawns, build_timed_route, SETTLE_TICKS, actor_box,
+    render_carla_simulation_video,
 )
 from generate_5_same_direction_micra_scenarios import render_real_world_drone_trajectory_image  # noqa: E402
 
@@ -107,6 +111,57 @@ def render_closest_still(out_path, frame, we, wo, ego, other, dist_m, typ_gap):
     cv2.putText(banner, f"Recorded centres {dist_m:.2f} m apart; real-size vehicles would overlap by {-typ_gap:.2f} m",
                 (10, 65), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 200, 255), 2)
     cv2.imwrite(out_path, np.vstack([banner, crop]))
+    print(f"  Saved {os.path.basename(out_path)}")
+
+
+def render_zoom_strip(out_path, frames, i, we, wo, ego, other):
+    """Raw (top) and boxed (bottom) drone crops a few frames before, at and after frame index i."""
+    cap = cv2.VideoCapture(VIDEO)
+    fps = cap.get(cv2.CAP_PROP_FPS) or 30.0
+    picks = sorted({frames[max(0, i - 3)], frames[i], frames[min(len(frames) - 1, i + 3)]})
+    raw_tiles, box_tiles = [], []
+    for f in picks:
+        cap.set(cv2.CAP_PROP_POS_FRAMES, annotation_frame_to_source_frame(f, fps, DEFAULT_SCENARIO_FPS))
+        ok, img = cap.read()
+        if not ok:
+            continue
+        boxed = img.copy()
+        for w, col in ((we, (0, 255, 0)), (wo, (0, 165, 255))):
+            cv2.polylines(boxed, [np.array(ast.literal_eval(w.at[f, "kf_obbox_coord_pixel"]), np.int32)], True, col, 1)
+        c = np.mean([[w.at[f, "kf_cx_pixel"], w.at[f, "kf_cy_pixel"]] for w in (we, wo)], axis=0).astype(int)
+        x0, y0 = np.maximum(c - 60, 0)
+        for im, tiles, tag in ((img, raw_tiles, "raw"), (boxed, box_tiles, "boxes")):
+            tile = cv2.resize(im[y0:y0 + 120, x0:x0 + 120], (360, 360), interpolation=cv2.INTER_CUBIC)
+            cv2.putText(tile, f"frame {f} {tag}", (6, 20), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255, 255, 255), 2)
+            tiles.append(tile)
+    cap.release()
+    cv2.imwrite(out_path, np.vstack([np.hstack(raw_tiles), np.hstack(box_tiles)]))
+    print(f"  Saved {os.path.basename(out_path)}")
+
+
+def render_all_tracks(out_path, frame, ego, other):
+    """Every tracked box within ~35 m of the pair at one frame, to show crowding and duplicate tracks."""
+    cols = ["frameID", "trackID", "labelID", "kf_cx_pixel", "kf_cy_pixel", "kf_obbox_coord_pixel"]
+    fid = f"frame_{frame:06d}"
+    df = pd.concat(ch[ch.frameID == fid] for ch in pd.read_csv(STABILIZE_EKF_CSV, usecols=cols, chunksize=500_000))
+    cap = cv2.VideoCapture(VIDEO)
+    cap.set(cv2.CAP_PROP_POS_FRAMES, annotation_frame_to_source_frame(frame, cap.get(cv2.CAP_PROP_FPS) or 30.0, DEFAULT_SCENARIO_FPS))
+    ok, img = cap.read()
+    cap.release()
+    if not ok:
+        return
+    c = df[df.trackID.isin([ego, other])][["kf_cx_pixel", "kf_cy_pixel"]].mean().to_numpy().astype(int)
+    x0, y0 = np.maximum(c - 250, 0)
+    near = df[(abs(df.kf_cx_pixel - c[0]) < 250) & (abs(df.kf_cy_pixel - c[1]) < 250)]
+    label_cols = {0: (255, 0, 255), 1: (0, 255, 255), 2: (255, 255, 0), 3: (0, 0, 255), 4: (200, 200, 200), 5: (0, 0, 255)}
+    for r in near.itertuples():
+        col = (0, 255, 0) if r.trackID == ego else (0, 165, 255) if r.trackID == other else label_cols.get(r.labelID, (255, 255, 255))
+        cv2.polylines(img, [np.array(ast.literal_eval(r.kf_obbox_coord_pixel), np.int32)], True, col, 1)
+        cv2.putText(img, f"{r.trackID}:{r.labelID}", (int(r.kf_cx_pixel) + 6, int(r.kf_cy_pixel) - 6), cv2.FONT_HERSHEY_SIMPLEX, 0.35, col, 1)
+    tile = cv2.resize(img[y0:y0 + 500, x0:x0 + 500], (900, 900), interpolation=cv2.INTER_CUBIC)
+    cv2.putText(tile, f"frame {frame}: all tracks near {ego}/{other} (track:label, 0=3W 1=car 2=2W 4=ped)",
+                (8, 24), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255, 255, 255), 2)
+    cv2.imwrite(out_path, tile)
     print(f"  Saved {os.path.basename(out_path)}")
 
 
@@ -241,6 +296,8 @@ def main():
     p.add_argument("--ego", type=int, required=True)
     p.add_argument("--other", type=int, required=True)
     p.add_argument("--start", type=int, required=True, help="start_frame of the CSV row")
+    p.add_argument("--camera", action="store_true", help="Film the CARLA runs with a bird's-eye camera (needs GPU rendering).")
+    p.add_argument("--camera-z", type=float, default=22.0, help="Bird's-eye camera height in metres.")
     args = p.parse_args()
 
     end, _ = find_row(args.category, args.ego, args.other, args.start)
@@ -262,6 +319,8 @@ def main():
     print(f"  Closest recorded centres: {dist[i]:.2f} m at frame {frames[i]}; typical-size gap {typ_gap[i]:+.2f} m")
     render_distance_plot(os.path.join(sc_dir, "centre_distance.png"), frames, dist, typ_gap, args.ego, args.other, labels)
     render_closest_still(os.path.join(sc_dir, "closest_moment_real.png"), frames[i], we, wo, args.ego, args.other, dist[i], typ_gap[i])
+    render_zoom_strip(os.path.join(sc_dir, "closest_moment_zoom.png"), frames, i, we, wo, args.ego, args.other)
+    render_all_tracks(os.path.join(sc_dir, f"frame{frames[i]}_all_tracks.png"), frames[i], args.ego, args.other)
 
     parser = AnnotationParser(STABILIZE_EKF_CSV)
     render_real_world_drone_trajectory_image(sc_dir, args.ego, args.other, args.start, end, f"{args.ego} vs {args.other}", parser)
@@ -284,6 +343,12 @@ def main():
     run_stage_3_spawns(sc_dir, summary_data, parser, dji_spawn_params=None, world=world)
     world.tick()
 
+    if args.camera:
+        world.set_weather(carla.WeatherParameters.ClearNoon)
+        for mode in ("expert", "pid"):
+            render_carla_simulation_video(client, world, sc_dir, summary, summary_data, parser, None, False,
+                                          mode=mode, render=True, camera_z=args.camera_z)
+        return
     for mode, label in (("expert", "EXPERT: positions set exactly from the drone data (physics off)"),
                         ("pid", "PID: cars driven by the controller along the recorded paths (physics on)")):
         states, routes = replay_and_record(world, sc_dir, args.start, mode)
