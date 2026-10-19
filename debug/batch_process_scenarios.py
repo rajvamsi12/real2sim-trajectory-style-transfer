@@ -1079,7 +1079,7 @@ def build_timed_route(tid_str, t_data, start_frame):
 
 
 def render_carla_simulation_video(client, world, scenario_dir, summary_path, summary_data, annotation_parser,
-                                  dji_spawn_params, enable_avoidance, mode=None, render=True):
+                                  dji_spawn_params, enable_avoidance, mode=None, render=True, camera_z=55.0):
     """
     Replays a scenario in CARLA and (optionally) records a top-down video.
 
@@ -1089,6 +1089,7 @@ def render_carla_simulation_video(client, world, scenario_dir, summary_path, sum
       "pid"       - PID tracking of the time-indexed real trajectory, no avoidance.
       "pid_avoid" - same, plus box-based follower avoidance.
     If mode is None it follows enable_avoidance (pid_avoid / pid), as the existing callers expect.
+    camera_z is the height (m) of the bird's-eye camera above the middle of the routes.
 
     Returns a metrics dict (also saved as sim_metrics_<mode>.json) or None if nothing spawned.
     """
@@ -1176,13 +1177,14 @@ def render_carla_simulation_video(client, world, scenario_dir, summary_path, sum
     camera, img_queue, writer = None, None, None
     cam_width, cam_height = 1280, 720
     if render:
-        avg_x = sum(p[0] for p in spawn_locations) / len(spawn_locations)
-        avg_y = sum(p[1] for p in spawn_locations) / len(spawn_locations)
+        # Centre the bird's-eye camera on the middle of all routes (not just the spawns)
+        route_xy = np.vstack([v.timed_route[1] for v in vehicles.values()])
+        avg_x, avg_y = route_xy.mean(axis=0)
         cam_bp = blueprint_library.find("sensor.camera.rgb")
         cam_bp.set_attribute("image_size_x", str(cam_width))
         cam_bp.set_attribute("image_size_y", str(cam_height))
         cam_bp.set_attribute("fov", "90")
-        cam_tf = carla.Transform(carla.Location(x=avg_x, y=avg_y, z=55.0), carla.Rotation(pitch=-90.0, yaw=0.0, roll=0.0))
+        cam_tf = carla.Transform(carla.Location(x=float(avg_x), y=float(avg_y), z=camera_z), carla.Rotation(pitch=-90.0, yaw=0.0, roll=0.0))
         camera = world.spawn_actor(cam_bp, cam_tf)
         img_queue = queue.Queue()
         camera.listen(img_queue.put)
