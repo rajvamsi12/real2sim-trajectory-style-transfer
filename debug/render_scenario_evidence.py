@@ -15,7 +15,8 @@ Builds one scenario folder with everything needed to inspect a replay problem:
     centre_distance.png            centre distance over time vs. what real-size vehicles need
     sim_metrics_<mode>.json
 
-  CARLA videos, with --camera (needs a GPU-rendered server, CarlaUE4.sh -RenderOffScreen):
+  CARLA outputs, with --camera (needs a GPU-rendered server, CarlaUE4.sh -RenderOffScreen):
+    trajectory_comparison.png                matrix (red) vs time-method (cyan) trajectories on the CARLA map
     trajectory_video_expert_replay.mp4       bird's-eye camera, positions set exactly from the data
     trajectory_video_without_avoidance.mp4   bird's-eye camera, PID-driven with physics
   without --camera (works headless with -nullrhi, no GPU), drawn from the simulated actor states:
@@ -47,7 +48,7 @@ from simulate_and_record_scenarios import (  # noqa: E402
 )
 from debug.batch_process_scenarios import (  # noqa: E402
     run_stage_1_matrix, run_stage_2_time_method, run_stage_3_spawns, build_timed_route, SETTLE_TICKS, actor_box,
-    render_carla_simulation_video,
+    render_carla_simulation_video, render_trajectory_comparison_map,
 )
 from generate_5_same_direction_micra_scenarios import render_real_world_drone_trajectory_image  # noqa: E402
 
@@ -345,6 +346,9 @@ def main():
 
     if args.camera:
         world.set_weather(carla.WeatherParameters.ClearNoon)
+        render_trajectory_comparison_map(client, world, sc_dir, summary_data)
+        for _ in range(5):  # let the server finish destroying that camera before the replays clean up actors
+            world.tick()
         for mode in ("expert", "pid"):
             render_carla_simulation_video(client, world, sc_dir, summary, summary_data, parser, None, False,
                                           mode=mode, render=True, camera_z=args.camera_z)
