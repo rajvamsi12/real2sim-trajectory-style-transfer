@@ -1124,9 +1124,12 @@ def render_carla_simulation_video(client, world, scenario_dir, summary_path, sum
     total_sim_ticks = int(scenario_duration_sec * SIM_FPS)
     dt = 1.0 / SIM_FPS
 
+    world.tick()  # flush pending destroys so the actor list below is current
     for actor in list(world.get_actors().filter("vehicle.*")) + list(world.get_actors().filter("sensor.*")):
-        try: actor.destroy()
-        except Exception: pass
+        if actor.is_alive:
+            try: actor.destroy()
+            except Exception: pass
+    world.tick()
 
     blueprint_library = world.get_blueprint_library()
     vehicles = {}
