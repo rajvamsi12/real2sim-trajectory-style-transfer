@@ -11,8 +11,9 @@ Two ways, whichever needs the smaller change:
              own heading every frame (works on curves and in the junction)
   delay    : the vehicle behind is moved back along its own path (front-to-back contact: following,
              cut-in, cut-out)
-The shift is the overlap plus a margin (default 0.2 m) for PID tracking error, and the shifted
-paths must stay on the drivable area (town10hd_drivable.npz, from predict_collisions.py --export-map).
+The shift is the overlap plus a margin (0.2 m) for PID tracking error, at most MAX_SHIFT_M (0.7 m), and
+only for overlaps down to MIN_FIXABLE_GAP (-0.5 m). The shifted paths must stay on the drivable area
+(town10hd_drivable.npz, from predict_collisions.py --export-map).
 
   python debug/apply_separation.py --count                       # offline: how many could be fixed
   python debug/apply_separation.py --apply "<scenario dir>" ...  # shift built folders, redo Stage 3 (CARLA)
@@ -36,6 +37,7 @@ import scenario_checks as sc  # noqa: E402
 
 MIN_FIXABLE_GAP = -0.5    # overlaps deeper than this are tracking errors, not size differences
 TARGET_GAP = 0.2          # gap required after the shift (PID tracking margin)
+MAX_SHIFT_M = 0.7         # largest allowed shift; above ~0.5 m only about half replay cleanly in CARLA
 MAX_STEPS = 20            # shift search: overlap + margin, then +0.05 m steps
 
 
@@ -93,6 +95,8 @@ def separate(pa, pb, fa, fb, drivable=None):
     best = None
     for step in range(MAX_STEPS):
         d = (TARGET_GAP - gap0) + 0.05 * step
+        if d > MAX_SHIFT_M + 1e-9:
+            break
         options = [("sideways",) + shift_sideways(pa, pb, d, i)]
         if a_behind:
             options.append(("delay ego",) + (shift_back(pa, d), pb))
