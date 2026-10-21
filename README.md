@@ -89,6 +89,8 @@ flowchart TD
 │   ├── debug/make_validated_scenarios.py  # Build scenario folders from audited candidates
 │   ├── debug/predict_collisions.py        # Offline car-contact / kerb / spawn prediction for all scenarios
 │   ├── debug/apply_separation.py          # Repair small overlaps by moving paths apart
+│   ├── debug/mine_vehicle_following.py    # Vehicle Following windows from the leader-vehicle columns
+│   ├── debug/count_usable_scenarios.py    # Usable-scenarios table and per-scenario status CSV
 │   └── debug/render_scenario_evidence.py  # One scenario folder: drone video, stills, trajectories, CARLA videos
 │
 ├── LLM Reasoning & Catalog Pipeline
@@ -191,6 +193,10 @@ python debug/predict_collisions.py            # -> Scenariosssss/collision_predi
 
 # How many small overlaps (>= -0.5 m) can be repaired with shifts <= 0.7 m
 python debug/apply_separation.py --count
+
+# Vehicle Following candidates (needs stabilize_ekf_lv_final.csv) and the full usable-scenarios table
+python debug/mine_vehicle_following.py
+python debug/count_usable_scenarios.py
 
 # Build scenario folders and replay them headless in CARLA (collisions, gaps, progress)
 python debug/make_validated_scenarios.py --input "Scenariosssss/Overtaking Left/overtaking_validated.json" --sample 5
