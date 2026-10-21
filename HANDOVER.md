@@ -2,7 +2,9 @@
 
 The single, current status file. It replaces `PROJECT_MASTER_HANDOVER_SPECIFICATION.md` and the
 untracked `HANDOVER_CONTEXT_SUMMARY.md`. Keep it short. Update it at the end of every session
-(see "Session log" at the bottom). Last updated: 2026-10-18.
+(see "Session log" at the bottom). Last updated: 2026-10-21.
+
+> For the latest rules, settings and numbers read **`AGENTS.md`** first; it is newer than parts of this file.
 
 ## What this repo does (one paragraph)
 
@@ -25,6 +27,10 @@ Autopilot vs a learned policy.
 | Stage 4 replay | `render_carla_simulation_video(mode=expert/pid/pid_avoid)` using `CapturingVehicle` (`simulate_and_record_scenarios.py`) and `SimVehicle` (`scc.py`) | `trajectory_video_*.mp4`, `sim_metrics_<mode>.json` |
 | Drone video overlay | `overlay_scenario_bboxes.py` against `DJI_0003-002.MP4` | `real_drone_video.mp4` |
 | Drivers | `generate_5_same_direction_micra_scenarios.py` (runs checks first), `generate_scenario_<row>.py`, `debug/make_validated_scenarios.py` | |
+| Collision prediction | `debug/predict_collisions.py` (+ `--export-map` once) | `Scenariosssss/collision_prediction.csv` |
+| Repair small overlaps | `debug/apply_separation.py` (overlap ≥ −0.5 m, shift ≤ 0.7 m) | shifted `time_variant_trajectories.json`, `separation.json` |
+| One-scenario evidence folder | `debug/render_scenario_evidence.py --camera` | drone video, stills, trajectory images, CARLA bird's-eye videos |
+| Vehicle Following candidates | mined from `stabilize_ekf_lv_final.csv` leader columns | `Scenariosssss/Vehicle Following/vehicle_following_candidates_relaxed.json` |
 | Benchmark / ML | `compare3.py`, `autopilotrun.py`, `modelrun.py`, `train3.py`, `drive.py` | **still on the old avoidance code** |
 
 ## Facts you must not re-derive
@@ -42,9 +48,12 @@ Autopilot vs a learned policy.
   | 4 | **pedestrian** | 1.5 × 1.5 m, p90 speed 0.6 m/s | excluded | — |
   | 5 | truck | 6.0 × 2.4 m | `mercedes.sprinter` | 5.92 × 1.99 |
 
-- **Most candidates are not usable.** Of 6,549 unique overtaking candidates, 3,270 include a pedestrian and most of the rest have real boxes that overlap. Passing per behaviour (relaxed rules): Cut In 1/8, Cut Out 8/27, U-turn 29/33, Overtaking Left 73/3,995, Overtaking Right 51/2,554. Details are in `BUG_COLLISIONS.md`.
-- **Validated scenario sets:** `Scenariosssss/<Behaviour> Validated/`, 37 in total: Cut In 1, Cut Out 6, U-turn 10, Overtaking Left 10, Overtaking Right 10. Use these, not the old hand-picked folders. The ones without warnings are all clean in CARLA; the per-scenario results are in `BUG_COLLISIONS.md`.
-- **Vehicle Following** exists only as an empty folder: there is no CSV and there are no scenarios yet.
+- **Usable scenarios now** (all CSV rows, no pedestrians, ≥ 80 % in-box, pass checks, no predicted car contact /
+  kerb hit / spawn failure, small overlaps repaired by shifts ≤ 0.7 m): Cut In 22, Cut Out 131, U-turn 18,
+  Overtaking Left 942, Overtaking Right 561, Vehicle Following 1,238 → **≈ 2,900**. Details in `AGENTS.md` §5.
+- **Half of `overtaking.csv` involves a pedestrian**, and many overlaps are tracking errors (ghost tracks, two IDs on one vehicle).
+- **`* Validated/` folders are test samples** that get rebuilt for each CARLA check; don't rely on their contents.
+- **Vehicle Following** has no CSV; it is mined from the leader columns (`ID_LV`, `direction`) of `stabilize_ekf_lv_final.csv`.
 - **`cut_in_out.csv`** in `Cut In/` and `Cut Out/` is the same file, as is `overtaking.csv` in `Overtaking Left/` and `Overtaking Right/`. The `cut_type` and `direction` columns split them.
 - **Overtaking geometry:** side by side needs `lateral ≥ (W1+W2)/2 + margin`. Slide 16's `< W_avg` is wrong.
 - **CARLA does not need the GPU for checks.** `CarlaUE4.sh -nullrhi` runs physics and the collision sensor headless. Videos and camera images need the GPU (`-RenderOffScreen`).
@@ -58,18 +67,18 @@ Autopilot vs a learned policy.
    - Random sample of 16 scenarios at least 80% in-box, PID mode: 8 clean, 3 vehicle collisions, 3 with static hits (both U-turns went off-road), 1 overlap without a sensor event, 1 failed to spawn. Every collision had a real box gap below −0.5 m; the clean ones were at −0.32 m or better.
    - Look at the warnings before using a scenario: every replay problem so far was in a scenario with warnings.
 2. Label 4 is a pedestrian: never spawn it as a vehicle.
-3. Spawn yaw comes from the CARLA path (`path_yaw_deg`), not from the EKF `heading_angle`.
+3. Spawn yaw (`choose_spawn_yaw`): inside the 6 regions the nearest CARLA driving lane's direction (flipped 180° if opposite to travel); elsewhere the lane direction, or EKF heading × region matrix when moving ≥ 1 m/s, else the path direction.
 4. Replays run in synchronous mode at 20 Hz (the PID gains assume `dt = 0.05`).
 5. "Done" means `TEST_CHECKLIST.md` passes, not that a video exists.
 6. One logical change per commit; read the diff before committing.
 
 ## Current state
 
-- Branch `fix/collisions` (in the worktree `~/Desktop/carlascripts-fix`) holds the collision fixes. **Not merged into `main` and not pushed.**
-- `main`'s working tree has your own uncommitted edits (the clearance-radii table, two deleted files) and untracked scripts. The branch doesn't touch them.
-- The NVIDIA driver isn't loaded on kernel 7.0.0-38: the module package for that kernel was never installed. Fix: `sudo apt install linux-modules-nvidia-595-open-7.0.0-38-generic linux-modules-nvidia-595-open-generic-hwe-24.04`, then reboot.
-- Videos in `Scenariosssss/` were rendered with the old code. They still show the collisions. The validated folders don't have videos yet (that needs the GPU).
-- Stale non-Python files were moved to `~/Desktop/carlascripts_trash_2026-10-18/` (nothing was permanently deleted). Two tracked ones were removed on this branch. The list is in "Cleanup" below.
+- All collision work is merged into `main` on the Dell. GitHub (`origin`) is behind until Raj pushes.
+- `main`'s working tree has Raj's own uncommitted edits (the clearance-radii table, `generate_5_first_behavior_scenarios.py`, two deleted files) and untracked scripts. Don't commit them.
+- The NVIDIA driver is fixed (kernel 7.0.0-38 module installed); camera videos render with `-RenderOffScreen`.
+- Old videos in the hand-picked `Scenariosssss/` folders were rendered with the old code and still show collisions.
+- Stale non-Python files were moved to `~/Desktop/carlascripts_trash_2026-10-18/` (nothing was permanently deleted). The list is in "Cleanup" below.
 
 ## Open questions (need Raj)
 
@@ -107,3 +116,8 @@ Kept on purpose:
   - **Did:** diagnosed the driver issue; traced the collisions (`BUG_COLLISIONS.md`); added scenario validation, time-indexed tracking, launch fix and new avoidance; added `TEST_CHECKLIST.md` and this file.
   - **Left:** port the avoidance to `compare3.py` / `modelrun.py` / `autopilotrun.py`; re-render videos for the validated folders on the GPU; answer the open questions; fix slide 16; find usable Cut In data; create Vehicle Following data.
   - **Watch out:** the old scenario folders are known-bad on purpose. Don't use them as examples.
+- **2026-10-19 to 2026-10-21 — Claude (Opus 5.5), with Raj.**
+  - **Did:** relaxed the rejecting rules (box gaps and geometry became warnings); GPU camera videos; evidence folders; road-based spawn yaw;
+    offline collision prediction (caught 20/20 problems on 45 CARLA replays); path separation for small overlaps (−0.5 m / 0.7 m);
+    vehicle-following mining from the lv file; `AGENTS.md`; README brought up to date.
+  - **Left:** see `AGENTS.md` §9.
