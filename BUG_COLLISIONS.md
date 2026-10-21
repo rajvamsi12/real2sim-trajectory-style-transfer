@@ -163,3 +163,12 @@ CARLA replay of 37 built scenarios (Cut In 1, Cut Out 6, U-turn 10, Overtaking L
 - Only 40 of 6,549 overtaking candidates pass. If that is too few, the main lever is the annotation quality (overlapping boxes), not the simulator.
 - Avoidance is conservative: in Overtaking Left 873 the follower stops behind a slow vehicle and covers only 11% of its route.
 - The videos for validated scenarios need re-rendering on the GPU server.
+
+## Later work (2026-10-19 to 2026-10-21)
+
+The rejecting rules were relaxed further (box gaps and geometry are warnings only), and collisions are now handled
+in three steps instead of rejecting scenarios outright: offline prediction (`debug/predict_collisions.py`, CARLA-body
+gap, drivable-area raster, spawn check), repair of small overlaps by moving paths apart (`debug/apply_separation.py`,
+overlap >= -0.5 m, shift <= 0.7 m), and a CARLA check of the repaired ones. Current rules, settings and numbers are
+in `AGENTS.md`; the table is reproduced by `debug/count_usable_scenarios.py`.
+

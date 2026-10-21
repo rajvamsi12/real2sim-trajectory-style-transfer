@@ -70,7 +70,20 @@ How to read a failure:
 - **`expert` clean but `pid` collides:** the controller or the spawn is wrong.
 - **`pid_avoid` progress far below `pid`:** avoidance is firing without a real conflict.
 
-## 5. Before committing
+## 5. Collision prediction and usable counts (no CARLA after the one-time map export)
+
+```bash
+python debug/predict_collisions.py --export-map     # once, CARLA running (-nullrhi is enough)
+python debug/mine_vehicle_following.py              # needs stabilize_ekf_lv_final.csv in the repo folder
+python debug/count_usable_scenarios.py              # ~15 min
+```
+
+Expected (2026-10-21): 19,203 vehicle-following windows (1,822 of >= 18 frames passing checks), and
+**2,658 usable with shifts <= 0.5 m, 2,912 with <= 0.7 m** (per behaviour in `AGENTS.md` section 5).
+`python debug/predict_collisions.py --validate` compares predictions with built `* Validated/` folders
+(last run: 20/20 problems caught, 8/25 clean wrongly flagged at the 0.15 m threshold).
+
+## 6. Before committing
 
 - Read the diff (`git diff --stat`, then `git diff`), not the AI's summary of it.
 - One logical change per commit, and the commit message says why.
