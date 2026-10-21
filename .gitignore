@@ -6,6 +6,7 @@ __pycache__/
 .pytest_cache/
 
 # Large Datasets & Media
+stabilize_ekf_*.csv
 *.mp4
 *.MP4
 *.avi
