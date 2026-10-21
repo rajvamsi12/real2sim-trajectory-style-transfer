@@ -1,0 +1,24 @@
+Here are the commands to run CARLA directly from your terminal:
+
+---
+
+### 1. Launch CARLA with GUI Window (Interactive Screen)
+```bash
+/home/raj/CARLA_0.9.15/CarlaUE4.sh -quality-level=Low
+```
+
+---
+
+### 2. Launch CARLA Offscreen (Headless / Background Mode)
+```bash
+/home/raj/CARLA_0.9.15/CarlaUE4.sh -RenderOffScreen -nosound -quality-level=Low
+```
+
+---
+
+### 3. Load `Town10HD` Map (Run in a 2nd Terminal while CARLA is running)
+```bash
+/home/raj/miniconda3/envs/carla_env/bin/python -c "import carla; client = carla.Client('localhost', 2000); client.set_timeout(15.0); client.load_world('Town10HD'); print('Loaded Town10HD!')"
+```
+
+
