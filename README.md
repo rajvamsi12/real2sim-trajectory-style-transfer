@@ -7,9 +7,9 @@
 
 Official repository for the research paper: **"While in London do as the Gwaliorites do: Style Transfer of Trajectories across Traffic Domains in Real-to-Sim"** by **Dasari Raj Vamsi** and **Rahul Kala** (*Center for Autonomous Systems, ABV-Indian Institute of Information Technology and Management Gwalior, India*).
 
-> **Working on this repo?** Start with [`AGENTS.md`](AGENTS.md) (current rules, settings, numbers and tools), then [`HANDOVER.md`](HANDOVER.md) (project facts, open questions) and [`TEST_CHECKLIST.md`](TEST_CHECKLIST.md). The collision investigation is in [`BUG_COLLISIONS.md`](BUG_COLLISIONS.md).
+> **Working on this repo?** Start with [`IL_STATUS.md`](IL_STATUS.md) (current status of the imitation-learning driver) and the dated decision log [`ML_DECISIONS.md`](ML_DECISIONS.md). The IL code is described in [`il/README.md`](il/README.md). The replay and collision work is in [`AGENTS.md`](AGENTS.md), [`HANDOVER.md`](HANDOVER.md), [`TEST_CHECKLIST.md`](TEST_CHECKLIST.md) and [`BUG_COLLISIONS.md`](BUG_COLLISIONS.md).
 
-> **Status (October 2026).** The replay pipeline was reworked after collisions were traced to the scenario data and to simulation bugs: scenarios are now validated, collisions are predicted offline, small overlaps are repaired by moving paths apart, and a sixth behaviour (vehicle following) was added. The benchmark results further down are the **earlier** (January 2026) numbers and have not been re-run with the current pipeline.
+> **Status (November 2026).** The drone-to-CARLA mapping was corrected to right-hand traffic: the first matrices drove Gwalior traffic against Town10HD's lanes. All data was rebuilt, and a new imitation-learning driver (camera + LiDAR, `il/`) was trained on it and evaluated closed loop over 10 runs against five baselines (results below). The earlier SegFormer behavioural-cloning model and its January 2026 benchmark are superseded.
 
 ---
 
@@ -20,13 +20,13 @@ Autonomous driving (AD) systems are primarily developed and evaluated under Amer
 This project introduces a **Real-to-Sim Style Transfer Framework** that transfers unorganized, aggressive real-world traffic trajectories recorded by high-altitude drones in India into simulated European/American urban environments (CARLA simulator, Town10HD). 
 
 ### Key Technical Highlights:
-1. **Map-Aware Affine Transformation**: Maps real-world drone pixel coordinates to CARLA Town10HD coordinates with six calibrated regions (one per road arm and direction) plus a blended centre, matching road lengths and widths and mapping Indian left-hand traffic onto CARLA's right-hand lanes.
-2. **Time-Synchronised Replay**: Vehicles follow their recorded trajectories on time (time-indexed PID with launch at the real speed), with an exact kinematic "expert" replay and an optional box-based follower collision avoidance.
-3. **Scenario Validation & Collision Handling**: Rejects unusable scenarios (pedestrians, missing tracks, no CARLA path), predicts car-to-car, kerb and spawn failures offline, and repairs small CARLA-body overlaps (≥ −0.5 m) by shifting paths apart by at most 0.7 m.
-4. **Synthetic Ego-Centric Dataset Generation**: Synchronizes monocular camera views with control actions (`[speed, steering]`) under realistic heavy-tailed traffic scenarios.
-5. **Zero-Shot LLM Reasoning**: Utilizes pre-trained LLMs to classify 15-second trajectory segments into maneuver categories without explicit fine-tuning.
-6. **Vision-Based Behavioral Cloning (SegFormer)**: Trains a `BehavioralCloningSegFormer` model (`nvidia/mit-b0` encoder) for end-to-end autonomous steering and velocity control.
-7. **Triple-Baseline Benchmarking Harness**: Compares performance across **Ground Truth Expert (Replay)**, **ML (SegFormer)**, and **CARLA Autopilot (Traffic Manager)** across 100 scenario categories.
+1. **Map-Aware Affine Transformation**: Maps drone pixel coordinates to CARLA Town10HD with six calibrated regions (one per road arm and direction) plus a blended centre, matching road lengths and widths. Since November 2026 the traffic keeps its real side relative to CARLA's right-hand lanes.
+2. **Time-Synchronised Replay**: Vehicles follow their recorded trajectories on time (time-indexed PID with launch at the real speed), with physics on for every vehicle.
+3. **Scenario Validation & Collision Handling**: Rejects unusable scenarios, predicts car contact, kerb and spawn failures offline, and keeps only scenarios that replay collision-free in CARLA.
+4. **Ego-Centric Dataset with Augmentation**: 8 s scenarios with scene noise, ego offset and ego speed-recovery copies; each sample has camera, LiDAR, the ego's speed history, a route command and the future path.
+5. **Imitation-Learning Driver** (`il/`): frozen SegFormer-B0 camera features and PointPillars LiDAR features, 3 frames, plus speed history and route command; predicts the next 2.5 s path on top of a constant-velocity prior.
+6. **Closed-Loop Benchmark with a TTC Safety Layer**: the driver drives the ego while all other vehicles follow their recordings; compared with the expert replay, constant velocity, IDM and CARLA Autopilot (stock and given the recorded route), each with or without a time-to-collision layer, over 10 runs.
+7. **Zero-Shot LLM Reasoning** (earlier work): pre-trained LLMs classify 15 s trajectory segments into maneuver categories.
 
 ---
 
@@ -34,18 +34,16 @@ This project introduces a **Real-to-Sim Style Transfer Framework** that transfer
 
 ```mermaid
 flowchart TD
-    A[High-Altitude Drone Video / Trajectories] --> B[Region-Based Affine Transformation]
-    B --> C[Map Coordinate Mapping - CARLA Town10HD]
-    C --> V[Scenario Checks, Collision Prediction & Path Separation]
-    V --> D[Time-Synchronised PID Replay / Expert Replay]
-    D --> E[CARLA Simulator Execution]
-    E --> F[Ego-Camera Monocular Video & Telemetry Log]
-    E --> G[15s Trajectory Prompt Exporter]
-    G --> H[Zero-Shot LLM Reasoning & Maneuver Tagging]
-    F --> I[SegFormer Vision-to-Control Training]
-    I --> J[Closed-Loop Driving Evaluation]
-    H --> K[Interactive Web Scenario Catalog]
-    J --> L[Benchmarking: Expert vs ML vs Autopilot]
+    A[High-Altitude Drone Video / Trajectories] --> B[Region-Based Affine Transformation, right-hand traffic]
+    B --> C[CARLA Town10HD Coordinates]
+    C --> V[Scenario Checks & Collision Prediction]
+    V --> S[8 s Scenarios + Augmentation]
+    S --> D[Time-Synchronised PID Replay, physics on]
+    D --> R[Recorded Samples: Camera, LiDAR, State, Future Path]
+    R --> F[Frozen SegFormer + PointPillars Features]
+    F --> M[Imitation-Learning Driver]
+    M --> E[Closed-Loop Evaluation with TTC Layer]
+    E --> L[Benchmark vs Expert, Const-Vel, IDM, Autopilot]
 ```
 
 ---
@@ -54,73 +52,44 @@ flowchart TD
 
 ```
 .
-├── README.md                              # Main documentation (this file)
-├── AGENTS.md                              # Current rules, settings, numbers, tools (read first)
-├── HANDOVER.md                            # Project facts, open questions, session log
-├── BUG_COLLISIONS.md                      # Collision investigation: causes, fixes, verification
-├── TEST_CHECKLIST.md                      # Commands and numbers a change must meet
+├── README.md                              # This file
+├── IL_STATUS.md                           # Current status of the IL driver (read first)
+├── ML_DECISIONS.md                        # Every decision and result, dated
+├── AGENTS.md, HANDOVER.md                 # Replay pipeline: rules, settings, facts (October 2026)
+├── BUG_COLLISIONS.md, TEST_CHECKLIST.md   # Collision investigation; checks a change must pass
 ├── requirements.txt                       # Python dependencies
-├── start_carla.sh                         # CARLA 0.9.15 simulator launcher script
-├── run_sample_test_pipeline.sh            # 1-command zero-shot LLM & video rendering pipeline
+├── start_carla.sh                         # CARLA 0.9.15 launcher
+│
+├── il/                                    # Imitation-learning driver (see il/README.md)
+│   ├── build_scenarios_8s.py, augment_scenarios.py, replay_scenarios.py, record_samples.py
+│   ├── cache_features.py, pointpillars.py # Frozen camera and LiDAR features
+│   ├── model.py, train.py                 # Model and training
+│   ├── closed_loop_multi.py               # Closed-loop evaluation, TTC layer, baselines
+│   ├── metrics_v2.py, behaviour_v2.py, dist_v2.py, summary_runs.py
+│   ├── idm.py, lead_input.py, probe_offline.py
+│   └── run_*.sh                           # Chain scripts that ran each step
+│
+├── results/il_rhd_10runs/                 # 10-run evaluation: summary, spreadsheet, per-run tables
 │
 ├── Real2Sim Trajectory & Map Alignment
 │   ├── timemethod.py                      # Six region affine matrices, centre blending, region classification
-│   ├── newtimemethod.py                   # Refined transformation matrices for Town10HD
-│   ├── convertion.py                      # Affine matrix pre-computations
-│   ├── automatic.py                       # Automated region coordinate transforms
-│   └── prepare_data.py                    # Preprocessing raw drone trajectory CSV/JSON inputs
-│
-├── Trajectory Mining & Dataset Generation
-│   ├── mine_15s_drone_catalog.py          # Mines 15-second trajectory windows from drone logs
-│   ├── mine_unique_ego_catalog.py         # Filters catalog into 10 maneuver classes (overtaking, lane change, etc.)
-│   └── mine_massive_catalog.py            # High-density region track miner
+│   ├── newtimemethod.py, convertion.py, automatic.py, prepare_data.py
 │
 ├── Simulation & Control Engine
 │   ├── scc.py                             # SimVehicle: time-indexed PID route tracking, in-gear launch
-│   ├── scenario_generator.py              # Spawns vehicles & configures trajectory replays
-│   ├── simulate_and_record_scenarios.py   # CapturingVehicle (box-based follower avoidance), annotation parser, recording
-│   ├── SCENARIO.py                        # Alternative scenario simulation runner
-│   └── overlay_scenario_bboxes.py         # Draws 2D bounding boxes & telemetry overlays on video frames
+│   ├── scenario_generator.py, simulate_and_record_scenarios.py, SCENARIO.py
 │
 ├── Scenario Validation & Collision Handling
-│   ├── scenario_checks.py                 # Offline checks (reject/warn), TrackStore, box geometry, in-box ratio
-│   ├── debug/batch_process_scenarios.py   # Stages 1-4 (matrix, time method, spawns + spawn yaw, CARLA replay/videos)
-│   ├── debug/check_scenarios.py           # Folder checks, per-behaviour CSV audit, headless CARLA collision check
-│   ├── debug/make_validated_scenarios.py  # Build scenario folders from audited candidates
-│   ├── debug/predict_collisions.py        # Offline car-contact / kerb / spawn prediction for all scenarios
-│   ├── debug/apply_separation.py          # Repair small overlaps by moving paths apart
-│   ├── debug/mine_vehicle_following.py    # Vehicle Following windows from the leader-vehicle columns
-│   ├── debug/count_usable_scenarios.py    # Usable-scenarios table and per-scenario status CSV
-│   └── debug/render_scenario_evidence.py  # One scenario folder: drone video, stills, trajectories, CARLA videos
+│   ├── scenario_checks.py                 # Offline checks, TrackStore, box geometry
+│   └── debug/                             # Audit, collision prediction, path separation, evidence rendering
 │
-├── LLM Reasoning & Catalog Pipeline
-│   ├── export_llm_trajectories.py         # Formats 15s agent trajectories as JSON prompts
-│   ├── query_zero_shot_llm.py             # Interfaces with LLM APIs for zero-shot maneuver tagging
-│   ├── create_sample_scenarios.py         # Subfolder scenario organizer
-│   ├── render_sample_20_videos.py         # Batch renders sample video clips
-│   ├── generate_scenario_catalog.py       # Builds HTML catalog with embedded frame previews
-│   ├── build_full_multivehicle_catalog.py # Multi-vehicle catalog builder
-│   └── catalog_server.py                  # Flask web server for interactive catalog exploration
+├── Earlier pipeline (superseded)
+│   ├── mine_*.py                          # 15 s trajectory mining
+│   ├── export_llm_trajectories.py, query_zero_shot_llm.py, catalog_server.py, ...   # LLM tagging and catalog
+│   └── train3.py, drive.py, modelrun.py, autopilotrun.py, compare3.py              # SegFormer BC and 3-way benchmark
 │
-├── Model Training, Driving & Benchmarking
-│   ├── train3.py                          # PyTorch training script for BehavioralCloningSegFormer
-│   ├── drive.py                           # Closed-loop driving inference script in CARLA
-│   ├── modelrun.py                        # SegFormer model test runner
-│   ├── autopilotrun.py                    # CARLA Autopilot Traffic Manager test runner (old avoidance code)
-│   └── compare3.py                        # 3-Way benchmark harness (Expert vs ML vs Autopilot; old avoidance code)
-│
-├── Telemetry & Utilities
-│   ├── carla_body_server.py               # Live telemetry streaming server
-│   └── town10_autopilot_convoy_logger.py   # Telemetry convoy logger for Town10
-│
-├── Assets & Metadata
-│   ├── raj_vamsi_wafr.pdf                 # Complete paper manuscript (WAFR)
-│   ├── drone_background_map.png           # Aerial road map reference image
-│   ├── label_scaler.pkl                   # Fitted MinMaxScaler for speed/steering normalization
-│   └── boundaries.txt                     # Region boundary polygon definitions
-│
-├── archive/                               # Archived experimental and draft scripts (gitignored)
-└── Scenariosssss/                         # Scenario data & outputs per behaviour (gitignored; see below)
+├── archive/                               # Archived scripts (gitignored)
+└── Scenariosssss/                         # Data and outputs (gitignored, about 70 GB)
 ```
 
 ---
@@ -206,45 +175,68 @@ python debug/check_scenarios.py --scenarios "Overtaking Left Validated" --carla 
 python debug/render_scenario_evidence.py --category "Overtaking Left" --ego 565 --other 1342 --start 853 --camera
 ```
 
-### Step 3: Run Zero-Shot LLM Reasoning Pipeline
-Run the full 1-command pipeline to export trajectory prompts, query zero-shot LLMs for maneuver classification, organize scenario subfolders, and render sample drone videos:
+### Step 3: Build the IL Dataset
+
+All IL scripts are in `il/`; `il/run_rhd_*.sh` are the chain scripts with the exact settings used.
 
 ```bash
-./run_sample_test_pipeline.sh
+python il/build_scenarios_8s.py                                     # 8 s scenarios from the drone tracks
+python il/replay_scenarios.py --yaw path --drive velocity --tag cureE   # keep the ones that replay collision-free
+python il/augment_scenarios.py                                      # scene noise, ego offset, ego speed recovery
+python il/record_samples.py --full --port 2000 --out <samples_dir>  # camera, LiDAR, state, future path (CARLA rendering)
+python il/cache_features.py --samples <samples_dir> --feats <feats_dir> --device cuda
 ```
 
-You can also launch the Flask Web Server to browse the interactive scenario catalog:
+Pretrained weights are not in the repository; `il/README.md` lists them.
+
+### Step 4: Train the IL Driver
 
 ```bash
-python catalog_server.py
+python il/train.py --data <samples_dir>:<feats_dir> --name rhd_scratch --epochs 20 --epoch-samples 65536 \
+    --modes 1 --lr 1e-4 --wd 0.05 --dropout 0.3 --feat-drop 0.2 --state speedhist --along-w 2
+python il/select_ckpt_closed_loop.py      # pick the checkpoint closed loop on validation scenarios
 ```
-Then open `http://localhost:5000` in your browser.
 
-### Step 4: Train Vision-Based Behavioral Cloning Model
-Train the `BehavioralCloningSegFormer` model using PyTorch and HuggingFace Transformers:
+### Step 5: Closed-Loop Evaluation
 
 ```bash
-python train3.py --lr 0.0001 --batch_size 32 --weight_speed 0.5 --epochs 50
+CL_TRAILS=<trails_dir> python il/closed_loop_multi.py --port 2000 --split test --tag eval \
+    --drivers expert constvel+ttc:0.7:0.2 rhd_scratch@cl rhd_scratch@cl+ttc:0.7:0.2 autopilot autopilot_stock idm
+python il/metrics_v2.py <trails_dir> --csv Scenariosssss/IL/closed_loop_eval.csv
+python il/dist_v2.py <trails_dir>
+python il/summary_runs.py <tag_run1> <tag_run2> ...    # mean, spread and paired differences over repeated runs
 ```
 
-### Step 5: Closed-Loop Driving & Benchmarking
-Run closed-loop evaluation of the trained model in CARLA:
-
-```bash
-python drive.py --model_path checkpoints/lr_0.0001_bs_32_wspeed_0.5/best_model.pth
-```
-
-To run the complete **3-Way Benchmark Harness** comparing Ground Truth Expert, SegFormer ML Model, and CARLA Autopilot:
-
-```bash
-python compare3.py
-```
+`+ttc:0.7:0.2` adds the time-to-collision layer (brake when a vehicle ahead is reached within 0.7 s, gap 0.2 m) to every vehicle.
 
 ---
 
 ## 📊 Evaluation & Results
 
-### Current scenario dataset (October 2026)
+### Closed-loop benchmark (November 2026, right-hand traffic)
+
+114 test scenarios × 9 drivers × 10 runs. The driver drives the ego; every other vehicle follows its recorded path with physics on. Mean over the 10 runs; spread, paired comparisons and per-run tables are in [`results/il_rhd_10runs/`](results/il_rhd_10runs/).
+
+| Driver | Ego collision % ↓ | Behaviour kept % (of 56) ↑ | Kept and no ego collision % ↑ | Progress ↑ | Median headway (s) |
+| :--- | ---: | ---: | ---: | ---: | ---: |
+| Expert (recording replayed) | 2.5 | 100 | 98.6 | 0.94 | 1.07 |
+| IL driver + lead input + TTC | 1.1 | 66.6 | 65.0 | 0.62 | 1.85 |
+| IDM | 25.6 | 74.6 | 62.9 | 0.80 | 1.46 |
+| **IL driver + TTC** | **1.4** | **62.0** | **60.0** | **0.59** | **1.83** |
+| Autopilot (recorded path + speed) | 9.1 | 68.8 | 60.0 | 0.54 | 1.91 |
+| Constant velocity + TTC | 1.2 | 61.8 | 59.3 | 0.51 | 1.62 |
+| IL driver + lead input | 36.3 | 58.6 | 38.0 | 0.72 | 1.11 |
+| Autopilot (stock) | 6.3 | 42.7 | 38.0 | 0.62 | 1.44 |
+| IL driver | 31.0 | 58.4 | 37.0 | 0.67 | 1.11 |
+
+- **Behaviour kept:** same vehicle ahead at start and end, any pass on the same side, final gap within 5 m of the recorded one; checkable on the 56 scenarios where the recorded ego moves at least 5 m.
+- **Lead input:** the ground-truth gap and closing speed to the vehicle ahead. It is privileged information, used as a test of whether the model can learn braking.
+- **Findings:**
+  - The IL driver on its own matches the real headway (1.11 s against 1.07 s) but crashes in 31 % of scenarios.
+  - With the TTC layer it crashes in 1.4 %, but then it equals constant velocity + TTC on behaviour kept, while driving further (0.59 against 0.51).
+  - The lead input adds about 5 points with the TTC layer (9 of 10 runs) and more collisions without it (10 of 10 runs).
+
+### Scenario dataset (October 2026, before the right-hand-traffic correction)
 
 Six behaviours, counted on all candidate rows (overlapping windows of the same event are not merged). A scenario is
 **usable** when it involves no pedestrian, is at least 80 % inside the calibrated regions, passes the scenario checks,
@@ -264,23 +256,9 @@ shifts of at most 0.7 m.
 The offline collision prediction caught 20 of 20 problem scenarios in 45 random CARLA replays. Repaired scenarios with
 shifts above ~0.5 m replay cleanly only about half the time, so those are checked in CARLA before use.
 
-### Earlier benchmark results (January 2026, WAFR draft)
+### Earlier benchmark results (January 2026, superseded)
 
-Kept for reference. These were produced with the earlier pipeline, before the collision fixes; `compare3.py`,
-`modelrun.py` and `autopilotrun.py` still contain the old avoidance code, and the numbers have not been reproduced
-with the current pipeline.
-
-The evaluation harness (`compare3.py`) tests driving policies across 100 scenario categories and measures:
-- **Trajectory Deviation (L2 Error)**
-- **Collision Rate**
-- **Solid Lane Departures**
-- **Maneuver Style Preservation Ratio**
-
-| Driving Policy | L2 Tracking Error (m) ↓ | Collision Rate (%) ↓ | Lane Departures ↓ |
-| :--- | :---: | :---: | :---: |
-| **Ground Truth Replay (Expert)** | 0.12 | 14.2% | 0 |
-| **CARLA Autopilot (Baseline)** | 3.45 | 28.5% | 8.2 |
-| **SegFormer (Ours)** | **0.84** | **6.1%** | **0.4** |
+The WAFR draft reported results from the earlier SegFormer behavioural-cloning model and `compare3.py`, before the collision fixes and the right-hand-traffic correction. They have not been reproduced and should not be used.
 
 ---
 
