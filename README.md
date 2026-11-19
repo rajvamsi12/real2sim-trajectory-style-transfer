@@ -34,16 +34,21 @@ This project introduces a **Real-to-Sim Style Transfer Framework** that transfer
 
 ```mermaid
 flowchart TD
-    A[High-Altitude Drone Video / Trajectories] --> B[Region-Based Affine Transformation, right-hand traffic]
-    B --> C[CARLA Town10HD Coordinates]
-    C --> V[Scenario Checks & Collision Prediction]
-    V --> S[8 s Scenarios + Augmentation]
-    S --> D[Time-Synchronised PID Replay, physics on]
-    D --> R[Recorded Samples: Camera, LiDAR, State, Future Path]
-    R --> F[Frozen SegFormer + PointPillars Features]
-    F --> M[Imitation-Learning Driver]
-    M --> E[Closed-Loop Evaluation with TTC Layer]
-    E --> L[Benchmark vs Expert, Const-Vel, IDM, Autopilot]
+    A["Drone tracks, Gwalior (EKF-smoothed)"] --> B["Six-region affine mapping to Town10HD, right-hand traffic"]
+    B --> C["Usable windows: scenario checks, offline collision prediction, path separation"]
+    C --> D["8 s scenarios: neighbour vehicles, route commands, glitch filter"]
+    D --> E["CARLA replay check: keep collision-free (1,191 scenarios)"]
+    E --> F["Augmentation x10: scene noise, ego offset, ego speed recovery"]
+    F --> G["CARLA replay check of the copies (10,854 kept)"]
+    E --> H["Recording in CARLA: camera, LiDAR, state, future path (433,778 samples)"]
+    G --> H
+    H --> I["Split by video time: train / val / test"]
+    I --> J["Frozen features: SegFormer-B0 camera, PointPillars LiDAR + PCA"]
+    J --> K["IL driver: 3 frames + speed history + route command, constant-velocity prior, plans the next 2.5 s"]
+    K --> L["Checkpoint picked closed loop on 50 val scenarios"]
+    L --> M["Closed-loop test: 114 scenarios, model drives the ego, others follow their recordings, optional TTC layer"]
+    N["Baselines: expert replay, constant velocity, IDM, Autopilot stock and with recorded path"] --> M
+    M --> O["Metrics over 10 runs: collisions, behaviour kept, progress, TTC, headway, smoothness"]
 ```
 
 ---
