@@ -1,0 +1,115 @@
+10 runs. mean over runs:
+driver                   autopilot  autopilot_stock  constvel+ttc:0.7:0.2  expert     idm  rhd_lead@ep08  rhd_lead@ep08+ttc:0.7:0.2  rhd_scratch@cl  rhd_scratch@cl+ttc:0.7:0.2
+episodes                    114.00           114.00                114.00  114.00  114.00         114.00                     114.00          114.00                      114.00
+ego_collision_%               9.12             6.32                  1.23    2.54   25.61          36.32                       1.05           30.96                        1.40
+behaviour_kept_%             68.75            42.68                 61.79  100.00   74.64          58.57                      66.61           58.39                       61.96
+kept_no_ego_coll_%           60.00            38.04                 59.29   98.57   62.86          38.04                      65.00           36.96                       60.00
+ego_progress                  0.54             0.62                  0.51    0.94    0.80           0.72                       0.62            0.67                        0.59
+speed_vs_rec_median           0.63             0.97                  0.56    0.99    1.12           1.10                       0.76            0.88                        0.66
+stands_still_%               19.65            20.53                 27.98    2.28   12.02          10.61                      13.68            9.74                       11.49
+min_ttc_s                     1.66             1.33                  1.89    1.27    1.25           0.95                       1.79            1.12                        1.84
+ttc_low_%                    10.63            10.90                  4.06   11.29   13.79          21.44                       4.12           18.31                        4.02
+mean_speed                    1.09             2.27                  1.14    1.49    2.14           1.93                       1.31            1.82                        1.26
+jerk_lon_rms                  2.19             4.51                  1.72    2.74    2.42           2.33                       2.01            2.17                        1.90
+path_dev_m                    0.41             3.23                  0.35    0.18    1.22           0.67                       0.45            0.60                        0.45
+headway_s_median              1.91             1.44                  1.62    1.07    1.46           1.11                       1.85            1.11                        1.83
+headway_s_wasserstein         0.85             0.37                  0.95    0.00    0.44           0.17                       0.90            0.15                        0.90
+gap_ahead_m_median            2.58             2.11                  2.26    2.03    2.26           1.99                       2.10            2.24                        2.33
+gap_ahead_m_wasserstein       0.48             0.47                  0.27    0.00    0.37           0.21                       0.26            0.27                        0.35
+
+standard deviation over runs:
+driver                   autopilot  autopilot_stock  constvel+ttc:0.7:0.2  expert   idm  rhd_lead@ep08  rhd_lead@ep08+ttc:0.7:0.2  rhd_scratch@cl  rhd_scratch@cl+ttc:0.7:0.2
+episodes                      0.00             0.00                  0.00    0.00  0.00           0.00                       0.00            0.00                        0.00
+ego_collision_%               0.85             1.15                  0.45    0.28  1.48           1.38                       1.00            1.71                        1.11
+behaviour_kept_%              3.06             2.59                  3.59    0.00  2.20           2.64                       2.80            3.37                        2.07
+kept_no_ego_coll_%            2.94             3.04                  4.44    0.75  1.64           2.80                       2.55            2.39                        2.10
+ego_progress                  0.00             0.02                  0.01    0.00  0.01           0.01                       0.01            0.01                        0.02
+speed_vs_rec_median           0.01             0.05                  0.03    0.00  0.01           0.02                       0.02            0.03                        0.03
+stands_still_%                0.61             0.45                  1.13    0.45  0.83           1.73                       2.12            2.13                        1.27
+min_ttc_s                     0.02             0.03                  0.03    0.04  0.02           0.04                       0.03            0.06                        0.03
+ttc_low_%                     0.31             0.60                  0.20    0.59  0.35           0.83                       0.36            0.70                        0.18
+mean_speed                    0.01             0.07                  0.04    0.00  0.02           0.02                       0.06            0.02                        0.06
+jerk_lon_rms                  0.03             0.09                  0.06    0.06  0.07           0.11                       0.09            0.10                        0.10
+path_dev_m                    0.00             0.11                  0.06    0.00  0.05           0.05                       0.02            0.08                        0.03
+headway_s_median              0.03             0.02                  0.08    0.02  0.04           0.04                       0.15            0.07                        0.15
+headway_s_wasserstein         0.06             0.02                  0.14    0.00  0.02           0.05                       0.06            0.06                        0.23
+gap_ahead_m_median            0.01             0.01                  0.01    0.04  0.02           0.09                       0.05            0.10                        0.07
+gap_ahead_m_wasserstein       0.05             0.04                  0.05    0.00  0.03           0.06                       0.04            0.05                        0.08
+
+ego_collision_% per run:
+run                         eval_v2  eval_v2_run2  eval_v2_run3  eval_v2_run4  eval_v2_run5  eval_v2_run6  eval_v2_run7  eval_v2_run8  eval_v2_run9  eval_v2_run10
+driver                                                                                                                                                            
+autopilot                       9.6          10.5           7.9           7.9           8.8           9.6           8.8           8.8           9.6            9.6
+autopilot_stock                 7.9           7.0           7.9           7.0           5.3           6.1           5.3           4.4           6.1            6.1
+constvel+ttc:0.7:0.2            1.8           0.9           0.9           0.9           1.8           0.9           1.8           1.8           0.9            0.9
+expert                          2.6           2.6           2.6           2.6           2.6           1.8           2.6           2.6           2.6            2.6
+idm                            23.7          25.4          22.8          26.3          28.1          26.3          26.3          26.3          25.4           25.4
+rhd_lead@ep08                  37.7          37.7          35.1          36.8          37.7          36.8          34.2          34.2          36.0           36.8
+rhd_lead@ep08+ttc:0.7:0.2       2.6           0.0           0.9           0.0           0.9           0.9           0.9           0.0           2.6            1.8
+rhd_scratch@cl                 29.8          33.3          28.9          31.6          32.5          29.8          33.3          29.8          28.9           31.6
+rhd_scratch@cl+ttc:0.7:0.2      3.5           0.9           0.9           0.0           0.9           1.8           1.8           0.0           2.6            1.8
+
+behaviour_kept_% per run:
+run                         eval_v2  eval_v2_run2  eval_v2_run3  eval_v2_run4  eval_v2_run5  eval_v2_run6  eval_v2_run7  eval_v2_run8  eval_v2_run9  eval_v2_run10
+driver                                                                                                                                                            
+autopilot                      67.9          69.6          69.6          69.6          64.3          71.4          66.1          64.3          73.2           71.4
+autopilot_stock                42.9          37.5          39.3          42.9          42.9          42.9          44.6          42.9          46.4           44.6
+constvel+ttc:0.7:0.2           60.7          62.5          66.1          64.3          57.1          62.5          57.1          57.1          64.3           66.1
+expert                        100.0         100.0         100.0         100.0         100.0         100.0         100.0         100.0         100.0          100.0
+idm                            73.2          75.0          75.0          76.8          75.0          75.0          78.6          75.0          71.4           71.4
+rhd_lead@ep08                  64.3          55.4          57.1          57.1          57.1          57.1          57.1          58.9          60.7           60.7
+rhd_lead@ep08+ttc:0.7:0.2      66.1          69.6          64.3          60.7          67.9          67.9          67.9          64.3          69.6           67.9
+rhd_scratch@cl                 58.9          60.7          57.1          64.3          57.1          51.8          60.7          58.9          58.9           55.4
+rhd_scratch@cl+ttc:0.7:0.2     64.3          57.1          60.7          62.5          62.5          62.5          60.7          62.5          64.3           62.5
+
+kept_no_ego_coll_% per run:
+run                         eval_v2  eval_v2_run2  eval_v2_run3  eval_v2_run4  eval_v2_run5  eval_v2_run6  eval_v2_run7  eval_v2_run8  eval_v2_run9  eval_v2_run10
+driver                                                                                                                                                            
+autopilot                      60.7          60.7          62.5          62.5          55.4          60.7          57.1          55.4          62.5           62.5
+autopilot_stock                37.5          32.1          33.9          37.5          39.3          37.5          41.1          41.1          41.1           39.3
+constvel+ttc:0.7:0.2           57.1          60.7          64.3          62.5          53.6          60.7          53.6          53.6          62.5           64.3
+expert                         98.2          98.2          98.2         100.0          98.2         100.0          98.2          98.2          98.2           98.2
+idm                            64.3          64.3          64.3          62.5          60.7          64.3          64.3          60.7          62.5           60.7
+rhd_lead@ep08                  37.5          32.1          37.5          37.5          35.7          39.3          39.3          39.3          42.9           39.3
+rhd_lead@ep08+ttc:0.7:0.2      62.5          69.6          62.5          60.7          66.1          66.1          66.1          64.3          66.1           66.1
+rhd_scratch@cl                 41.1          35.7          37.5          37.5          32.1          37.5          35.7          37.5          39.3           35.7
+rhd_scratch@cl+ttc:0.7:0.2     58.9          55.4          58.9          62.5          60.7          60.7          58.9          62.5          60.7           60.7
+
+paired over runs (a - b): mean difference, sd of the difference, runs with a > b / a < b
+  rhd_lead@ep08 - rhd_scratch@cl  ego_collision_%: +5.35  sd 1.96  10/0 of 10
+  rhd_lead@ep08 - rhd_scratch@cl  behaviour_kept_%: +0.18  sd 4.49  4/3 of 10
+  rhd_lead@ep08 - rhd_scratch@cl  kept_no_ego_coll_%: +1.07  sd 2.82  6/2 of 10
+  rhd_lead@ep08 - rhd_scratch@cl  ego_progress: +0.05  sd 0.01  10/0 of 10
+  rhd_lead@ep08+ttc:0.7:0.2 - rhd_scratch@cl+ttc:0.7:0.2  ego_collision_%: -0.35  sd 0.45  0/4 of 10
+  rhd_lead@ep08+ttc:0.7:0.2 - rhd_scratch@cl+ttc:0.7:0.2  behaviour_kept_%: +4.64  sd 3.78  9/1 of 10
+  rhd_lead@ep08+ttc:0.7:0.2 - rhd_scratch@cl+ttc:0.7:0.2  kept_no_ego_coll_%: +5.00  sd 4.11  9/1 of 10
+  rhd_lead@ep08+ttc:0.7:0.2 - rhd_scratch@cl+ttc:0.7:0.2  ego_progress: +0.03  sd 0.01  10/0 of 10
+  rhd_lead@ep08+ttc:0.7:0.2 - constvel+ttc:0.7:0.2  ego_collision_%: -0.18  sd 1.08  3/5 of 10
+  rhd_lead@ep08+ttc:0.7:0.2 - constvel+ttc:0.7:0.2  behaviour_kept_%: +4.82  sd 4.77  8/2 of 10
+  rhd_lead@ep08+ttc:0.7:0.2 - constvel+ttc:0.7:0.2  kept_no_ego_coll_%: +5.71  sd 5.38  8/2 of 10
+  rhd_lead@ep08+ttc:0.7:0.2 - constvel+ttc:0.7:0.2  ego_progress: +0.11  sd 0.01  10/0 of 10
+  rhd_scratch@cl+ttc:0.7:0.2 - constvel+ttc:0.7:0.2  ego_collision_%: +0.18  sd 1.15  4/3 of 10
+  rhd_scratch@cl+ttc:0.7:0.2 - constvel+ttc:0.7:0.2  behaviour_kept_%: +0.18  sd 4.16  4/4 of 10
+  rhd_scratch@cl+ttc:0.7:0.2 - constvel+ttc:0.7:0.2  kept_no_ego_coll_%: +0.71  sd 5.06  4/4 of 10
+  rhd_scratch@cl+ttc:0.7:0.2 - constvel+ttc:0.7:0.2  ego_progress: +0.08  sd 0.02  10/0 of 10
+  autopilot - autopilot_stock  ego_collision_%: +2.81  sd 1.42  9/0 of 10
+  autopilot - autopilot_stock  behaviour_kept_%: +26.07  sd 3.78  10/0 of 10
+  autopilot - autopilot_stock  kept_no_ego_coll_%: +21.96  sd 5.05  10/0 of 10
+  autopilot - autopilot_stock  ego_progress: -0.08  sd 0.02  0/10 of 10
+  idm - rhd_lead@ep08+ttc:0.7:0.2  ego_collision_%: +24.56  sd 2.07  10/0 of 10
+  idm - rhd_lead@ep08+ttc:0.7:0.2  behaviour_kept_%: +8.04  sd 4.15  10/0 of 10
+  idm - rhd_lead@ep08+ttc:0.7:0.2  kept_no_ego_coll_%: -2.14  sd 3.01  3/7 of 10
+  idm - rhd_lead@ep08+ttc:0.7:0.2  ego_progress: +0.17  sd 0.02  10/0 of 10
+
+scenarios by outcome over the runs (ego collision of 114, kept of the checkable):
+                            ego collision: scenarios never  always  sometimes  kept: never  kept always  kept sometimes
+driver                                                                                                                 
+autopilot                                              100       8          6           15           34               7
+autopilot_stock                                        104       4          6           27           21               8
+constvel+ttc:0.7:0.2                                   112       1          1           13           24              19
+expert                                                 110       2          2            0           56               0
+idm                                                     78      21         15           10           35              11
+rhd_lead@ep08                                           62      28         24           18           29               9
+rhd_lead@ep08+ttc:0.7:0.2                              111       0          3           12           24              20
+rhd_scratch@cl                                          69      24         21           18           28              10
+rhd_scratch@cl+ttc:0.7:0.2                             110       0          4           12           25              19

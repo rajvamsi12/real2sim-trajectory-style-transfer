@@ -1,0 +1,1027 @@
+scenario,behaviour,length_s,driver,result,vehicles,vehicles_in_collision,vehicle_pairs_hit,ego_collision,ego_other_hit,off_road_vehicles,behaviour_checked,behaviour_kept,behaviour2_checked,behaviour2_kept,behaviour2_kind,gap_err_m,ego_progress,mean_progress,speed_vs_recorded,ego_speed_vs_recorded,stuck_s_per_vehicle,shield_brake_s_per_vehicle,shield_follow_s_per_vehicle,plans,model_s,seconds
+00381,Vehicle Following,8.0,expert,ok,6,0,0,False,False,0,True,True,True,True,ego behind,0.0,1.0,0.972,1.017,0.991,0.03,,,0,0.0,14.9
+00381,Vehicle Following,8.0,constvel+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,False,True,False,ego behind,-12.89,0.0,0.791,0.794,0.001,0.65,0.0,0.33,30,0.0,14.8
+00381,Vehicle Following,8.0,rhd_scratch@cl,ok,6,0,0,False,False,0,True,False,True,False,ego behind,-12.75,0.021,0.809,0.816,0.015,0.64,,,30,2.82,16.8
+00381,Vehicle Following,8.0,rhd_scratch@cl+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,False,True,False,ego behind,-12.73,0.023,0.795,0.802,0.017,0.64,0.0,0.29,30,2.6,16.8
+00381,Vehicle Following,8.0,autopilot,ok,6,0,0,False,False,0,True,True,True,True,ego behind,-3.5,0.764,0.932,0.962,0.724,0.0,,,0,0.0,14.9
+00381,Vehicle Following,8.0,idm,ok,6,0,0,False,False,0,True,True,True,True,ego behind,2.33,1.0,0.973,1.049,1.17,0.02,,,32,0.0,14.9
+00035,Overtaking Left,8.0,expert,ok,6,0,0,False,False,0,True,True,True,True,ego passes,0.78,1.0,0.833,1.015,1.0,0.0,,,0,0.0,14.9
+00035,Overtaking Left,8.0,constvel+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,False,True,False,ego passes,-14.69,0.357,0.631,0.602,0.339,0.38,0.38,0.62,30,0.0,15.0
+00035,Overtaking Left,8.0,rhd_scratch@cl,ok,6,0,0,False,False,0,True,True,True,True,ego passes,23.15,1.0,0.833,1.322,1.963,0.03,,,30,2.46,16.1
+00035,Overtaking Left,8.0,rhd_scratch@cl+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,True,True,True,ego passes,-5.04,0.771,0.79,0.913,0.756,0.23,0.18,0.53,30,2.42,16.2
+00035,Overtaking Left,8.0,autopilot,ok,6,0,0,False,False,0,True,True,True,True,ego passes,-1.28,0.935,0.823,0.987,0.906,0.02,,,0,0.0,14.9
+00035,Overtaking Left,8.0,idm,ok,6,0,0,False,False,0,True,True,True,True,ego passes,21.77,1.0,0.833,1.3,1.887,0.02,,,32,0.0,14.9
+00496,Vehicle Following,8.0,expert,ok,5,0,0,False,False,0,False,,False,,,,0.0,0.595,2.024,3.445,0.0,,,0,0.0,14.8
+00496,Vehicle Following,8.0,constvel+ttc:0.7:0.2,ok,5,0,0,False,False,0,False,,False,,,,0.67,0.731,1.352,1.318,0.0,0.02,0.35,30,0.0,14.8
+00496,Vehicle Following,8.0,rhd_scratch@cl,collision,5,2,1,True,True,0,False,,False,,,,0.655,0.728,1.828,2.627,0.0,,,30,2.32,16.4
+00496,Vehicle Following,8.0,rhd_scratch@cl+ttc:0.7:0.2,ok,5,0,0,False,False,0,False,,False,,,,0.589,0.712,1.165,0.581,0.0,0.02,0.29,30,2.46,16.4
+00496,Vehicle Following,8.0,autopilot,ok,5,0,0,False,False,0,False,,False,,,,0.606,0.716,1.295,0.509,0.0,,,0,0.0,14.8
+00496,Vehicle Following,8.0,idm,ok,5,0,0,False,False,0,False,,False,,,,0.968,0.788,1.46,1.162,0.0,,,32,0.0,14.8
+00809,Vehicle Following,8.0,expert,ok,5,0,0,False,False,0,True,True,True,True,ego behind,0.07,1.0,1.0,0.994,0.996,0.0,,,0,0.0,14.8
+00809,Vehicle Following,8.0,constvel+ttc:0.7:0.2,ok,5,0,0,False,False,0,True,True,True,False,ego behind,-6.67,0.654,0.93,0.933,0.643,0.02,0.0,0.19,30,0.0,14.8
+00809,Vehicle Following,8.0,rhd_scratch@cl,ok,5,0,0,False,False,0,True,True,True,False,ego behind,-5.55,0.702,0.94,0.945,0.698,0.06,,,30,2.54,16.4
+00809,Vehicle Following,8.0,rhd_scratch@cl+ttc:0.7:0.2,ok,5,0,0,False,False,0,True,True,True,False,ego behind,-7.11,0.637,0.927,0.925,0.612,0.02,0.0,0.18,30,2.52,16.4
+00809,Vehicle Following,8.0,autopilot,ok,5,0,0,False,False,0,True,True,True,True,ego behind,-4.23,0.803,0.961,0.96,0.766,0.0,,,0,0.0,14.9
+00809,Vehicle Following,8.0,idm,ok,5,0,0,False,False,0,True,True,True,True,ego behind,-2.1,0.955,0.991,0.977,0.872,0.09,,,32,0.0,14.8
+00208,Overtaking Left,8.0,expert,ok,6,0,0,False,False,0,True,True,True,True,ego passes,0.02,1.0,0.952,0.962,0.996,0.0,,,0,0.0,14.7
+00208,Overtaking Left,8.0,constvel+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,True,True,True,ego passes,-15.21,0.383,0.85,0.596,0.383,0.0,0.0,0.05,30,0.0,14.7
+00208,Overtaking Left,8.0,rhd_scratch@cl,collision,6,2,1,True,True,0,True,False,True,False,ego passes,-23.08,0.177,0.691,0.403,0.177,0.84,,,30,2.5,16.1
+00208,Overtaking Left,8.0,rhd_scratch@cl+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,False,True,False,ego passes,-24.58,0.088,0.708,0.363,0.085,0.97,0.0,0.45,30,2.47,16.2
+00208,Overtaking Left,8.0,autopilot,ok,6,0,0,False,False,0,True,True,True,True,ego passes,-2.14,0.946,0.944,0.906,0.906,0.0,,,0,0.0,14.7
+00208,Overtaking Left,8.0,idm,ok,6,0,0,False,False,0,True,True,True,True,ego passes,9.95,1.0,0.953,1.206,1.406,0.0,,,32,0.0,14.7
+01179,Vehicle Following,8.0,expert,ok,6,0,0,False,False,0,True,True,False,,,,1.0,1.0,0.961,0.875,0.0,,,0,0.0,14.8
+01179,Vehicle Following,8.0,constvel+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,False,False,,,,0.244,0.865,0.906,0.017,0.0,0.0,0.48,30,0.0,14.9
+01179,Vehicle Following,8.0,rhd_scratch@cl,ok,6,0,0,False,False,0,True,False,False,,,,0.304,0.884,0.915,0.086,0.0,,,30,2.57,16.2
+01179,Vehicle Following,8.0,rhd_scratch@cl+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,False,False,,,,0.299,0.874,0.91,0.08,0.0,0.0,0.5,30,2.55,16.2
+01179,Vehicle Following,8.0,autopilot,collision,6,2,1,True,False,0,True,True,False,,,,0.564,0.927,0.944,0.446,0.02,,,0,0.0,14.9
+01179,Vehicle Following,8.0,idm,collision,6,2,1,True,True,0,True,False,False,,,,1.0,1.0,1.244,5.181,0.0,,,32,0.0,14.9
+01540,Vehicle Following,4.9,expert,ok,6,0,0,False,False,0,True,True,False,,,,1.0,0.998,0.952,0.98,0.0,,,0,0.0,9.9
+01540,Vehicle Following,4.9,constvel+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,True,False,,,,1.0,0.992,1.037,1.558,0.0,0.0,0.14,17,0.0,9.9
+01540,Vehicle Following,4.9,rhd_scratch@cl,collision,6,2,1,True,False,0,True,False,False,,,,1.0,0.836,1.196,2.556,0.0,,,18,1.52,10.9
+01540,Vehicle Following,4.9,rhd_scratch@cl+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,True,False,,,,1.0,0.992,1.015,1.356,0.0,0.0,0.33,18,1.47,10.9
+01540,Vehicle Following,4.9,autopilot,ok,6,0,0,False,False,0,True,False,False,,,,0.482,0.906,0.927,0.783,0.01,,,0,0.0,9.9
+01540,Vehicle Following,4.9,idm,ok,6,0,0,False,False,0,True,False,False,,,,1.0,0.99,1.109,2.049,0.0,,,19,0.0,9.9
+00562,Vehicle Following,8.0,expert,collision,6,1,0,False,False,1,True,True,False,,,,1.0,0.825,1.022,0.996,0.0,,,0,0.0,14.9
+00562,Vehicle Following,8.0,constvel+ttc:0.7:0.2,collision,6,1,0,False,False,1,True,False,False,,,,0.175,0.845,0.771,0.187,0.0,0.0,0.29,30,0.0,14.9
+00562,Vehicle Following,8.0,rhd_scratch@cl,collision,6,1,0,False,False,1,True,False,False,,,,0.113,0.676,0.82,0.123,0.0,,,30,2.55,16.8
+00562,Vehicle Following,8.0,rhd_scratch@cl+ttc:0.7:0.2,collision,6,1,0,False,False,1,True,False,False,,,,0.11,0.828,0.755,0.129,0.0,0.0,0.37,30,2.55,16.8
+00562,Vehicle Following,8.0,autopilot,collision,6,1,0,False,False,1,True,False,False,,,,0.361,0.884,0.82,0.362,0.0,,,0,0.0,14.9
+00562,Vehicle Following,8.0,idm,collision,6,1,0,False,False,1,True,True,False,,,,0.551,0.75,0.924,0.539,0.0,,,32,0.0,14.9
+01182,Vehicle Following,8.0,expert,ok,6,0,0,False,False,0,True,True,True,True,ego behind,-0.09,1.0,0.827,1.013,0.981,0.0,,,0,0.0,14.9
+01182,Vehicle Following,8.0,constvel+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,True,True,True,ego behind,-3.34,0.636,0.724,0.827,0.625,0.08,0.25,1.71,30,0.0,14.9
+01182,Vehicle Following,8.0,rhd_scratch@cl,collision,6,2,1,True,True,1,True,True,True,True,ego behind,-2.27,0.994,0.841,1.012,0.903,0.01,,,30,2.39,16.6
+01182,Vehicle Following,8.0,rhd_scratch@cl+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,True,True,True,ego behind,-2.64,0.712,0.745,0.859,0.696,0.05,0.18,1.85,30,2.54,16.5
+01182,Vehicle Following,8.0,autopilot,collision,6,2,1,True,False,1,True,True,True,False,ego behind,-7.06,0.258,0.703,0.829,0.242,0.06,,,0,0.0,14.9
+01182,Vehicle Following,8.0,idm,off road,6,0,0,False,False,1,True,True,True,True,ego behind,-3.04,0.684,0.774,0.938,0.681,0.03,,,32,0.0,14.9
+00368,Vehicle Following,8.0,expert,ok,6,0,0,False,False,0,False,,False,,,,0.135,0.262,2.407,3.546,0.0,,,0,0.0,14.9
+00368,Vehicle Following,8.0,constvel+ttc:0.7:0.2,ok,6,0,0,False,False,0,False,,False,,,,0.172,0.25,1.676,-0.017,0.0,0.0,0.58,30,0.0,14.9
+00368,Vehicle Following,8.0,rhd_scratch@cl,ok,6,0,0,False,False,0,False,,False,,,,0.641,0.346,2.148,0.769,0.0,,,30,2.3,16.6
+00368,Vehicle Following,8.0,rhd_scratch@cl+ttc:0.7:0.2,ok,6,0,0,False,False,0,False,,False,,,,0.613,0.323,1.769,0.711,0.0,0.0,0.6,30,2.27,16.6
+00368,Vehicle Following,8.0,autopilot,ok,6,0,0,False,False,0,False,,False,,,,0.372,0.301,2.178,0.739,0.0,,,0,0.0,15.0
+00368,Vehicle Following,8.0,idm,collision,6,1,0,True,False,0,False,,False,,,,0.965,0.4,2.34,2.905,0.0,,,32,0.0,15.0
+01257,Vehicle Following,8.0,expert,ok,6,0,0,False,False,0,False,,False,,,,0.883,0.799,1.269,0.842,0.0,,,0,0.0,14.9
+01257,Vehicle Following,8.0,constvel+ttc:0.7:0.2,ok,6,0,0,False,False,0,False,,False,,,,0.051,0.66,0.974,0.004,0.0,0.0,0.17,30,0.0,14.9
+01257,Vehicle Following,8.0,rhd_scratch@cl,ok,6,0,0,False,False,0,False,,False,,,,0.277,0.698,1.184,0.301,0.0,,,30,2.38,16.4
+01257,Vehicle Following,8.0,rhd_scratch@cl+ttc:0.7:0.2,ok,6,0,0,False,False,0,False,,False,,,,0.277,0.698,1.02,0.296,0.0,0.0,0.17,30,2.39,16.4
+01257,Vehicle Following,8.0,autopilot,ok,6,0,0,False,False,0,False,,False,,,,0.54,0.742,1.269,0.661,0.0,,,0,0.0,14.9
+01257,Vehicle Following,8.0,idm,ok,6,0,0,False,False,0,False,,False,,,,0.019,0.655,1.147,0.019,0.0,,,32,0.0,14.9
+01359,Overtaking Right,4.9,expert,ok,6,0,0,False,False,0,True,True,True,True,ego passes,0.14,1.0,1.0,0.984,1.002,0.0,,,0,0.0,9.9
+01359,Overtaking Right,4.9,constvel+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,True,True,True,ego passes,0.01,1.0,0.977,0.941,0.993,0.0,0.0,0.23,17,0.0,9.9
+01359,Overtaking Right,4.9,rhd_scratch@cl,collision,6,3,2,True,False,0,True,True,True,True,ego passes,8.48,1.0,1.0,1.184,1.493,0.0,,,18,1.55,11.0
+01359,Overtaking Right,4.9,rhd_scratch@cl+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,True,True,True,ego passes,-0.97,0.969,0.97,0.921,0.937,0.0,0.0,0.3,18,1.57,11.0
+01359,Overtaking Right,4.9,autopilot,ok,6,0,0,False,False,0,True,False,True,False,ego passes,-10.29,0.432,0.905,0.733,0.386,0.31,,,0,0.0,9.9
+01359,Overtaking Right,4.9,idm,ok,6,0,0,False,False,0,True,True,True,True,ego passes,0.39,1.0,1.0,0.988,1.016,0.0,,,19,0.0,9.9
+00312,Overtaking Right,8.0,expert,ok,6,0,0,False,False,0,True,True,True,True,ego passes,0.34,1.0,0.988,0.999,0.999,0.07,,,0,0.0,14.9
+00312,Overtaking Right,8.0,constvel+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,True,True,True,ego passes,-1.02,0.836,0.909,0.898,0.816,0.22,0.02,1.02,30,0.0,14.9
+00312,Overtaking Right,8.0,rhd_scratch@cl,collision,6,2,1,True,False,0,True,True,True,True,ego passes,5.52,1.0,0.987,1.025,1.179,0.11,,,30,2.5,16.3
+00312,Overtaking Right,8.0,rhd_scratch@cl+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,True,True,True,ego passes,-1.35,0.858,0.927,0.903,0.84,0.26,0.0,1.12,30,2.57,16.3
+00312,Overtaking Right,8.0,autopilot,ok,6,0,0,False,False,0,True,True,True,True,ego passes,-0.73,0.998,0.988,0.979,0.961,0.09,,,0,0.0,14.9
+00312,Overtaking Right,8.0,idm,ok,6,0,0,False,False,0,True,True,True,True,ego passes,0.85,1.0,0.989,1.001,1.014,0.12,,,32,0.0,14.9
+01524,Vehicle Following,4.9,expert,ok,6,0,0,False,False,0,True,True,True,True,ego is passed,-0.03,1.0,0.984,0.954,0.985,0.0,,,0,0.0,9.9
+01524,Vehicle Following,4.9,constvel+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,True,True,True,ego is passed,-2.76,0.787,0.949,0.935,0.808,0.0,0.0,0.15,17,0.0,9.9
+01524,Vehicle Following,4.9,rhd_scratch@cl,ok,6,0,0,False,False,0,True,True,True,True,ego is passed,-1.92,0.882,0.963,0.941,0.844,0.0,,,18,1.54,10.8
+01524,Vehicle Following,4.9,rhd_scratch@cl+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,True,True,True,ego is passed,-1.98,0.861,0.96,0.933,0.832,0.0,0.0,0.12,18,1.54,10.9
+01524,Vehicle Following,4.9,autopilot,ok,6,0,0,False,False,0,True,True,True,True,ego is passed,-2.72,0.788,0.948,0.925,0.724,0.13,,,0,0.0,9.9
+01524,Vehicle Following,4.9,idm,ok,6,0,0,False,False,0,True,False,True,False,ego is passed,4.6,1.0,0.981,1.001,1.369,0.01,,,19,0.0,9.9
+00489,Vehicle Following,8.0,expert,ok,6,0,0,False,False,0,False,,False,,,,0.934,0.844,1.031,0.85,0.0,,,0,0.0,14.7
+00489,Vehicle Following,8.0,constvel+ttc:0.7:0.2,ok,6,0,0,False,False,0,False,,False,,,,1.0,0.857,1.014,1.883,0.0,0.0,0.34,30,0.0,14.7
+00489,Vehicle Following,8.0,rhd_scratch@cl,ok,6,0,0,False,False,0,False,,False,,,,1.0,0.855,1.021,1.623,0.0,,,30,2.56,16.6
+00489,Vehicle Following,8.0,rhd_scratch@cl+ttc:0.7:0.2,ok,6,0,0,False,False,0,False,,False,,,,1.0,0.857,1.003,1.613,0.0,0.0,0.35,30,2.54,16.6
+00489,Vehicle Following,8.0,autopilot,ok,6,0,0,False,False,0,False,,False,,,,0.612,0.792,1.011,0.812,0.0,,,0,0.0,14.7
+00489,Vehicle Following,8.0,idm,ok,6,0,0,False,False,0,False,,False,,,,1.0,0.865,1.057,1.935,0.0,,,32,0.0,14.7
+01588,Vehicle Following,4.9,expert,collision,6,2,1,True,True,1,True,True,True,True,ego behind,1.65,1.0,0.998,0.977,0.977,0.0,,,0,0.0,9.9
+01588,Vehicle Following,4.9,constvel+ttc:0.7:0.2,off road,6,0,0,False,False,1,True,False,True,False,ego behind,-16.57,0.071,0.844,0.77,0.064,0.62,0.09,0.17,17,0.0,9.9
+01588,Vehicle Following,4.9,rhd_scratch@cl,collision,6,2,1,True,True,1,True,False,True,False,ego behind,-7.54,0.513,0.916,1.003,1.098,0.0,,,18,1.59,10.9
+01588,Vehicle Following,4.9,rhd_scratch@cl+ttc:0.7:0.2,off road,6,0,0,False,False,1,True,False,True,False,ego behind,-15.0,0.164,0.861,0.928,0.577,0.07,0.09,0.12,18,1.57,10.7
+01588,Vehicle Following,4.9,autopilot,off road,6,0,0,False,False,1,True,False,True,False,ego behind,-9.67,0.399,0.898,0.866,0.502,0.14,,,0,0.0,9.9
+01588,Vehicle Following,4.9,idm,collision,6,2,1,True,True,1,True,True,True,True,ego behind,3.15,1.0,0.999,1.003,1.084,0.0,,,19,0.0,9.9
+01610,Vehicle Following,4.9,expert,ok,6,0,0,False,False,0,True,True,False,,,,1.0,0.823,0.89,0.779,0.0,,,0,0.0,9.9
+01610,Vehicle Following,4.9,constvel+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,True,False,,,,1.0,0.791,0.753,0.888,0.0,0.0,0.76,17,0.0,9.9
+01610,Vehicle Following,4.9,rhd_scratch@cl,collision,6,2,1,True,True,0,True,True,False,,,,0.939,0.813,0.902,0.965,0.0,,,18,1.51,11.3
+01610,Vehicle Following,4.9,rhd_scratch@cl+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,True,False,,,,0.66,0.735,0.731,0.582,0.0,0.05,0.57,18,1.54,11.3
+01610,Vehicle Following,4.9,autopilot,ok,6,0,0,False,False,0,True,False,False,,,,0.296,0.784,0.83,0.321,0.0,,,0,0.0,9.9
+01610,Vehicle Following,4.9,idm,collision,6,1,0,True,False,0,True,False,False,,,,1.0,0.896,1.146,4.334,0.0,,,19,0.0,9.9
+00168,Overtaking Left,8.0,expert,off road,5,0,0,False,False,1,True,True,True,True,ego passes,-0.03,1.0,0.999,0.999,0.997,0.0,,,0,0.0,14.8
+00168,Overtaking Left,8.0,constvel+ttc:0.7:0.2,ok,5,0,0,False,False,0,True,True,True,True,ego passes,-9.78,0.791,0.951,0.87,0.603,0.0,0.0,0.53,30,0.0,14.8
+00168,Overtaking Left,8.0,rhd_scratch@cl,collision,5,1,0,True,False,1,True,True,True,True,ego passes,4.67,1.0,0.998,1.032,1.189,0.0,,,30,2.49,15.7
+00168,Overtaking Left,8.0,rhd_scratch@cl+ttc:0.7:0.2,ok,5,0,0,False,False,0,True,True,True,True,ego passes,-7.64,0.953,0.951,0.859,0.69,0.0,0.13,0.47,30,2.56,15.7
+00168,Overtaking Left,8.0,autopilot,collision,5,2,1,True,True,0,True,True,True,True,ego passes,-12.93,0.485,0.897,0.867,0.487,0.6,,,0,0.0,14.8
+00168,Overtaking Left,8.0,idm,collision,5,1,0,True,False,1,True,True,True,True,ego passes,-0.23,1.0,1.0,0.999,0.992,0.0,,,32,0.0,14.8
+00495,Vehicle Following,8.0,expert,ok,6,0,0,False,False,0,True,True,False,,,,1.0,0.781,1.124,0.979,0.0,,,0,0.0,14.9
+00495,Vehicle Following,8.0,constvel+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,True,False,,,,1.0,0.781,1.186,1.323,0.0,0.0,0.13,30,0.0,14.9
+00495,Vehicle Following,8.0,rhd_scratch@cl,collision,6,2,1,True,True,0,True,True,False,,,,1.0,0.781,1.41,2.3,0.0,,,30,2.46,16.6
+00495,Vehicle Following,8.0,rhd_scratch@cl+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,True,False,,,,1.0,0.781,1.159,1.207,0.0,0.0,0.12,30,2.44,16.6
+00495,Vehicle Following,8.0,autopilot,ok,6,0,0,False,False,0,True,True,False,,,,0.652,0.723,1.039,0.643,0.0,,,0,0.0,14.9
+00495,Vehicle Following,8.0,idm,collision,6,1,0,True,False,0,True,True,False,,,,1.0,0.781,1.198,1.34,0.0,,,32,0.0,14.9
+00979,Vehicle Following,8.0,expert,collision,4,1,0,False,False,1,True,True,True,True,ego behind,3.66,1.0,0.733,0.987,1.006,0.06,,,0,0.0,14.7
+00979,Vehicle Following,8.0,constvel+ttc:0.7:0.2,collision,4,1,0,False,False,1,True,True,True,False,ego behind,-5.29,0.663,0.651,0.879,0.63,0.09,0.0,0.0,30,0.0,14.7
+00979,Vehicle Following,8.0,rhd_scratch@cl,collision,4,1,0,False,False,1,True,True,True,True,ego behind,0.02,0.881,0.705,0.943,0.849,0.05,,,30,2.52,16.3
+00979,Vehicle Following,8.0,rhd_scratch@cl+ttc:0.7:0.2,collision,4,1,0,False,False,1,True,True,True,True,ego behind,-1.4,0.82,0.69,0.928,0.798,0.05,0.0,0.1,30,2.5,16.3
+00979,Vehicle Following,8.0,autopilot,collision,4,1,0,False,False,1,True,True,True,True,ego behind,-0.25,0.877,0.704,0.941,0.843,0.1,,,0,0.0,14.7
+00979,Vehicle Following,8.0,idm,collision,4,1,0,False,False,1,True,True,True,False,ego behind,8.64,1.0,0.735,1.055,1.226,0.05,,,32,0.0,14.7
+00169,Overtaking Left,8.0,expert,ok,5,0,0,False,False,0,True,True,True,True,ego passes,0.39,1.0,0.994,0.979,0.999,0.0,,,0,0.0,14.8
+00169,Overtaking Left,8.0,constvel+ttc:0.7:0.2,ok,5,0,0,False,False,0,True,False,True,False,ego passes,-24.16,0.257,0.819,0.719,0.256,0.28,0.09,0.35,30,0.0,14.8
+00169,Overtaking Left,8.0,rhd_scratch@cl,collision,5,2,1,True,True,0,True,False,True,False,ego passes,-25.45,0.217,0.838,0.71,0.215,1.02,,,30,2.51,16.2
+00169,Overtaking Left,8.0,rhd_scratch@cl+ttc:0.7:0.2,ok,5,0,0,False,False,0,True,False,True,False,ego passes,-27.77,0.147,0.769,0.659,0.146,0.88,0.0,0.46,30,2.49,16.3
+00169,Overtaking Left,8.0,autopilot,collision,5,2,1,True,True,0,True,False,True,False,ego passes,-23.89,0.265,0.83,0.725,0.263,0.93,,,0,0.0,14.8
+00169,Overtaking Left,8.0,idm,ok,5,0,0,False,False,0,True,True,True,True,ego passes,3.77,1.0,0.978,1.018,1.103,0.0,,,32,0.0,14.8
+00430,Vehicle Following,8.0,expert,ok,6,0,0,False,False,0,True,True,False,,,,1.0,0.785,1.074,1.007,0.0,,,0,0.0,14.8
+00430,Vehicle Following,8.0,constvel+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,False,False,,,,0.161,0.647,0.929,0.17,0.0,0.0,0.23,30,0.0,14.8
+00430,Vehicle Following,8.0,rhd_scratch@cl,ok,6,0,0,False,False,0,True,False,False,,,,0.077,0.626,0.915,0.111,0.0,,,30,2.46,16.5
+00430,Vehicle Following,8.0,rhd_scratch@cl+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,False,False,,,,0.087,0.631,0.904,0.084,0.0,0.0,0.23,30,2.5,16.5
+00430,Vehicle Following,8.0,autopilot,ok,6,0,0,False,False,0,True,False,False,,,,0.451,0.693,0.983,0.567,0.0,,,0,0.0,14.8
+00430,Vehicle Following,8.0,idm,ok,6,0,0,False,False,0,True,False,False,,,,0.654,0.727,1.003,0.57,0.0,,,32,0.0,14.8
+00147,Overtaking Left,8.0,expert,ok,6,0,0,False,False,0,True,True,True,True,ego passes,-0.22,1.0,0.986,0.984,0.989,0.0,,,0,0.0,14.9
+00147,Overtaking Left,8.0,constvel+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,True,True,True,ego passes,-8.17,0.798,0.953,0.921,0.773,0.0,0.0,0.0,30,0.0,14.9
+00147,Overtaking Left,8.0,rhd_scratch@cl,ok,6,0,0,False,False,0,True,True,True,True,ego passes,4.69,1.0,0.987,1.028,1.122,0.0,,,30,2.6,16.2
+00147,Overtaking Left,8.0,rhd_scratch@cl+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,True,True,True,ego passes,9.54,1.0,0.987,1.072,1.262,0.0,0.0,0.0,30,2.56,16.2
+00147,Overtaking Left,8.0,autopilot,ok,6,0,0,False,False,0,True,True,True,True,ego passes,-2.33,0.969,0.981,0.969,0.923,0.0,,,0,0.0,14.9
+00147,Overtaking Left,8.0,idm,ok,6,0,0,False,False,0,True,True,True,True,ego passes,6.02,1.0,0.986,1.044,1.163,0.0,,,32,0.0,14.9
+01435,Vehicle Following,4.9,expert,ok,6,0,0,False,False,0,False,,False,,,,1.0,0.57,1.382,0.876,0.0,,,0,0.0,9.9
+01435,Vehicle Following,4.9,constvel+ttc:0.7:0.2,ok,6,0,0,False,False,0,False,,False,,,,0.199,0.317,1.138,0.272,0.0,0.0,0.07,17,0.0,9.9
+01435,Vehicle Following,4.9,rhd_scratch@cl,ok,6,0,0,False,False,0,False,,False,,,,0.298,0.35,1.153,0.358,0.0,,,18,1.49,11.1
+01435,Vehicle Following,4.9,rhd_scratch@cl+ttc:0.7:0.2,ok,6,0,0,False,False,0,False,,False,,,,0.211,0.336,1.057,0.268,0.0,0.0,0.09,18,1.5,11.1
+01435,Vehicle Following,4.9,autopilot,ok,6,0,0,False,False,0,False,,False,,,,0.502,0.387,1.176,0.494,0.0,,,0,0.0,9.9
+01435,Vehicle Following,4.9,idm,ok,6,0,0,False,False,0,False,,False,,,,0.51,0.366,1.233,0.546,0.0,,,19,0.0,9.9
+00155,Overtaking Left,8.0,expert,collision,5,1,0,False,False,0,True,True,True,True,ego passes,-0.17,1.0,1.0,0.973,0.994,0.0,,,0,0.0,14.8
+00155,Overtaking Left,8.0,constvel+ttc:0.7:0.2,collision,5,1,0,False,False,0,True,True,True,True,ego passes,0.54,1.0,1.0,0.991,1.025,0.0,0.0,0.0,30,0.0,14.8
+00155,Overtaking Left,8.0,rhd_scratch@cl,collision,5,1,0,False,False,0,True,True,True,True,ego passes,9.18,1.0,1.0,1.235,1.418,0.0,,,30,2.5,16.0
+00155,Overtaking Left,8.0,rhd_scratch@cl+ttc:0.7:0.2,collision,5,1,0,False,False,0,True,True,True,True,ego passes,9.97,1.0,1.0,1.255,1.454,0.0,0.0,0.03,30,2.53,16.0
+00155,Overtaking Left,8.0,autopilot,collision,5,1,0,False,False,0,True,True,True,True,ego passes,-2.03,0.944,0.989,0.929,0.92,0.0,,,0,0.0,14.8
+00155,Overtaking Left,8.0,idm,collision,5,1,0,False,False,0,True,True,True,True,ego passes,18.63,1.0,1.0,1.501,1.849,0.0,,,32,0.0,14.8
+01297,Overtaking Left,4.9,expert,ok,5,0,0,False,False,0,True,True,True,True,ego passes,0.1,1.0,0.999,0.988,0.954,0.0,,,0,0.0,9.8
+01297,Overtaking Left,4.9,constvel+ttc:0.7:0.2,ok,5,0,0,False,False,0,True,True,True,True,ego passes,-1.55,0.825,0.964,0.975,0.837,0.0,0.0,0.0,17,0.0,9.8
+01297,Overtaking Left,4.9,rhd_scratch@cl,ok,5,0,0,False,False,0,True,True,True,True,ego passes,2.07,1.0,0.999,1.02,1.164,0.0,,,18,1.57,10.8
+01297,Overtaking Left,4.9,rhd_scratch@cl+ttc:0.7:0.2,ok,5,0,0,False,False,0,True,False,True,False,ego passes,-6.08,0.235,0.846,0.896,0.237,0.03,0.0,0.31,18,1.57,10.8
+01297,Overtaking Left,4.9,autopilot,ok,5,0,0,False,False,0,True,False,True,False,ego passes,-7.42,0.067,0.813,0.873,0.053,0.04,,,0,0.0,9.8
+01297,Overtaking Left,4.9,idm,ok,5,0,0,False,False,0,True,True,True,True,ego passes,9.68,1.0,1.0,1.149,2.17,0.0,,,19,0.0,9.8
+01587,Vehicle Following,4.9,expert,collision,3,1,0,False,False,0,True,True,True,True,ego behind,0.04,1.0,0.762,1.03,0.989,0.0,,,0,0.0,9.6
+01587,Vehicle Following,4.9,constvel+ttc:0.7:0.2,collision,3,1,0,False,False,0,True,True,True,True,ego behind,0.79,1.0,0.762,1.08,1.078,0.0,0.0,0.2,17,0.0,9.6
+01587,Vehicle Following,4.9,rhd_scratch@cl,collision,3,2,1,True,True,0,True,True,True,True,ego behind,1.92,1.0,0.765,1.185,1.258,0.0,,,18,1.49,10.7
+01587,Vehicle Following,4.9,rhd_scratch@cl+ttc:0.7:0.2,collision,3,1,0,False,False,0,True,True,True,True,ego behind,0.94,1.0,0.762,1.093,1.102,0.0,0.0,0.22,18,1.45,10.7
+01587,Vehicle Following,4.9,autopilot,collision,3,1,0,False,False,0,True,True,True,True,ego behind,-0.39,0.904,0.73,0.973,0.895,0.0,,,0,0.0,9.6
+01587,Vehicle Following,4.9,idm,collision,3,1,0,False,False,0,True,True,True,True,ego behind,0.48,1.0,0.761,1.052,1.028,0.0,,,19,0.0,9.6
+00380,Vehicle Following,8.0,expert,ok,6,0,0,False,False,0,True,True,False,,,,0.992,0.866,0.995,0.84,0.0,,,0,0.0,14.8
+00380,Vehicle Following,8.0,constvel+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,True,False,,,,1.0,0.855,1.01,1.253,0.0,0.0,0.26,30,0.0,14.7
+00380,Vehicle Following,8.0,rhd_scratch@cl,collision,6,2,1,True,True,0,True,True,False,,,,0.976,0.859,1.106,2.054,0.0,,,30,2.48,16.4
+00380,Vehicle Following,8.0,rhd_scratch@cl+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,True,False,,,,0.976,0.862,1.001,1.048,0.0,0.0,0.26,30,2.5,16.3
+00380,Vehicle Following,8.0,autopilot,ok,6,0,0,False,False,0,True,True,False,,,,0.68,0.813,0.968,0.651,0.0,,,0,0.0,14.7
+00380,Vehicle Following,8.0,idm,collision,6,1,0,True,False,0,True,True,False,,,,0.643,0.809,0.985,0.66,0.0,,,32,0.0,14.7
+00359,Vehicle Following,8.0,expert,collision,6,1,0,False,False,0,True,True,True,True,ego behind,0.01,1.0,0.978,0.987,0.998,0.0,,,0,0.0,14.8
+00359,Vehicle Following,8.0,constvel+ttc:0.7:0.2,collision,6,1,0,False,False,0,True,True,True,True,ego behind,-1.4,0.952,0.97,0.957,0.925,0.0,0.0,0.18,30,0.0,14.9
+00359,Vehicle Following,8.0,rhd_scratch@cl,collision,6,4,2,True,True,0,True,False,True,False,ego behind,7.44,1.0,0.979,1.191,1.355,0.0,,,30,2.62,16.3
+00359,Vehicle Following,8.0,rhd_scratch@cl+ttc:0.7:0.2,collision,6,1,0,False,False,0,True,True,True,True,ego behind,-1.91,0.92,0.965,0.947,0.899,0.01,0.0,0.2,30,2.58,16.4
+00359,Vehicle Following,8.0,autopilot,collision,6,1,0,False,False,0,True,True,True,True,ego behind,-1.53,0.964,0.972,0.956,0.923,0.0,,,0,0.0,14.9
+00359,Vehicle Following,8.0,idm,collision,6,1,0,False,False,0,True,True,True,True,ego behind,-1.86,0.94,0.968,0.952,0.911,0.0,,,32,0.0,14.8
+01532,Vehicle Following,4.9,expert,ok,6,0,0,False,False,0,True,True,True,True,ego behind,-0.03,1.0,1.0,0.999,0.992,0.0,,,0,0.0,9.9
+01532,Vehicle Following,4.9,constvel+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,True,True,True,ego behind,-4.67,0.512,0.849,0.866,0.501,0.18,0.13,0.41,17,0.0,9.9
+01532,Vehicle Following,4.9,rhd_scratch@cl,ok,6,0,0,False,False,0,True,True,True,True,ego behind,-0.86,0.942,0.99,0.981,0.901,0.03,,,18,1.53,11.0
+01532,Vehicle Following,4.9,rhd_scratch@cl+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,True,True,True,ego behind,-3.7,0.583,0.87,0.862,0.57,0.2,0.18,0.34,18,1.54,11.1
+01532,Vehicle Following,4.9,autopilot,collision,6,2,1,True,False,0,True,True,True,True,ego behind,-2.84,0.752,0.922,0.897,0.643,0.23,,,0,0.0,9.9
+01532,Vehicle Following,4.9,idm,collision,6,2,1,True,False,0,True,True,True,False,ego behind,-8.33,0.133,0.855,0.869,0.119,0.3,,,19,0.0,9.9
+00835,Vehicle Following,8.0,expert,ok,5,0,0,False,False,0,True,True,True,True,ego behind,-0.04,1.0,1.0,0.996,0.998,0.0,,,0,0.0,14.8
+00835,Vehicle Following,8.0,constvel+ttc:0.7:0.2,ok,5,0,0,False,False,0,True,True,True,False,ego behind,-9.22,0.689,0.911,0.885,0.662,0.0,0.12,0.53,30,0.0,14.8
+00835,Vehicle Following,8.0,rhd_scratch@cl,collision,5,2,1,True,True,0,True,True,True,True,ego behind,1.65,1.0,1.0,1.011,1.062,0.0,,,30,2.62,16.2
+00835,Vehicle Following,8.0,rhd_scratch@cl+ttc:0.7:0.2,ok,5,0,0,False,False,0,True,False,True,False,ego behind,-6.85,0.792,0.937,0.92,0.758,0.03,0.01,0.31,30,2.55,16.3
+00835,Vehicle Following,8.0,autopilot,ok,5,0,0,False,False,0,True,True,True,True,ego behind,-4.54,0.866,0.973,0.956,0.826,0.13,,,0,0.0,14.8
+00835,Vehicle Following,8.0,idm,ok,5,0,0,False,False,0,True,True,True,True,ego behind,-4.55,0.873,0.975,0.955,0.83,0.04,,,32,0.0,14.8
+01266,Vehicle Following,8.0,expert,ok,6,0,0,False,False,0,False,,False,,,,1.0,1.0,0.564,0.804,0.0,,,0,0.0,14.9
+01266,Vehicle Following,8.0,constvel+ttc:0.7:0.2,ok,6,0,0,False,False,0,False,,False,,,,0.0,0.833,0.389,-0.0,0.0,0.38,0.0,30,0.0,14.9
+01266,Vehicle Following,8.0,rhd_scratch@cl,ok,6,0,0,False,False,0,False,,False,,,,0.174,0.862,0.432,0.179,0.0,,,30,2.28,16.4
+01266,Vehicle Following,8.0,rhd_scratch@cl+ttc:0.7:0.2,ok,6,0,0,False,False,0,False,,False,,,,0.167,0.861,0.423,0.162,0.0,0.38,0.08,30,2.27,16.5
+01266,Vehicle Following,8.0,autopilot,ok,6,0,0,False,False,0,False,,False,,,,0.207,0.868,0.401,0.08,0.0,,,0,0.0,15.0
+01266,Vehicle Following,8.0,idm,collision,6,2,1,True,True,0,False,,False,,,,1.0,1.0,0.871,2.186,0.0,,,32,0.0,15.0
+00595,Vehicle Following,8.0,expert,ok,5,0,0,False,False,0,False,,False,,,,0.895,0.796,1.066,0.743,0.0,,,0,0.0,14.8
+00595,Vehicle Following,8.0,constvel+ttc:0.7:0.2,ok,5,0,0,False,False,0,False,,False,,,,0.041,0.628,0.996,0.06,0.0,0.0,0.3,30,0.0,14.8
+00595,Vehicle Following,8.0,rhd_scratch@cl,ok,5,0,0,False,False,0,False,,False,,,,0.123,0.644,1.02,0.124,0.0,,,30,2.51,16.6
+00595,Vehicle Following,8.0,rhd_scratch@cl+ttc:0.7:0.2,ok,5,0,0,False,False,0,False,,False,,,,0.113,0.642,1.007,0.11,0.0,0.0,0.31,30,2.5,16.6
+00595,Vehicle Following,8.0,autopilot,ok,5,0,0,False,False,0,False,,False,,,,0.509,0.722,1.058,0.632,0.0,,,0,0.0,14.8
+00595,Vehicle Following,8.0,idm,collision,5,2,1,True,True,0,False,,False,,,,1.0,0.82,1.176,2.035,0.0,,,32,0.0,14.8
+01276,Cut Out,4.9,expert,ok,5,0,0,False,False,0,False,,False,,,,0.885,0.905,0.967,0.704,0.0,,,0,0.0,9.8
+01276,Cut Out,4.9,constvel+ttc:0.7:0.2,ok,5,0,0,False,False,0,False,,False,,,,0.121,0.633,0.902,0.06,0.0,0.0,0.19,17,0.0,9.8
+01276,Cut Out,4.9,rhd_scratch@cl,ok,5,0,0,False,False,0,False,,False,,,,0.916,0.911,0.997,2.221,0.01,,,18,1.59,11.0
+01276,Cut Out,4.9,rhd_scratch@cl+ttc:0.7:0.2,ok,5,0,0,False,False,0,False,,False,,,,0.916,0.914,1.083,6.075,0.0,0.0,0.0,18,1.58,11.0
+01276,Cut Out,4.9,autopilot,ok,5,0,0,False,False,0,False,,False,,,,0.727,0.873,0.964,0.789,0.0,,,0,0.0,9.8
+01276,Cut Out,4.9,idm,collision,5,2,1,True,False,0,False,,False,,,,1.0,0.969,1.26,14.773,0.0,,,19,0.0,9.8
+00022,Overtaking Left,8.0,expert,ok,6,0,0,False,False,0,True,True,True,True,ego passes,-0.05,1.0,0.997,0.948,0.991,0.0,,,0,0.0,14.9
+00022,Overtaking Left,8.0,constvel+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,True,True,True,ego passes,7.9,1.0,1.0,1.113,1.37,0.0,0.0,0.05,30,0.0,14.9
+00022,Overtaking Left,8.0,rhd_scratch@cl,ok,6,0,0,False,False,0,True,True,True,True,ego passes,13.53,1.0,0.999,1.23,1.641,0.0,,,30,2.59,16.3
+00022,Overtaking Left,8.0,rhd_scratch@cl+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,True,True,True,ego passes,11.28,1.0,1.0,1.185,1.535,0.0,0.0,0.07,30,2.6,16.3
+00022,Overtaking Left,8.0,autopilot,ok,6,0,0,False,False,0,True,False,True,True,ego passes,-1.6,0.956,0.992,0.919,0.926,0.0,,,0,0.0,14.9
+00022,Overtaking Left,8.0,idm,ok,6,0,0,False,False,0,True,True,True,True,ego passes,20.43,1.0,0.999,1.366,1.957,0.0,,,32,0.0,14.9
+00395,Vehicle Following,8.0,expert,collision,6,2,1,False,False,0,True,True,False,,,,1.0,0.836,1.059,0.999,0.0,,,0,0.0,14.9
+00395,Vehicle Following,8.0,constvel+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,True,False,,,,0.439,0.716,0.734,0.434,0.0,0.0,1.16,30,0.0,14.9
+00395,Vehicle Following,8.0,rhd_scratch@cl,collision,6,2,1,False,False,0,True,True,False,,,,0.749,0.794,0.992,0.727,0.0,,,30,2.49,16.5
+00395,Vehicle Following,8.0,rhd_scratch@cl+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,True,False,,,,0.315,0.695,0.695,0.332,0.0,0.0,1.34,30,2.43,16.5
+00395,Vehicle Following,8.0,autopilot,collision,6,2,1,False,False,0,True,True,False,,,,0.805,0.803,1.012,0.799,0.0,,,0,0.0,14.9
+00395,Vehicle Following,8.0,idm,collision,6,3,1,True,False,0,True,False,False,,,,1.0,0.836,1.948,3.193,0.0,,,32,0.0,14.9
+01228,Vehicle Following,8.0,expert,ok,6,0,0,False,False,0,True,True,True,True,ego behind,0.03,1.0,1.0,0.979,0.947,0.01,,,0,0.0,14.9
+01228,Vehicle Following,8.0,constvel+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,True,True,True,ego behind,-1.89,0.802,0.95,0.954,0.818,0.06,0.18,0.88,30,0.0,14.9
+01228,Vehicle Following,8.0,rhd_scratch@cl,collision,6,2,1,True,True,0,True,False,True,False,ego behind,4.46,1.0,1.0,1.072,1.459,0.0,,,30,2.35,16.3
+01228,Vehicle Following,8.0,rhd_scratch@cl+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,False,True,False,ego behind,4.81,1.0,1.0,1.053,1.494,0.02,0.0,0.36,30,2.52,16.3
+01228,Vehicle Following,8.0,autopilot,collision,6,2,1,True,False,0,True,True,True,False,ego behind,-5.46,0.422,0.904,0.94,0.599,0.14,,,0,0.0,14.9
+01228,Vehicle Following,8.0,idm,ok,6,0,0,False,False,0,True,False,True,False,ego behind,26.92,1.0,1.0,1.372,3.813,0.0,,,32,0.0,14.9
+00537,Vehicle Following,8.0,expert,off road,6,0,0,False,False,1,False,,False,,,,0.47,0.744,1.161,1.328,0.0,,,0,0.0,14.9
+00537,Vehicle Following,8.0,constvel+ttc:0.7:0.2,ok,6,0,0,False,False,0,False,,False,,,,0.205,0.698,1.096,0.16,0.0,0.0,0.02,30,0.0,14.9
+00537,Vehicle Following,8.0,rhd_scratch@cl,ok,6,0,0,False,False,0,False,,False,,,,0.883,0.809,1.131,0.695,0.0,,,30,2.49,16.8
+00537,Vehicle Following,8.0,rhd_scratch@cl+ttc:0.7:0.2,ok,6,0,0,False,False,0,False,,False,,,,0.891,0.813,1.127,0.796,0.0,0.0,0.02,30,2.49,16.8
+00537,Vehicle Following,8.0,autopilot,collision,6,1,0,False,False,0,False,,False,,,,0.205,0.613,1.105,0.604,0.0,,,0,0.0,15.0
+00537,Vehicle Following,8.0,idm,collision,6,1,0,True,False,1,False,,False,,,,0.911,0.813,4.338,56.033,0.0,,,32,0.0,14.9
+00579,Vehicle Following,8.0,expert,ok,5,0,0,False,False,0,False,,False,,,,0.445,0.889,1.027,1.856,0.0,,,0,0.0,14.8
+00579,Vehicle Following,8.0,constvel+ttc:0.7:0.2,ok,5,0,0,False,False,0,False,,False,,,,0.03,0.806,0.911,0.043,0.0,0.0,0.0,30,0.0,14.8
+00579,Vehicle Following,8.0,rhd_scratch@cl,ok,5,0,0,False,False,0,False,,False,,,,0.072,0.814,0.901,0.102,0.0,,,30,2.51,16.7
+00579,Vehicle Following,8.0,rhd_scratch@cl+ttc:0.7:0.2,ok,5,0,0,False,False,0,False,,False,,,,0.027,0.805,0.901,0.077,0.0,0.0,0.0,30,2.53,16.7
+00579,Vehicle Following,8.0,autopilot,ok,5,0,0,False,False,0,False,,False,,,,0.0,0.8,0.897,-0.0,0.0,,,0,0.0,14.9
+00579,Vehicle Following,8.0,idm,ok,5,0,0,False,False,0,False,,False,,,,0.025,0.805,0.898,0.029,0.0,,,32,0.0,14.8
+00592,Vehicle Following,8.0,expert,ok,6,0,0,False,False,0,True,True,False,,,,1.0,0.99,0.981,1.153,0.0,,,0,0.0,14.9
+00592,Vehicle Following,8.0,constvel+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,True,False,,,,0.606,0.9,0.772,0.611,0.0,0.0,0.11,30,0.0,14.9
+00592,Vehicle Following,8.0,rhd_scratch@cl,ok,6,0,0,False,False,0,True,True,False,,,,0.423,0.892,0.692,0.435,0.0,,,30,2.54,16.7
+00592,Vehicle Following,8.0,rhd_scratch@cl+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,True,False,,,,0.597,0.898,0.773,0.616,0.0,0.0,0.12,30,2.51,16.7
+00592,Vehicle Following,8.0,autopilot,ok,6,0,0,False,False,0,True,True,False,,,,0.393,0.733,0.83,0.415,0.0,,,0,0.0,14.9
+00592,Vehicle Following,8.0,idm,ok,6,0,0,False,False,0,True,True,False,,,,0.642,0.924,0.795,0.648,0.0,,,32,0.0,14.9
+00838,Vehicle Following,8.0,expert,ok,6,0,0,False,False,0,True,True,True,True,ego behind,0.05,1.0,1.0,0.997,0.999,0.01,,,0,0.0,14.9
+00838,Vehicle Following,8.0,constvel+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,False,True,True,ego behind,-4.22,0.768,0.961,0.958,0.751,0.01,0.01,0.23,30,0.0,15.0
+00838,Vehicle Following,8.0,rhd_scratch@cl,ok,6,0,0,False,False,0,True,False,True,False,ego behind,8.32,1.0,1.0,1.064,1.482,0.01,,,30,2.55,16.4
+00838,Vehicle Following,8.0,rhd_scratch@cl+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,False,True,True,ego behind,-4.54,0.75,0.958,0.955,0.726,0.0,0.01,0.39,30,2.52,16.6
+00838,Vehicle Following,8.0,autopilot,ok,6,0,0,False,False,0,True,True,True,True,ego behind,-2.61,0.873,0.979,0.971,0.827,0.1,,,0,0.0,15.0
+00838,Vehicle Following,8.0,idm,ok,6,0,0,False,False,0,True,True,True,True,ego behind,-3.71,0.827,0.971,0.963,0.77,0.2,,,32,0.0,14.9
+00843,Vehicle Following,8.0,expert,ok,5,0,0,False,False,0,True,True,True,True,ego behind,0.05,1.0,1.0,0.995,0.995,0.03,,,0,0.0,14.9
+00843,Vehicle Following,8.0,constvel+ttc:0.7:0.2,ok,5,0,0,False,False,0,True,True,True,True,ego behind,-1.76,0.872,0.973,0.969,0.85,0.09,0.0,0.57,30,0.0,14.8
+00843,Vehicle Following,8.0,rhd_scratch@cl,collision,5,2,1,True,True,1,True,True,True,True,ego behind,0.74,1.0,1.0,1.019,1.155,0.08,,,30,2.45,16.6
+00843,Vehicle Following,8.0,rhd_scratch@cl+ttc:0.7:0.2,ok,5,0,0,False,False,0,True,True,True,True,ego behind,-2.82,0.776,0.955,0.959,0.748,0.02,0.0,0.54,30,2.49,16.5
+00843,Vehicle Following,8.0,autopilot,ok,5,0,0,False,False,0,True,True,True,True,ego behind,-2.22,0.844,0.969,0.967,0.794,0.05,,,0,0.0,14.8
+00843,Vehicle Following,8.0,idm,ok,5,0,0,False,False,0,True,True,True,True,ego behind,-1.38,0.924,0.985,0.978,0.875,0.04,,,32,0.0,14.8
+01399,Overtaking Right,4.9,expert,ok,6,0,0,False,False,0,True,True,True,True,ego passes,-0.13,1.0,0.96,1.003,0.987,0.0,,,0,0.0,9.9
+01399,Overtaking Right,4.9,constvel+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,True,True,True,ego passes,4.28,1.0,0.959,1.072,1.287,0.0,0.0,0.12,17,0.0,9.9
+01399,Overtaking Right,4.9,rhd_scratch@cl,ok,6,0,0,False,False,0,True,True,True,True,ego passes,11.99,1.0,0.96,1.251,1.818,0.0,,,18,1.47,10.9
+01399,Overtaking Right,4.9,rhd_scratch@cl+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,True,True,True,ego passes,7.71,1.0,0.96,1.148,1.521,0.0,0.0,0.11,18,1.48,10.9
+01399,Overtaking Right,4.9,autopilot,collision,6,2,1,True,True,0,True,True,True,True,ego passes,-1.11,0.982,0.957,0.956,0.926,0.0,,,0,0.0,10.0
+01399,Overtaking Right,4.9,idm,ok,6,0,0,False,False,0,True,True,True,True,ego passes,13.73,1.0,0.96,1.288,1.936,0.0,,,19,0.0,9.9
+01401,Overtaking Right,4.9,expert,ok,6,0,0,False,False,0,True,True,True,True,ego passes,0.22,1.0,0.926,0.987,1.002,0.0,,,0,0.0,9.9
+01401,Overtaking Right,4.9,constvel+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,True,True,True,ego passes,2.5,1.0,0.907,1.045,1.128,0.0,0.0,0.05,17,0.0,9.9
+01401,Overtaking Right,4.9,rhd_scratch@cl,collision,6,2,1,True,False,0,True,True,True,True,ego passes,16.68,1.0,0.922,1.384,1.893,0.0,,,18,1.56,10.7
+01401,Overtaking Right,4.9,rhd_scratch@cl+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,False,True,False,ego passes,-7.56,0.624,0.853,0.808,0.591,0.0,0.0,0.21,18,1.55,10.8
+01401,Overtaking Right,4.9,autopilot,ok,6,0,0,False,False,0,True,False,True,False,ego passes,-7.64,0.617,0.841,0.806,0.586,0.06,,,0,0.0,9.9
+01401,Overtaking Right,4.9,idm,ok,6,0,0,False,False,0,True,True,True,True,ego passes,0.63,1.0,0.938,1.002,1.028,0.0,,,19,0.0,9.9
+00554,Vehicle Following,8.0,expert,ok,6,0,0,False,False,0,True,True,False,,,,1.0,0.959,0.959,0.979,0.07,,,0,0.0,14.8
+00554,Vehicle Following,8.0,constvel+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,False,False,,,,0.352,0.837,0.911,0.395,0.07,0.0,0.03,30,0.0,14.8
+00554,Vehicle Following,8.0,rhd_scratch@cl,ok,6,0,0,False,False,0,True,True,False,,,,1.0,0.959,0.958,1.049,0.06,,,30,2.57,16.7
+00554,Vehicle Following,8.0,rhd_scratch@cl+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,True,False,,,,0.88,0.94,0.948,0.809,0.08,0.0,0.0,30,2.57,16.7
+00554,Vehicle Following,8.0,autopilot,ok,6,0,0,False,False,0,True,True,False,,,,0.988,0.957,0.95,0.985,0.07,,,0,0.0,14.8
+00554,Vehicle Following,8.0,idm,ok,6,0,0,False,False,0,True,False,False,,,,1.0,0.959,1.857,16.711,0.07,,,32,0.0,14.8
+00307,Overtaking Right,8.0,expert,ok,5,0,0,False,False,0,True,True,True,True,ego passes,0.15,1.0,0.911,1.021,0.981,0.0,,,0,0.0,14.6
+00307,Overtaking Right,8.0,constvel+ttc:0.7:0.2,ok,5,0,0,False,False,0,True,False,True,False,ego passes,-6.7,0.092,0.554,0.597,0.089,0.0,0.0,0.45,30,0.0,14.6
+00307,Overtaking Right,8.0,rhd_scratch@cl,collision,5,2,1,True,True,0,True,False,True,False,ego passes,-9.69,0.643,0.701,0.572,0.666,0.0,,,30,2.42,16.1
+00307,Overtaking Right,8.0,rhd_scratch@cl+ttc:0.7:0.2,ok,5,0,0,False,False,0,True,False,True,False,ego passes,-6.68,0.103,0.556,0.606,0.094,0.0,0.0,0.45,30,2.45,16.1
+00307,Overtaking Right,8.0,autopilot,ok,5,0,0,False,False,0,True,True,True,True,ego passes,-3.47,0.579,0.828,0.821,0.547,0.0,,,0,0.0,14.6
+00307,Overtaking Right,8.0,idm,ok,5,0,0,False,False,0,True,True,True,True,ego passes,7.78,1.0,0.911,1.581,2.244,0.0,,,32,0.0,14.6
+00463,Vehicle Following,8.0,expert,ok,6,0,0,False,False,0,True,True,False,,,,0.978,0.822,1.127,0.961,0.0,,,0,0.0,14.9
+00463,Vehicle Following,8.0,constvel+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,False,False,,,,0.058,0.648,0.859,0.041,0.0,0.0,0.2,30,0.0,14.9
+00463,Vehicle Following,8.0,rhd_scratch@cl,ok,6,0,0,False,False,0,True,False,False,,,,0.075,0.671,0.923,0.067,0.0,,,30,2.45,16.7
+00463,Vehicle Following,8.0,rhd_scratch@cl+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,False,False,,,,0.074,0.648,0.852,0.071,0.0,0.0,0.22,30,2.43,16.7
+00463,Vehicle Following,8.0,autopilot,ok,6,0,0,False,False,0,True,False,False,,,,0.0,0.659,0.909,-0.0,0.0,,,0,0.0,14.9
+00463,Vehicle Following,8.0,idm,ok,6,0,0,False,False,0,True,False,False,,,,0.013,0.669,0.927,0.013,0.0,,,32,0.0,14.9
+00010,Overtaking Left,8.0,expert,ok,6,0,0,False,False,0,True,True,True,True,ego passes,0.02,1.0,0.962,1.003,1.001,0.0,,,0,0.0,14.9
+00010,Overtaking Left,8.0,constvel+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,True,True,True,ego passes,0.21,1.0,0.964,1.006,1.015,0.04,0.0,0.07,30,0.0,14.9
+00010,Overtaking Left,8.0,rhd_scratch@cl,ok,6,0,0,False,False,0,True,True,True,True,ego passes,8.11,1.0,0.961,1.163,1.467,0.0,,,30,2.55,16.0
+00010,Overtaking Left,8.0,rhd_scratch@cl+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,True,True,True,ego passes,3.2,1.0,0.964,1.068,1.183,0.0,0.0,0.07,30,2.55,16.0
+00010,Overtaking Left,8.0,autopilot,ok,6,0,0,False,False,0,True,False,True,False,ego passes,-6.9,0.899,0.947,0.85,0.593,0.28,,,0,0.0,14.9
+00010,Overtaking Left,8.0,idm,ok,6,0,0,False,False,0,True,False,True,False,ego passes,-5.01,0.961,0.958,0.893,0.711,0.12,,,32,0.0,14.9
+00492,Vehicle Following,8.0,expert,ok,4,0,0,False,False,0,True,True,True,True,ego behind,-1.01,1.0,0.998,0.912,0.963,0.0,,,0,0.0,14.8
+00492,Vehicle Following,8.0,constvel+ttc:0.7:0.2,ok,4,0,0,False,False,0,True,True,True,True,ego behind,0.11,0.995,0.996,0.987,1.093,0.0,0.0,0.3,30,0.0,14.8
+00492,Vehicle Following,8.0,rhd_scratch@cl,collision,4,2,1,True,False,0,True,True,True,True,ego behind,3.88,0.995,0.996,1.372,1.776,0.0,,,30,2.47,16.5
+00492,Vehicle Following,8.0,rhd_scratch@cl+ttc:0.7:0.2,ok,4,0,0,False,False,0,True,True,True,True,ego behind,0.28,0.998,0.997,0.983,1.096,0.0,0.0,0.42,30,2.48,16.5
+00492,Vehicle Following,8.0,autopilot,ok,4,0,0,False,False,0,True,True,True,True,ego behind,-1.32,0.946,0.984,0.903,0.942,0.07,,,0,0.0,14.8
+00492,Vehicle Following,8.0,idm,collision,4,1,0,True,False,1,True,True,True,True,ego behind,4.93,0.998,0.997,1.381,1.788,0.0,,,32,0.0,14.8
+01186,Vehicle Following,8.0,expert,ok,6,0,0,False,False,0,False,,False,,,,0.981,0.664,1.476,1.044,0.0,,,0,0.0,14.9
+01186,Vehicle Following,8.0,constvel+ttc:0.7:0.2,ok,6,0,0,False,False,0,False,,False,,,,0.049,0.508,1.34,0.083,0.0,0.01,0.17,30,0.0,14.9
+01186,Vehicle Following,8.0,rhd_scratch@cl,ok,6,0,0,False,False,0,False,,False,,,,0.248,0.541,1.378,0.315,0.0,,,30,2.35,16.4
+01186,Vehicle Following,8.0,rhd_scratch@cl+ttc:0.7:0.2,ok,6,0,0,False,False,0,False,,False,,,,0.223,0.537,1.369,0.281,0.0,0.02,0.21,30,2.3,16.4
+01186,Vehicle Following,8.0,autopilot,ok,6,0,0,False,False,0,False,,False,,,,0.0,0.5,1.331,-0.0,0.0,,,0,0.0,14.9
+01186,Vehicle Following,8.0,idm,ok,6,0,0,False,False,0,False,,False,,,,0.042,0.507,1.339,0.041,0.0,,,32,0.0,14.9
+00987,Vehicle Following,8.0,expert,collision,6,2,1,False,False,0,False,,False,,,,1.0,0.524,1.021,0.922,0.0,,,0,0.0,14.9
+00987,Vehicle Following,8.0,constvel+ttc:0.7:0.2,ok,6,0,0,False,False,0,False,,False,,,,0.024,0.458,0.771,0.044,0.0,0.0,0.71,30,0.0,14.9
+00987,Vehicle Following,8.0,rhd_scratch@cl,collision,6,3,2,False,False,0,False,,False,,,,0.163,0.376,1.013,0.256,0.0,,,30,2.53,16.5
+00987,Vehicle Following,8.0,rhd_scratch@cl+ttc:0.7:0.2,ok,6,0,0,False,False,0,False,,False,,,,0.163,0.481,0.766,0.24,0.0,0.0,0.82,30,2.53,16.5
+00987,Vehicle Following,8.0,autopilot,collision,6,2,1,False,False,0,False,,False,,,,0.111,0.352,1.011,0.147,0.0,,,0,0.0,14.9
+00987,Vehicle Following,8.0,idm,collision,6,4,3,True,True,0,False,,False,,,,0.0,0.544,1.144,14.222,0.0,,,32,0.0,14.9
+00555,Vehicle Following,8.0,expert,ok,6,0,0,False,False,0,True,True,False,,,,0.993,0.867,0.975,0.959,0.0,,,0,0.0,14.8
+00555,Vehicle Following,8.0,constvel+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,True,False,,,,1.0,0.873,1.03,1.189,0.0,0.0,0.06,30,0.0,14.8
+00555,Vehicle Following,8.0,rhd_scratch@cl,ok,6,0,0,False,False,0,True,False,False,,,,1.0,0.866,1.141,1.573,0.0,,,30,2.53,16.7
+00555,Vehicle Following,8.0,rhd_scratch@cl+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,False,False,,,,1.0,0.868,1.251,2.025,0.0,0.0,0.06,30,2.57,16.7
+00555,Vehicle Following,8.0,autopilot,ok,6,0,0,False,False,0,True,False,False,,,,0.215,0.738,0.776,0.231,0.0,,,0,0.0,14.8
+00555,Vehicle Following,8.0,idm,ok,6,0,0,False,False,0,True,False,False,,,,1.0,0.873,1.2,1.787,0.0,,,32,0.0,14.8
+00317,Overtaking Right,8.0,expert,collision,4,2,1,False,False,0,True,True,True,True,ego ahead,-0.29,1.0,0.971,0.982,0.969,0.01,,,0,0.0,14.7
+00317,Overtaking Right,8.0,constvel+ttc:0.7:0.2,ok,4,0,0,False,False,0,True,True,True,False,ego ahead,7.65,1.0,0.935,1.048,1.453,0.0,0.21,1.25,30,0.0,14.8
+00317,Overtaking Right,8.0,rhd_scratch@cl,collision,4,4,3,True,True,0,True,True,True,False,ego ahead,14.77,1.0,0.971,1.206,1.903,0.05,,,30,2.58,16.1
+00317,Overtaking Right,8.0,rhd_scratch@cl+ttc:0.7:0.2,ok,4,0,0,False,False,0,True,True,True,False,ego ahead,16.76,1.0,0.941,1.193,2.005,0.05,0.21,1.29,30,2.56,16.1
+00317,Overtaking Right,8.0,autopilot,collision,4,3,2,True,False,0,True,False,True,False,ego ahead,-7.43,0.604,0.832,0.865,0.539,0.19,,,0,0.0,14.8
+00317,Overtaking Right,8.0,idm,collision,4,2,1,False,False,0,True,True,True,False,ego ahead,17.68,1.0,0.914,1.279,2.27,0.06,,,32,0.0,14.8
+01218,Vehicle Following,8.0,expert,ok,6,0,0,False,False,0,False,,False,,,,1.0,0.61,1.118,0.711,0.0,,,0,0.0,14.9
+01218,Vehicle Following,8.0,constvel+ttc:0.7:0.2,ok,6,0,0,False,False,0,False,,False,,,,0.009,0.445,1.025,0.049,0.0,0.0,0.02,30,0.0,14.9
+01218,Vehicle Following,8.0,rhd_scratch@cl,ok,6,0,0,False,False,0,False,,False,,,,0.003,0.444,1.037,0.127,0.0,,,30,2.5,16.7
+01218,Vehicle Following,8.0,rhd_scratch@cl+ttc:0.7:0.2,ok,6,0,0,False,False,0,False,,False,,,,0.003,0.444,1.042,0.136,0.0,0.0,0.02,30,2.51,16.7
+01218,Vehicle Following,8.0,autopilot,ok,6,0,0,False,False,0,False,,False,,,,0.639,0.55,1.044,0.228,0.0,,,0,0.0,14.9
+01218,Vehicle Following,8.0,idm,ok,6,0,0,False,False,0,False,,False,,,,1.0,0.61,3.625,17.515,0.0,,,32,0.0,14.9
+00431,Vehicle Following,8.0,expert,ok,6,0,0,False,False,0,False,,False,,,,1.0,0.708,1.617,0.727,0.0,,,0,0.0,14.8
+00431,Vehicle Following,8.0,constvel+ttc:0.7:0.2,ok,6,0,0,False,False,0,False,,False,,,,0.11,0.56,1.417,0.102,0.0,0.0,0.18,30,0.0,14.8
+00431,Vehicle Following,8.0,rhd_scratch@cl,ok,6,0,0,False,False,0,False,,False,,,,0.083,0.555,1.403,0.031,0.0,,,30,2.51,16.5
+00431,Vehicle Following,8.0,rhd_scratch@cl+ttc:0.7:0.2,ok,6,0,0,False,False,0,False,,False,,,,0.05,0.55,1.413,0.06,0.0,0.0,0.17,30,2.48,16.5
+00431,Vehicle Following,8.0,autopilot,ok,6,0,0,False,False,0,False,,False,,,,0.289,0.589,1.505,0.397,0.0,,,0,0.0,14.8
+00431,Vehicle Following,8.0,idm,ok,6,0,0,False,False,0,False,,False,,,,0.541,0.631,1.521,0.479,0.0,,,32,0.0,14.8
+01229,Vehicle Following,8.0,expert,ok,6,0,0,False,False,0,True,True,False,,,,1.0,1.0,0.982,0.991,0.0,,,0,0.0,14.8
+01229,Vehicle Following,8.0,constvel+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,True,False,,,,1.0,1.0,1.005,1.265,0.0,0.0,0.17,30,0.0,14.8
+01229,Vehicle Following,8.0,rhd_scratch@cl,ok,6,0,0,False,False,0,True,True,False,,,,1.0,1.0,1.084,2.22,0.0,,,30,2.5,16.4
+01229,Vehicle Following,8.0,rhd_scratch@cl+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,True,False,,,,1.0,1.0,1.077,2.142,0.0,0.0,0.05,30,2.53,16.4
+01229,Vehicle Following,8.0,autopilot,ok,6,0,0,False,False,0,True,True,False,,,,0.916,0.986,0.971,0.865,0.0,,,0,0.0,14.9
+01229,Vehicle Following,8.0,idm,ok,6,0,0,False,False,0,True,True,False,,,,1.0,1.0,1.444,6.547,0.0,,,32,0.0,14.8
+00354,Vehicle Following,8.0,expert,ok,6,0,0,False,False,0,True,True,True,True,ego behind,0.04,1.0,0.973,1.006,0.998,0.12,,,0,0.0,14.9
+00354,Vehicle Following,8.0,constvel+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,False,True,False,ego behind,27.86,1.0,0.973,1.285,1.807,0.0,0.0,0.17,30,0.0,14.9
+00354,Vehicle Following,8.0,rhd_scratch@cl,collision,6,3,2,True,True,0,True,True,True,False,ego behind,-9.78,0.712,0.823,0.97,0.888,0.25,,,30,2.29,16.2
+00354,Vehicle Following,8.0,rhd_scratch@cl+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,False,True,False,ego behind,18.27,1.0,0.973,1.19,1.531,0.0,0.0,0.16,30,2.45,16.2
+00354,Vehicle Following,8.0,autopilot,ok,6,0,0,False,False,0,True,True,True,True,ego behind,-2.68,0.953,0.965,0.982,0.924,0.08,,,0,0.0,14.9
+00354,Vehicle Following,8.0,idm,ok,6,0,0,False,False,0,True,True,True,True,ego behind,-0.61,1.0,0.973,1.0,0.979,0.1,,,32,0.0,14.9
+00060,Overtaking Left,8.0,expert,ok,6,0,0,False,False,0,True,True,True,True,ego passes,0.68,1.0,0.972,0.956,0.997,0.01,,,0,0.0,14.9
+00060,Overtaking Left,8.0,constvel+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,False,True,False,ego passes,-5.99,0.598,0.902,0.84,0.604,0.01,0.02,0.42,30,0.0,14.9
+00060,Overtaking Left,8.0,rhd_scratch@cl,collision,6,2,1,True,False,0,True,False,True,False,ego passes,-6.34,0.623,0.907,0.828,0.572,0.17,,,30,2.42,16.0
+00060,Overtaking Left,8.0,rhd_scratch@cl+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,False,True,False,ego passes,-6.52,0.537,0.858,0.746,0.51,0.12,0.11,0.64,30,2.47,16.0
+00060,Overtaking Left,8.0,autopilot,collision,6,2,1,True,False,0,True,False,True,False,ego passes,-5.17,0.659,0.914,0.841,0.614,0.26,,,0,0.0,14.9
+00060,Overtaking Left,8.0,idm,ok,6,0,0,False,False,0,True,True,True,True,ego passes,9.17,1.0,0.968,1.18,1.735,0.01,,,32,0.0,14.9
+00017,Overtaking Left,8.0,expert,ok,6,0,0,False,False,0,True,True,True,True,ego passes,0.22,1.0,1.0,1.002,0.995,0.0,,,0,0.0,14.9
+00017,Overtaking Left,8.0,constvel+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,False,True,False,ego passes,-17.35,0.407,0.816,0.714,0.246,0.15,0.28,1.18,30,0.0,14.9
+00017,Overtaking Left,8.0,rhd_scratch@cl,collision,6,1,0,True,False,1,True,True,True,True,ego passes,4.05,1.0,1.0,1.045,1.154,0.02,,,30,2.42,15.8
+00017,Overtaking Left,8.0,rhd_scratch@cl+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,False,True,False,ego passes,-16.54,0.411,0.812,0.719,0.282,0.27,0.28,1.02,30,2.61,15.8
+00017,Overtaking Left,8.0,autopilot,ok,6,0,0,False,False,0,True,False,True,False,ego passes,-15.57,0.575,0.929,0.819,0.336,0.47,,,0,0.0,14.9
+00017,Overtaking Left,8.0,idm,collision,6,1,0,True,False,1,True,True,True,True,ego passes,6.84,1.0,1.0,1.079,1.275,0.0,,,32,0.0,14.9
+00003,Cut Out,8.0,expert,ok,6,0,0,False,False,0,False,,False,,,,0.18,0.849,0.998,3.575,0.0,,,0,0.0,14.9
+00003,Cut Out,8.0,constvel+ttc:0.7:0.2,ok,6,0,0,False,False,0,False,,False,,,,0.18,0.716,0.964,0.109,0.0,0.41,0.43,30,0.0,14.9
+00003,Cut Out,8.0,rhd_scratch@cl,ok,6,0,0,False,False,0,False,,False,,,,0.529,0.905,0.972,0.544,0.0,,,30,2.63,16.7
+00003,Cut Out,8.0,rhd_scratch@cl+ttc:0.7:0.2,ok,6,0,0,False,False,0,False,,False,,,,1.0,0.985,0.995,3.332,0.0,0.12,0.13,30,2.67,16.7
+00003,Cut Out,8.0,autopilot,ok,6,0,0,False,False,0,False,,False,,,,0.514,0.905,0.976,0.839,0.0,,,0,0.0,14.9
+00003,Cut Out,8.0,idm,collision,6,1,0,True,False,1,False,,False,,,,0.923,0.975,1.242,34.302,0.0,,,32,0.0,14.9
+00842,Vehicle Following,8.0,expert,ok,6,0,0,False,False,0,True,True,True,True,ego behind,0.05,1.0,1.0,0.997,0.997,0.0,,,0,0.0,14.9
+00842,Vehicle Following,8.0,constvel+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,True,True,True,ego behind,-2.52,0.886,0.981,0.976,0.851,0.0,0.0,0.12,30,0.0,14.9
+00842,Vehicle Following,8.0,rhd_scratch@cl,ok,6,0,0,False,False,0,True,True,True,True,ego behind,-1.37,0.974,0.996,0.984,0.924,0.07,,,30,2.55,16.4
+00842,Vehicle Following,8.0,rhd_scratch@cl+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,True,True,True,ego behind,-1.78,0.938,0.99,0.982,0.899,0.0,0.0,0.23,30,2.55,16.5
+00842,Vehicle Following,8.0,autopilot,ok,6,0,0,False,False,0,True,True,True,True,ego behind,-3.73,0.822,0.97,0.966,0.786,0.01,,,0,0.0,14.9
+00842,Vehicle Following,8.0,idm,ok,6,0,0,False,False,0,True,True,True,True,ego behind,-0.62,1.0,1.0,0.992,0.958,0.12,,,32,0.0,14.9
+00593,Vehicle Following,8.0,expert,ok,6,0,0,False,False,0,False,,False,,,,0.89,0.888,0.932,0.623,0.0,,,0,0.0,14.9
+00593,Vehicle Following,8.0,constvel+ttc:0.7:0.2,ok,6,0,0,False,False,0,False,,False,,,,0.331,0.797,0.892,0.365,0.0,0.0,0.03,30,0.0,14.9
+00593,Vehicle Following,8.0,rhd_scratch@cl,ok,6,0,0,False,False,0,False,,False,,,,0.887,0.888,0.948,0.655,0.0,,,30,2.54,16.7
+00593,Vehicle Following,8.0,rhd_scratch@cl+ttc:0.7:0.2,ok,6,0,0,False,False,0,False,,False,,,,0.375,0.803,0.901,0.432,0.0,0.0,0.03,30,2.56,16.7
+00593,Vehicle Following,8.0,autopilot,ok,6,0,0,False,False,0,False,,False,,,,0.022,0.745,0.835,-0.0,0.0,,,0,0.0,15.0
+00593,Vehicle Following,8.0,idm,ok,6,0,0,False,False,0,False,,False,,,,0.078,0.755,0.857,0.077,0.0,,,32,0.0,14.9
+00393,Vehicle Following,8.0,expert,ok,6,0,0,False,False,0,False,,False,,,,0.978,0.996,0.843,0.836,0.0,,,0,0.0,14.9
+00393,Vehicle Following,8.0,constvel+ttc:0.7:0.2,ok,6,0,0,False,False,0,False,,False,,,,0.079,0.846,0.793,0.106,0.0,0.0,0.0,30,0.0,14.9
+00393,Vehicle Following,8.0,rhd_scratch@cl,ok,6,0,0,False,False,0,False,,False,,,,0.163,0.86,0.843,0.852,0.0,,,30,2.46,16.6
+00393,Vehicle Following,8.0,rhd_scratch@cl+ttc:0.7:0.2,ok,6,0,0,False,False,0,False,,False,,,,0.152,0.859,0.833,0.802,0.0,0.0,0.0,30,2.44,16.6
+00393,Vehicle Following,8.0,autopilot,ok,6,0,0,False,False,0,False,,False,,,,0.0,0.833,0.782,-0.0,0.0,,,0,0.0,14.9
+00393,Vehicle Following,8.0,idm,ok,6,0,0,False,False,0,False,,False,,,,0.021,0.837,0.778,0.026,0.0,,,32,0.0,14.9
+01224,Vehicle Following,8.0,expert,ok,6,0,0,False,False,0,True,True,True,True,ego behind,-0.16,1.0,0.996,0.97,0.981,0.05,,,0,0.0,14.9
+01224,Vehicle Following,8.0,constvel+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,False,True,False,ego behind,-14.29,0.0,0.828,0.806,0.004,0.68,0.0,0.06,30,0.0,14.9
+01224,Vehicle Following,8.0,rhd_scratch@cl,ok,6,0,0,False,False,0,True,False,True,False,ego behind,-10.75,0.277,0.875,0.848,0.249,0.17,,,30,2.6,16.7
+01224,Vehicle Following,8.0,rhd_scratch@cl+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,False,True,False,ego behind,-10.27,0.311,0.881,0.854,0.283,0.13,0.0,0.05,30,2.57,16.8
+01224,Vehicle Following,8.0,autopilot,ok,6,0,0,False,False,0,True,False,True,False,ego behind,-6.53,0.579,0.926,0.898,0.552,0.06,,,0,0.0,14.9
+01224,Vehicle Following,8.0,idm,ok,6,0,0,False,False,0,True,True,True,True,ego behind,-4.14,0.795,0.96,0.923,0.704,0.05,,,32,0.0,14.9
+01147,Vehicle Following,8.0,expert,ok,6,0,0,False,False,0,True,True,True,True,ego behind,-0.0,1.0,1.0,0.996,0.998,0.0,,,0,0.0,14.8
+01147,Vehicle Following,8.0,constvel+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,False,True,False,ego behind,-12.25,0.399,0.89,0.86,0.394,0.68,0.0,0.48,30,0.0,14.8
+01147,Vehicle Following,8.0,rhd_scratch@cl,collision,6,2,1,True,True,0,True,False,True,False,ego behind,9.11,1.0,1.0,1.09,1.448,0.0,,,30,2.46,16.3
+01147,Vehicle Following,8.0,rhd_scratch@cl+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,True,True,False,ego behind,7.51,1.0,1.0,1.07,1.367,0.0,0.0,0.23,30,2.43,16.3
+01147,Vehicle Following,8.0,autopilot,ok,6,0,0,False,False,0,True,True,True,True,ego behind,-2.46,0.914,0.986,0.971,0.876,0.07,,,0,0.0,14.8
+01147,Vehicle Following,8.0,idm,ok,6,0,0,False,False,0,True,False,True,False,ego behind,15.83,1.0,1.0,1.158,1.778,0.0,,,32,0.0,14.8
+00601,Vehicle Following,8.0,expert,ok,5,0,0,False,False,0,False,,False,,,,0.0,0.792,1.09,5.393,0.02,,,0,0.0,14.8
+00601,Vehicle Following,8.0,constvel+ttc:0.7:0.2,ok,5,0,0,False,False,0,False,,False,,,,0.008,0.794,0.882,0.253,0.0,0.0,0.0,30,0.0,14.8
+00601,Vehicle Following,8.0,rhd_scratch@cl,ok,5,0,0,False,False,0,False,,False,,,,0.19,0.832,0.903,0.677,0.0,,,30,2.53,16.7
+00601,Vehicle Following,8.0,rhd_scratch@cl+ttc:0.7:0.2,ok,5,0,0,False,False,0,False,,False,,,,0.19,0.831,0.923,0.765,0.0,0.0,0.0,30,2.55,16.8
+00601,Vehicle Following,8.0,autopilot,ok,5,0,0,False,False,0,False,,False,,,,0.0,0.795,0.885,-0.001,0.0,,,0,0.0,14.9
+00601,Vehicle Following,8.0,idm,ok,5,0,0,False,False,0,False,,False,,,,0.064,0.807,0.881,0.17,0.0,,,32,0.0,14.9
+00369,Vehicle Following,8.0,expert,ok,6,0,0,False,False,0,False,,False,,,,1.0,0.969,0.782,0.47,0.0,,,0,0.0,14.9
+00369,Vehicle Following,8.0,constvel+ttc:0.7:0.2,ok,6,0,0,False,False,0,False,,False,,,,0.036,0.81,0.735,0.198,0.0,0.0,0.06,30,0.0,14.9
+00369,Vehicle Following,8.0,rhd_scratch@cl,ok,6,0,0,False,False,0,False,,False,,,,0.422,0.874,0.767,0.432,0.0,,,30,2.37,16.5
+00369,Vehicle Following,8.0,rhd_scratch@cl+ttc:0.7:0.2,ok,6,0,0,False,False,0,False,,False,,,,0.409,0.87,0.756,0.427,0.0,0.0,0.04,30,2.36,16.6
+00369,Vehicle Following,8.0,autopilot,ok,6,0,0,False,False,0,False,,False,,,,0.889,0.951,0.861,1.374,0.0,,,0,0.0,14.9
+00369,Vehicle Following,8.0,idm,collision,6,1,0,True,False,0,False,,False,,,,1.0,0.971,0.858,1.346,0.0,,,32,0.0,14.9
+00986,Vehicle Following,8.0,expert,ok,5,0,0,False,False,0,False,,False,,,,0.894,0.974,1.2,0.883,0.0,,,0,0.0,14.8
+00986,Vehicle Following,8.0,constvel+ttc:0.7:0.2,ok,5,0,0,False,False,0,False,,False,,,,0.0,0.595,1.093,0.02,0.0,0.02,0.74,30,0.0,14.8
+00986,Vehicle Following,8.0,rhd_scratch@cl,ok,5,0,0,False,False,0,False,,False,,,,0.0,0.795,1.167,0.131,0.0,,,30,2.56,16.4
+00986,Vehicle Following,8.0,rhd_scratch@cl+ttc:0.7:0.2,ok,5,0,0,False,False,0,False,,False,,,,0.0,0.595,1.095,0.138,0.0,0.02,0.72,30,2.56,16.5
+00986,Vehicle Following,8.0,autopilot,ok,5,0,0,False,False,0,False,,False,,,,0.03,0.801,1.182,0.514,0.0,,,0,0.0,14.8
+00986,Vehicle Following,8.0,idm,collision,5,2,1,True,False,0,False,,False,,,,1.0,0.995,1.274,2.856,0.0,,,32,0.0,14.8
+01141,Vehicle Following,8.0,expert,ok,6,0,0,False,False,0,True,True,True,True,ego behind,0.69,0.984,0.836,1.0,0.967,0.01,,,0,0.0,14.9
+01141,Vehicle Following,8.0,constvel+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,True,True,False,ego behind,-21.51,0.364,0.767,0.729,0.36,0.1,0.0,0.7,30,0.0,14.9
+01141,Vehicle Following,8.0,rhd_scratch@cl,collision,6,2,1,True,True,0,True,True,True,False,ego behind,5.9,1.0,0.845,1.127,1.203,0.0,,,30,2.49,16.8
+01141,Vehicle Following,8.0,rhd_scratch@cl+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,True,True,False,ego behind,-13.33,0.61,0.811,0.815,0.581,0.01,0.0,0.67,30,2.55,16.9
+01141,Vehicle Following,8.0,autopilot,ok,6,0,0,False,False,0,True,False,True,False,ego behind,-39.59,0.0,0.659,0.961,0.857,0.0,,,0,0.0,14.9
+01141,Vehicle Following,8.0,idm,ok,6,0,0,False,False,0,True,True,True,True,ego behind,1.62,1.0,0.842,1.011,0.992,0.0,,,32,0.0,14.9
+00984,Vehicle Following,8.0,expert,ok,6,0,0,False,False,0,False,,False,,,,0.811,0.76,1.057,1.704,0.0,,,0,0.0,14.9
+00984,Vehicle Following,8.0,constvel+ttc:0.7:0.2,ok,6,0,0,False,False,0,False,,False,,,,0.0,0.627,1.035,0.174,0.0,0.0,0.08,30,0.0,14.9
+00984,Vehicle Following,8.0,rhd_scratch@cl,ok,6,0,0,False,False,0,False,,False,,,,0.0,0.627,1.07,1.861,0.0,,,30,2.59,16.5
+00984,Vehicle Following,8.0,rhd_scratch@cl+ttc:0.7:0.2,ok,6,0,0,False,False,0,False,,False,,,,0.0,0.626,1.039,0.533,0.0,0.0,0.08,30,2.61,16.5
+00984,Vehicle Following,8.0,autopilot,ok,6,0,0,False,False,0,False,,False,,,,0.0,0.624,1.036,0.196,0.0,,,0,0.0,14.9
+00984,Vehicle Following,8.0,idm,off road,6,0,0,False,False,1,False,,False,,,,1.0,0.793,1.541,47.967,0.0,,,32,0.0,14.9
+00568,Vehicle Following,8.0,expert,collision,6,2,1,False,False,0,True,True,False,,,,1.0,0.641,1.222,0.903,0.03,,,0,0.0,14.9
+00568,Vehicle Following,8.0,constvel+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,False,False,,,,0.112,0.599,1.083,0.145,0.0,0.0,0.32,30,0.0,14.9
+00568,Vehicle Following,8.0,rhd_scratch@cl,collision,6,2,1,False,False,0,True,False,False,,,,0.214,0.52,1.163,0.251,0.0,,,30,2.53,16.7
+00568,Vehicle Following,8.0,rhd_scratch@cl+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,False,False,,,,0.185,0.656,1.1,0.189,0.0,0.0,0.38,30,2.51,16.7
+00568,Vehicle Following,8.0,autopilot,collision,6,2,1,False,False,0,True,False,False,,,,0.121,0.48,1.148,0.147,0.03,,,0,0.0,14.9
+00568,Vehicle Following,8.0,idm,collision,6,2,1,False,False,0,True,False,False,,,,0.132,0.506,1.14,0.128,0.0,,,32,0.0,14.9
+00002,Cut Out,8.0,expert,ok,5,0,0,False,False,0,True,True,True,True,ego ahead,-1.52,1.0,1.0,1.02,0.987,0.0,,,0,0.0,14.8
+00002,Cut Out,8.0,constvel+ttc:0.7:0.2,ok,5,0,0,False,False,0,True,False,True,True,ego ahead,-3.18,0.003,0.626,0.601,0.002,0.95,0.0,0.25,30,0.0,14.7
+00002,Cut Out,8.0,rhd_scratch@cl,collision,5,2,1,True,True,0,True,True,True,True,ego ahead,-3.85,0.538,0.894,0.839,0.459,0.18,,,30,2.64,16.6
+00002,Cut Out,8.0,rhd_scratch@cl+ttc:0.7:0.2,ok,5,0,0,False,False,0,True,True,True,True,ego ahead,-3.18,0.301,0.762,0.719,0.247,0.32,0.09,0.27,30,2.61,16.6
+00002,Cut Out,8.0,autopilot,collision,5,2,1,True,True,0,True,True,True,True,ego ahead,-3.88,0.647,0.929,0.894,0.596,0.0,,,0,0.0,14.8
+00002,Cut Out,8.0,idm,ok,5,0,0,False,False,0,True,True,True,True,ego ahead,-1.16,1.0,1.0,0.973,0.912,0.0,,,32,0.0,14.8
+00655,Vehicle Following,8.0,expert,ok,6,0,0,False,False,0,True,True,True,True,ego behind,1.23,1.0,1.0,1.004,1.032,0.0,,,0,0.0,14.9
+00655,Vehicle Following,8.0,constvel+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,True,True,False,ego behind,-5.39,0.879,0.98,0.964,0.849,0.0,0.0,0.01,30,0.0,14.9
+00655,Vehicle Following,8.0,rhd_scratch@cl,ok,6,0,0,False,False,0,True,True,True,True,ego behind,-4.45,0.911,0.985,0.964,0.854,0.0,,,30,2.56,16.3
+00655,Vehicle Following,8.0,rhd_scratch@cl+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,True,True,False,ego behind,-7.64,0.828,0.971,0.949,0.787,0.0,0.05,0.22,30,2.52,16.4
+00655,Vehicle Following,8.0,autopilot,ok,6,0,0,False,False,0,True,True,True,False,ego behind,-7.48,0.804,0.967,0.951,0.796,0.02,,,0,0.0,14.9
+00655,Vehicle Following,8.0,idm,ok,6,0,0,False,False,0,True,False,True,True,ego behind,4.89,1.0,1.0,1.026,1.135,0.01,,,32,0.0,14.9
+00961,Vehicle Following,8.0,expert,ok,6,0,0,False,False,0,True,True,True,True,ego behind,0.0,1.0,0.891,1.169,0.998,0.0,,,0,0.0,14.9
+00961,Vehicle Following,8.0,constvel+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,True,True,True,ego behind,-0.51,0.955,0.906,1.073,0.933,0.0,0.0,0.69,30,0.0,14.8
+00961,Vehicle Following,8.0,rhd_scratch@cl,ok,6,0,0,False,False,0,True,True,True,True,ego behind,-1.22,0.873,0.868,1.168,0.857,0.0,,,30,2.48,16.6
+00961,Vehicle Following,8.0,rhd_scratch@cl+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,True,True,True,ego behind,-1.49,0.842,0.902,1.028,0.818,0.0,0.0,0.69,30,2.5,16.6
+00961,Vehicle Following,8.0,autopilot,ok,6,0,0,False,False,0,True,True,True,True,ego behind,-0.77,0.937,0.883,1.181,0.903,0.0,,,0,0.0,14.9
+00961,Vehicle Following,8.0,idm,ok,6,0,0,False,False,0,True,False,True,False,ego behind,25.95,1.0,0.89,1.936,4.129,0.0,,,32,0.0,14.9
+00669,Vehicle Following,8.0,expert,ok,6,0,0,False,False,0,True,True,True,True,ego behind,-0.03,1.0,0.899,1.003,1.0,0.0,,,0,0.0,14.9
+00669,Vehicle Following,8.0,constvel+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,True,True,True,ego behind,-3.5,0.869,0.877,0.953,0.856,0.0,0.0,0.29,30,0.0,14.9
+00669,Vehicle Following,8.0,rhd_scratch@cl,ok,6,0,0,False,False,0,True,False,True,False,ego behind,22.99,1.0,0.899,1.271,1.959,0.07,,,30,2.51,16.0
+00669,Vehicle Following,8.0,rhd_scratch@cl+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,True,True,True,ego behind,-2.29,0.921,0.885,0.97,0.905,0.01,0.0,0.33,30,2.42,16.1
+00669,Vehicle Following,8.0,autopilot,ok,6,0,0,False,False,0,True,True,True,True,ego behind,-2.35,0.94,0.889,0.977,0.908,0.01,,,0,0.0,14.9
+00669,Vehicle Following,8.0,idm,ok,6,0,0,False,False,0,True,False,True,False,ego behind,21.0,1.0,0.899,1.264,1.922,0.0,,,32,0.0,14.9
+00565,Vehicle Following,8.0,expert,ok,6,0,0,False,False,0,True,True,True,True,ego behind,-0.03,1.0,1.0,0.994,0.995,0.0,,,0,0.0,14.8
+00565,Vehicle Following,8.0,constvel+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,True,True,True,ego behind,-3.98,0.847,0.959,0.939,0.812,0.0,0.03,0.64,30,0.0,14.8
+00565,Vehicle Following,8.0,rhd_scratch@cl,ok,6,0,0,False,False,0,True,True,True,True,ego behind,-4.96,0.803,0.967,0.95,0.752,0.0,,,30,2.5,16.3
+00565,Vehicle Following,8.0,rhd_scratch@cl+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,True,True,False,ego behind,-5.31,0.789,0.965,0.946,0.739,0.0,0.01,0.37,30,2.49,16.3
+00565,Vehicle Following,8.0,autopilot,ok,6,0,0,False,False,0,True,True,True,True,ego behind,-1.93,0.946,0.991,0.979,0.91,0.0,,,0,0.0,14.8
+00565,Vehicle Following,8.0,idm,ok,6,0,0,False,False,0,True,True,True,True,ego behind,-0.16,1.0,1.0,0.993,0.989,0.0,,,32,0.0,14.8
+01362,Overtaking Right,4.9,expert,ok,6,0,0,False,False,0,True,True,True,True,ego passes,0.05,1.0,0.981,0.967,0.995,0.0,,,0,0.0,9.9
+01362,Overtaking Right,4.9,constvel+ttc:0.7:0.2,off road,6,0,0,False,False,1,True,True,True,True,ego passes,-0.84,1.0,0.984,0.9,0.906,0.0,0.0,0.0,17,0.0,9.8
+01362,Overtaking Right,4.9,rhd_scratch@cl,collision,6,2,1,True,False,0,True,True,True,True,ego passes,-1.52,1.0,0.966,0.82,0.811,0.0,,,18,1.6,11.2
+01362,Overtaking Right,4.9,rhd_scratch@cl+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,False,True,False,ego passes,-3.44,0.726,0.919,0.655,0.603,0.05,0.0,0.08,18,1.56,11.3
+01362,Overtaking Right,4.9,autopilot,ok,6,0,0,False,False,0,True,False,True,False,ego passes,-7.72,0.121,0.819,0.247,0.104,0.42,,,0,0.0,9.9
+01362,Overtaking Right,4.9,idm,ok,6,0,0,False,False,0,True,True,True,True,ego passes,1.5,1.0,0.983,1.103,1.16,0.0,,,19,0.0,9.9
+00424,Vehicle Following,8.0,expert,off road,5,0,0,False,False,1,True,True,True,True,ego behind,0.47,1.0,1.0,0.989,0.973,0.03,,,0,0.0,14.8
+00424,Vehicle Following,8.0,constvel+ttc:0.7:0.2,off road,5,0,0,False,False,1,True,True,True,False,ego behind,-6.23,0.726,0.919,0.929,0.772,0.01,0.0,0.44,30,0.0,14.8
+00424,Vehicle Following,8.0,rhd_scratch@cl,collision,5,2,1,True,True,1,True,False,True,False,ego behind,8.12,0.932,0.921,0.867,0.682,0.45,,,30,2.6,16.0
+00424,Vehicle Following,8.0,rhd_scratch@cl+ttc:0.7:0.2,off road,5,0,0,False,False,1,True,False,True,False,ego behind,6.73,1.0,0.927,0.83,0.535,0.47,0.0,0.78,30,2.6,16.1
+00424,Vehicle Following,8.0,autopilot,off road,5,0,0,False,False,1,True,True,True,True,ego behind,0.26,1.0,1.0,0.944,0.723,0.09,,,0,0.0,14.8
+00424,Vehicle Following,8.0,idm,collision,5,2,1,True,True,1,True,False,True,False,ego behind,8.44,1.0,1.0,1.051,1.393,0.02,,,32,0.0,14.8
+00580,Vehicle Following,8.0,expert,ok,6,0,0,False,False,0,False,,False,,,,0.0,0.807,1.234,4.638,0.0,,,0,0.0,14.9
+00580,Vehicle Following,8.0,constvel+ttc:0.7:0.2,ok,6,0,0,False,False,0,False,,False,,,,0.0,0.807,0.876,0.35,0.0,0.0,0.02,30,0.0,14.9
+00580,Vehicle Following,8.0,rhd_scratch@cl,ok,6,0,0,False,False,0,False,,False,,,,0.0,0.807,0.862,0.21,0.0,,,30,2.52,16.7
+00580,Vehicle Following,8.0,rhd_scratch@cl+ttc:0.7:0.2,ok,6,0,0,False,False,0,False,,False,,,,0.0,0.769,0.86,0.299,0.0,0.0,0.02,30,2.54,16.7
+00580,Vehicle Following,8.0,autopilot,ok,6,0,0,False,False,0,False,,False,,,,0.0,0.807,0.851,-0.0,0.0,,,0,0.0,14.9
+00580,Vehicle Following,8.0,idm,ok,6,0,0,False,False,0,False,,False,,,,0.0,0.769,0.843,0.028,0.0,,,32,0.0,14.9
+00570,Vehicle Following,8.0,expert,ok,6,0,0,False,False,0,True,True,False,,,,1.0,0.67,1.407,0.983,0.0,,,0,0.0,14.9
+00570,Vehicle Following,8.0,constvel+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,False,False,,,,0.043,0.515,1.26,0.064,0.0,0.0,0.05,30,0.0,14.9
+00570,Vehicle Following,8.0,rhd_scratch@cl,ok,6,0,0,False,False,0,True,False,False,,,,0.041,0.521,1.255,0.096,0.0,,,30,2.53,16.7
+00570,Vehicle Following,8.0,rhd_scratch@cl+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,False,False,,,,0.079,0.522,1.27,0.104,0.0,0.0,0.04,30,2.54,16.7
+00570,Vehicle Following,8.0,autopilot,ok,6,0,0,False,False,0,True,False,False,,,,0.079,0.528,1.255,0.081,0.0,,,0,0.0,14.9
+00570,Vehicle Following,8.0,idm,ok,6,0,0,False,False,0,True,False,False,,,,0.215,0.599,1.247,0.173,0.0,,,32,0.0,14.9
+01265,Vehicle Following,8.0,expert,off road,6,0,0,False,False,1,False,,False,,,,0.943,0.57,1.636,1.028,0.0,,,0,0.0,14.9
+01265,Vehicle Following,8.0,constvel+ttc:0.7:0.2,off road,6,0,0,False,False,1,False,,False,,,,0.0,0.412,1.484,-0.0,0.0,0.23,0.33,30,0.0,14.9
+01265,Vehicle Following,8.0,rhd_scratch@cl,off road,6,0,0,False,False,1,False,,False,,,,0.562,0.554,1.624,0.656,0.0,,,30,2.33,16.4
+01265,Vehicle Following,8.0,rhd_scratch@cl+ttc:0.7:0.2,off road,6,0,0,False,False,1,False,,False,,,,0.369,0.474,1.549,0.502,0.0,0.23,0.47,30,2.3,16.4
+01265,Vehicle Following,8.0,autopilot,off road,6,0,0,False,False,1,False,,False,,,,0.522,0.551,1.603,0.74,0.0,,,0,0.0,14.9
+01265,Vehicle Following,8.0,idm,off road,6,0,0,False,False,1,False,,False,,,,0.246,0.502,1.579,0.217,0.0,,,32,0.0,14.9
+01586,Vehicle Following,4.9,expert,ok,6,0,0,False,False,0,True,True,True,True,ego behind,-0.0,1.0,0.907,1.006,0.996,0.0,,,0,0.0,9.9
+01586,Vehicle Following,4.9,constvel+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,True,True,True,ego behind,-1.88,0.864,0.802,0.869,0.846,0.0,0.12,0.3,17,0.0,9.9
+01586,Vehicle Following,4.9,rhd_scratch@cl,ok,6,0,0,False,False,0,True,True,True,True,ego behind,-0.39,1.0,0.906,1.001,0.994,0.0,,,18,1.57,11.1
+01586,Vehicle Following,4.9,rhd_scratch@cl+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,True,True,True,ego behind,-1.63,0.892,0.809,0.877,0.87,0.0,0.23,0.31,18,1.54,11.1
+01586,Vehicle Following,4.9,autopilot,ok,6,0,0,False,False,0,True,True,True,True,ego behind,-1.33,0.933,0.896,0.975,0.877,0.0,,,0,0.0,9.9
+01586,Vehicle Following,4.9,idm,ok,6,0,0,False,False,0,True,True,True,False,ego behind,7.98,1.0,0.904,1.184,1.701,0.0,,,19,0.0,9.9
+01600,Vehicle Following,4.9,expert,ok,6,0,0,False,False,0,False,,False,,,,0.643,0.877,0.899,0.917,0.0,,,0,0.0,9.9
+01600,Vehicle Following,4.9,constvel+ttc:0.7:0.2,ok,6,0,0,False,False,0,False,,False,,,,0.194,0.805,0.803,-0.025,0.0,0.03,0.02,17,0.0,9.9
+01600,Vehicle Following,4.9,rhd_scratch@cl,ok,6,0,0,False,False,0,False,,False,,,,0.359,0.833,0.842,0.23,0.0,,,18,1.45,11.0
+01600,Vehicle Following,4.9,rhd_scratch@cl+ttc:0.7:0.2,ok,6,0,0,False,False,0,False,,False,,,,0.332,0.828,0.822,0.194,0.0,0.03,0.02,18,1.42,11.0
+01600,Vehicle Following,4.9,autopilot,ok,6,0,0,False,False,0,False,,False,,,,0.0,0.773,0.803,-0.0,0.0,,,0,0.0,9.9
+01600,Vehicle Following,4.9,idm,ok,6,0,0,False,False,0,False,,False,,,,0.0,0.773,0.783,0.006,0.0,,,19,0.0,9.9
+00545,Vehicle Following,8.0,expert,ok,5,0,0,False,False,0,False,,False,,,,1.0,0.969,0.933,0.954,0.0,,,0,0.0,14.9
+00545,Vehicle Following,8.0,constvel+ttc:0.7:0.2,ok,5,0,0,False,False,0,False,,False,,,,0.063,0.786,0.82,0.088,0.0,0.0,0.07,30,0.0,14.8
+00545,Vehicle Following,8.0,rhd_scratch@cl,ok,5,0,0,False,False,0,False,,False,,,,0.412,0.857,0.881,0.5,0.0,,,30,2.53,16.7
+00545,Vehicle Following,8.0,rhd_scratch@cl+ttc:0.7:0.2,ok,5,0,0,False,False,0,False,,False,,,,0.327,0.834,0.871,0.438,0.0,0.0,0.23,30,2.51,16.7
+00545,Vehicle Following,8.0,autopilot,ok,5,0,0,False,False,0,False,,False,,,,0.0,0.78,0.82,-0.0,0.0,,,0,0.0,14.9
+00545,Vehicle Following,8.0,idm,ok,5,0,0,False,False,0,False,,False,,,,0.012,0.792,0.833,0.016,0.0,,,32,0.0,14.8
+00668,Vehicle Following,8.0,expert,ok,6,0,0,False,False,0,True,True,True,True,ego behind,0.02,1.0,0.988,0.964,0.994,0.0,,,0,0.0,14.9
+00668,Vehicle Following,8.0,constvel+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,True,True,True,ego behind,-4.62,0.765,0.935,0.914,0.736,0.0,0.0,0.53,30,0.0,14.9
+00668,Vehicle Following,8.0,rhd_scratch@cl,ok,6,0,0,False,False,0,True,True,True,True,ego behind,-4.91,0.754,0.948,0.935,0.718,0.15,,,30,2.54,16.4
+00668,Vehicle Following,8.0,rhd_scratch@cl+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,True,True,False,ego behind,-5.98,0.688,0.912,0.899,0.663,0.03,0.02,0.57,30,2.54,16.4
+00668,Vehicle Following,8.0,autopilot,ok,6,0,0,False,False,0,True,True,True,True,ego behind,-3.73,0.822,0.958,0.936,0.782,0.03,,,0,0.0,14.9
+00668,Vehicle Following,8.0,idm,collision,6,2,1,True,False,0,True,True,True,True,ego behind,-3.65,0.857,0.964,0.941,0.792,0.03,,,32,0.0,14.9
+00174,Overtaking Left,8.0,expert,ok,4,0,0,False,False,0,True,True,True,True,ego passes,0.06,1.0,0.997,1.024,0.997,0.0,,,0,0.0,14.7
+00174,Overtaking Left,8.0,constvel+ttc:0.7:0.2,ok,4,0,0,False,False,0,True,False,True,False,ego passes,-15.12,0.288,0.82,0.788,0.275,0.04,0.0,0.21,30,0.0,14.7
+00174,Overtaking Left,8.0,rhd_scratch@cl,ok,4,0,0,False,False,0,True,True,True,True,ego passes,3.28,1.0,0.995,1.049,1.149,0.1,,,30,2.51,16.2
+00174,Overtaking Left,8.0,rhd_scratch@cl+ttc:0.7:0.2,ok,4,0,0,False,False,0,True,True,True,True,ego passes,0.38,1.0,0.997,1.031,1.012,0.0,0.0,0.04,30,2.53,16.2
+00174,Overtaking Left,8.0,autopilot,ok,4,0,0,False,False,0,True,False,True,False,ego passes,-10.34,0.541,0.883,0.861,0.5,0.24,,,0,0.0,14.7
+00174,Overtaking Left,8.0,idm,ok,4,0,0,False,False,0,True,False,True,False,ego passes,-8.82,0.65,0.91,0.854,0.572,0.29,,,32,0.0,14.7
+01612,Vehicle Following,4.9,expert,ok,4,0,0,False,False,0,True,True,True,True,ego behind,0.04,1.0,0.875,0.993,0.996,0.0,,,0,0.0,9.7
+01612,Vehicle Following,4.9,constvel+ttc:0.7:0.2,ok,4,0,0,False,False,0,True,True,True,True,ego behind,-1.05,0.915,0.854,0.965,0.911,0.0,0.0,0.23,17,0.0,9.7
+01612,Vehicle Following,4.9,rhd_scratch@cl,collision,4,2,1,True,True,0,True,True,True,True,ego behind,0.25,1.0,0.875,1.001,1.018,0.0,,,18,1.51,10.6
+01612,Vehicle Following,4.9,rhd_scratch@cl+ttc:0.7:0.2,ok,4,0,0,False,False,0,True,True,True,True,ego behind,-1.0,0.924,0.856,0.966,0.915,0.0,0.0,0.29,18,1.52,10.6
+01612,Vehicle Following,4.9,autopilot,ok,4,0,0,False,False,0,True,True,True,True,ego behind,-2.77,0.78,0.818,0.921,0.78,0.0,,,0,0.0,9.7
+01612,Vehicle Following,4.9,idm,ok,4,0,0,False,False,0,True,True,True,True,ego behind,-2.18,0.826,0.828,0.929,0.81,0.0,,,19,0.0,9.7
+00479,Vehicle Following,8.0,expert,collision,6,2,1,True,True,0,False,,False,,,,1.0,0.786,1.115,1.054,0.0,,,0,0.0,14.9
+00479,Vehicle Following,8.0,constvel+ttc:0.7:0.2,ok,6,0,0,False,False,0,False,,False,,,,0.041,0.626,0.793,0.069,0.0,0.0,0.05,30,0.0,14.9
+00479,Vehicle Following,8.0,rhd_scratch@cl,ok,6,0,0,False,False,0,False,,False,,,,0.041,0.624,0.831,0.233,0.0,,,30,2.41,16.5
+00479,Vehicle Following,8.0,rhd_scratch@cl+ttc:0.7:0.2,ok,6,0,0,False,False,0,False,,False,,,,0.041,0.626,0.814,0.142,0.0,0.0,0.05,30,2.4,16.5
+00479,Vehicle Following,8.0,autopilot,ok,6,0,0,False,False,0,False,,False,,,,0.0,0.62,0.773,-0.0,0.0,,,0,0.0,14.9
+00479,Vehicle Following,8.0,idm,collision,6,2,1,True,True,0,False,,False,,,,1.0,0.753,1.354,1.831,0.0,,,32,0.0,14.9
+01608,Vehicle Following,4.9,expert,ok,6,0,0,False,False,0,True,True,True,True,ego behind,0.01,1.0,0.833,0.998,0.997,0.0,,,0,0.0,9.9
+01608,Vehicle Following,4.9,constvel+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,True,True,False,ego behind,-5.22,0.695,0.782,0.922,0.69,0.03,0.0,0.18,17,0.0,9.9
+01608,Vehicle Following,4.9,rhd_scratch@cl,collision,6,2,1,True,False,0,True,False,True,False,ego behind,2.1,1.0,0.833,1.044,1.122,0.0,,,18,1.57,10.8
+01608,Vehicle Following,4.9,rhd_scratch@cl+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,True,True,True,ego behind,-1.72,0.919,0.82,0.976,0.891,0.0,0.0,0.27,18,1.55,10.8
+01608,Vehicle Following,4.9,autopilot,ok,6,0,0,False,False,0,True,True,True,True,ego behind,-1.41,0.919,0.82,0.964,0.894,0.0,,,0,0.0,9.9
+01608,Vehicle Following,4.9,idm,ok,6,0,0,False,False,0,True,True,True,True,ego behind,-3.34,0.834,0.806,0.952,0.795,0.0,,,19,0.0,9.9
+01230,Vehicle Following,8.0,expert,ok,5,0,0,False,False,0,True,True,False,,,,1.0,0.998,0.963,0.938,0.0,,,0,0.0,14.8
+01230,Vehicle Following,8.0,constvel+ttc:0.7:0.2,ok,5,0,0,False,False,0,True,True,False,,,,1.0,0.989,0.949,0.866,0.01,0.02,0.29,30,0.0,14.8
+01230,Vehicle Following,8.0,rhd_scratch@cl,collision,5,2,1,True,True,0,True,False,False,,,,1.0,1.0,1.104,5.894,0.0,,,30,2.49,16.9
+01230,Vehicle Following,8.0,rhd_scratch@cl+ttc:0.7:0.2,ok,5,0,0,False,False,0,True,True,False,,,,0.673,0.935,0.959,0.779,0.0,0.0,0.23,30,2.56,16.9
+01230,Vehicle Following,8.0,autopilot,ok,5,0,0,False,False,0,True,True,False,,,,0.592,0.918,0.961,0.728,0.0,,,0,0.0,14.8
+01230,Vehicle Following,8.0,idm,ok,5,0,0,False,False,0,True,True,False,,,,0.479,0.894,0.951,0.478,0.0,,,32,0.0,14.8
+00567,Vehicle Following,8.0,expert,ok,6,0,0,False,False,0,True,True,False,,,,1.0,0.999,0.949,0.993,0.0,,,0,0.0,14.9
+00567,Vehicle Following,8.0,constvel+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,False,False,,,,0.006,0.696,0.464,0.018,0.0,0.05,0.61,30,0.0,14.9
+00567,Vehicle Following,8.0,rhd_scratch@cl,collision,6,2,1,True,False,0,True,False,False,,,,0.072,0.764,0.563,0.078,0.0,,,30,2.59,16.8
+00567,Vehicle Following,8.0,rhd_scratch@cl+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,False,False,,,,0.012,0.703,0.464,0.013,0.0,0.12,0.57,30,2.57,16.7
+00567,Vehicle Following,8.0,autopilot,ok,6,0,0,False,False,0,True,True,False,,,,0.559,0.924,0.808,0.53,0.0,,,0,0.0,14.9
+00567,Vehicle Following,8.0,idm,ok,6,0,0,False,False,0,True,True,False,,,,0.597,0.92,0.82,0.6,0.0,,,32,0.0,14.9
+00604,Vehicle Following,8.0,expert,ok,6,0,0,False,False,0,True,True,False,,,,1.0,0.808,1.216,0.997,0.0,,,0,0.0,14.9
+00604,Vehicle Following,8.0,constvel+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,True,False,,,,1.0,0.797,1.239,1.103,0.0,0.0,0.0,30,0.0,14.9
+00604,Vehicle Following,8.0,rhd_scratch@cl,ok,6,0,0,False,False,0,True,True,False,,,,0.996,0.797,1.201,0.954,0.0,,,30,2.48,16.7
+00604,Vehicle Following,8.0,rhd_scratch@cl+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,True,False,,,,0.738,0.753,1.101,0.679,0.0,0.0,0.0,30,2.46,16.7
+00604,Vehicle Following,8.0,autopilot,ok,6,0,0,False,False,0,True,True,False,,,,0.808,0.767,1.135,0.784,0.0,,,0,0.0,14.9
+00604,Vehicle Following,8.0,idm,ok,6,0,0,False,False,0,True,True,False,,,,1.0,0.807,1.585,2.086,0.0,,,32,0.0,14.9
+00219,Overtaking Left,8.0,expert,ok,5,0,0,False,False,0,True,True,True,True,ego passes,0.07,1.0,0.992,0.989,1.0,0.0,,,0,0.0,14.8
+00219,Overtaking Left,8.0,constvel+ttc:0.7:0.2,collision,5,1,0,True,False,1,True,True,True,True,ego passes,-2.9,1.0,0.99,0.948,0.877,0.0,0.0,0.04,30,0.0,14.8
+00219,Overtaking Left,8.0,rhd_scratch@cl,collision,5,1,0,True,False,1,True,True,True,True,ego passes,1.11,1.0,0.993,0.994,1.033,0.0,,,30,2.42,15.7
+00219,Overtaking Left,8.0,rhd_scratch@cl+ttc:0.7:0.2,collision,5,1,0,True,False,1,True,True,True,True,ego passes,0.52,1.0,0.994,0.992,1.012,0.0,0.0,0.08,30,2.43,15.7
+00219,Overtaking Left,8.0,autopilot,collision,5,2,1,True,True,0,True,True,True,True,ego passes,-10.5,0.508,0.894,0.916,0.734,0.02,,,0,0.0,14.8
+00219,Overtaking Left,8.0,idm,collision,5,1,0,True,False,1,True,True,True,True,ego passes,3.29,1.0,0.993,1.025,1.132,0.0,,,32,0.0,14.8
+00985,Vehicle Following,8.0,expert,ok,6,0,0,False,False,0,False,,False,,,,0.879,0.96,1.037,2.114,0.0,,,0,0.0,14.9
+00985,Vehicle Following,8.0,constvel+ttc:0.7:0.2,ok,6,0,0,False,False,0,False,,False,,,,0.0,0.813,1.007,0.002,0.0,0.0,0.0,30,0.0,14.9
+00985,Vehicle Following,8.0,rhd_scratch@cl,ok,6,0,0,False,False,0,False,,False,,,,0.229,0.852,1.008,0.214,0.0,,,30,2.59,16.5
+00985,Vehicle Following,8.0,rhd_scratch@cl+ttc:0.7:0.2,ok,6,0,0,False,False,0,False,,False,,,,0.229,0.852,1.01,0.262,0.0,0.0,0.0,30,2.58,16.6
+00985,Vehicle Following,8.0,autopilot,ok,6,0,0,False,False,0,False,,False,,,,0.0,0.813,1.012,0.384,0.0,,,0,0.0,14.9
+00985,Vehicle Following,8.0,idm,collision,6,2,1,True,False,0,False,,False,,,,1.0,0.98,1.229,14.433,0.0,,,32,0.0,14.9
+00520,Vehicle Following,8.0,expert,ok,5,0,0,False,False,0,True,True,False,,,,1.0,0.8,1.084,0.983,0.0,,,0,0.0,14.8
+00520,Vehicle Following,8.0,constvel+ttc:0.7:0.2,ok,5,0,0,False,False,0,True,True,False,,,,0.474,0.695,0.895,0.456,0.0,0.0,0.0,30,0.0,14.8
+00520,Vehicle Following,8.0,rhd_scratch@cl,ok,5,0,0,False,False,0,True,True,False,,,,0.47,0.694,0.897,0.476,0.0,,,30,2.55,16.7
+00520,Vehicle Following,8.0,rhd_scratch@cl+ttc:0.7:0.2,ok,5,0,0,False,False,0,True,True,False,,,,0.462,0.692,0.888,0.458,0.0,0.0,0.0,30,2.54,16.7
+00520,Vehicle Following,8.0,autopilot,ok,5,0,0,False,False,0,True,True,False,,,,0.595,0.719,0.932,0.567,0.0,,,0,0.0,14.8
+00520,Vehicle Following,8.0,idm,ok,5,0,0,False,False,0,True,True,False,,,,1.0,0.8,1.102,1.046,0.0,,,32,0.0,14.8
+01444,Vehicle Following,4.9,expert,ok,5,0,0,False,False,0,False,,False,,,,1.0,1.0,0.948,0.738,0.0,,,0,0.0,9.8
+01444,Vehicle Following,4.9,constvel+ttc:0.7:0.2,ok,5,0,0,False,False,0,False,,False,,,,0.0,0.78,0.857,-0.0,0.0,0.21,0.39,17,0.0,9.8
+01444,Vehicle Following,4.9,rhd_scratch@cl,ok,5,0,0,False,False,0,False,,False,,,,0.19,0.838,0.926,0.333,0.0,,,18,1.51,11.1
+01444,Vehicle Following,4.9,rhd_scratch@cl+ttc:0.7:0.2,ok,5,0,0,False,False,0,False,,False,,,,0.127,0.822,0.883,0.197,0.0,0.21,0.35,18,1.49,11.0
+01444,Vehicle Following,4.9,autopilot,ok,5,0,0,False,False,0,False,,False,,,,0.509,0.902,0.96,0.851,0.0,,,0,0.0,9.8
+01444,Vehicle Following,4.9,idm,ok,5,0,0,False,False,0,False,,False,,,,1.0,1.0,0.972,0.83,0.0,,,19,0.0,9.8
+00473,Vehicle Following,8.0,expert,ok,6,0,0,False,False,0,True,True,True,True,ego behind,0.01,1.0,0.874,1.004,0.993,0.01,,,0,0.0,14.9
+00473,Vehicle Following,8.0,constvel+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,True,True,True,ego behind,-4.82,0.682,0.796,0.877,0.673,0.08,0.02,0.55,30,0.0,14.9
+00473,Vehicle Following,8.0,rhd_scratch@cl,ok,6,0,0,False,False,0,True,False,True,False,ego behind,17.97,1.0,0.874,1.312,2.254,0.0,,,30,2.51,16.4
+00473,Vehicle Following,8.0,rhd_scratch@cl+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,True,True,True,ego behind,-2.95,0.841,0.837,0.935,0.797,0.0,0.02,0.63,30,2.62,16.4
+00473,Vehicle Following,8.0,autopilot,ok,6,0,0,False,False,0,True,False,True,False,ego behind,-13.29,0.095,0.723,0.986,0.931,0.0,,,0,0.0,14.9
+00473,Vehicle Following,8.0,idm,collision,6,2,1,True,False,0,True,True,True,False,ego behind,-5.18,0.675,0.819,0.914,0.646,0.07,,,32,0.0,14.9
+01508,Vehicle Following,4.9,expert,ok,6,0,0,False,False,0,True,True,True,True,ego behind,0.04,1.0,0.994,0.992,0.998,0.0,,,0,0.0,9.9
+01508,Vehicle Following,4.9,constvel+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,True,True,True,ego behind,2.42,1.0,0.996,1.011,1.119,0.0,0.02,0.08,17,0.0,9.9
+01508,Vehicle Following,4.9,rhd_scratch@cl,ok,6,0,0,False,False,0,True,False,True,True,ego behind,2.88,1.0,0.993,1.019,1.128,0.0,,,18,1.6,10.8
+01508,Vehicle Following,4.9,rhd_scratch@cl+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,False,True,True,ego behind,2.9,1.0,0.996,1.004,1.117,0.0,0.02,0.07,18,1.57,10.8
+01508,Vehicle Following,4.9,autopilot,ok,6,0,0,False,False,0,True,True,True,True,ego behind,-2.29,0.945,0.986,0.967,0.896,0.0,,,0,0.0,9.9
+01508,Vehicle Following,4.9,idm,ok,6,0,0,False,False,0,True,True,True,True,ego behind,-0.15,1.0,0.995,0.989,0.99,0.0,,,19,0.0,9.9
+00569,Vehicle Following,8.0,expert,ok,6,0,0,False,False,0,False,,False,,,,0.998,0.833,1.143,0.868,0.0,,,0,0.0,14.9
+00569,Vehicle Following,8.0,constvel+ttc:0.7:0.2,ok,6,0,0,False,False,0,False,,False,,,,0.026,0.668,1.062,0.067,0.0,0.0,0.02,30,0.0,14.9
+00569,Vehicle Following,8.0,rhd_scratch@cl,ok,6,0,0,False,False,0,False,,False,,,,0.062,0.677,1.075,0.113,0.0,,,30,2.56,16.7
+00569,Vehicle Following,8.0,rhd_scratch@cl+ttc:0.7:0.2,ok,6,0,0,False,False,0,False,,False,,,,0.1,0.683,1.077,0.133,0.0,0.0,0.0,30,2.52,16.7
+00569,Vehicle Following,8.0,autopilot,ok,6,0,0,False,False,0,False,,False,,,,0.0,0.667,1.078,-0.0,0.0,,,0,0.0,14.9
+00569,Vehicle Following,8.0,idm,ok,6,0,0,False,False,0,False,,False,,,,0.022,0.67,1.064,0.01,0.0,,,32,0.0,14.9
+01098,Vehicle Following,8.0,expert,ok,3,0,0,False,False,0,True,True,True,True,ego behind,-0.51,0.972,0.982,0.945,0.926,0.0,,,0,0.0,14.5
+01098,Vehicle Following,8.0,constvel+ttc:0.7:0.2,ok,3,0,0,False,False,0,True,False,True,False,ego behind,-8.81,0.652,0.875,0.834,0.637,0.0,0.0,0.1,30,0.0,14.5
+01098,Vehicle Following,8.0,rhd_scratch@cl,collision,3,2,1,True,True,0,True,False,True,False,ego behind,8.84,1.0,1.0,1.14,1.344,0.12,,,30,2.54,15.6
+01098,Vehicle Following,8.0,rhd_scratch@cl+ttc:0.7:0.2,ok,3,0,0,False,False,0,True,False,True,True,ego behind,-2.84,0.886,0.953,0.914,0.845,0.0,0.0,0.12,30,2.52,15.5
+01098,Vehicle Following,8.0,autopilot,ok,3,0,0,False,False,0,True,False,True,True,ego behind,-1.74,0.919,0.964,0.928,0.88,0.0,,,0,0.0,14.5
+01098,Vehicle Following,8.0,idm,ok,3,0,0,False,False,0,True,True,True,True,ego behind,2.67,1.0,0.991,0.989,1.038,0.0,,,32,0.0,14.5
+00988,Vehicle Following,8.0,expert,ok,5,0,0,False,False,0,False,,False,,,,1.0,1.0,0.977,0.819,0.0,,,0,0.0,14.9
+00988,Vehicle Following,8.0,constvel+ttc:0.7:0.2,ok,5,0,0,False,False,0,False,,False,,,,0.016,0.754,0.878,0.011,0.0,0.0,0.18,30,0.0,14.8
+00988,Vehicle Following,8.0,rhd_scratch@cl,ok,5,0,0,False,False,0,False,,False,,,,0.085,0.781,0.968,0.092,0.0,,,30,2.54,16.5
+00988,Vehicle Following,8.0,rhd_scratch@cl+ttc:0.7:0.2,ok,5,0,0,False,False,0,False,,False,,,,0.154,0.818,0.884,0.113,0.0,0.0,0.14,30,2.53,16.5
+00988,Vehicle Following,8.0,autopilot,ok,5,0,0,False,False,0,False,,False,,,,0.222,0.812,0.971,0.498,0.0,,,0,0.0,14.8
+00988,Vehicle Following,8.0,idm,collision,5,2,1,True,True,0,False,,False,,,,1.0,0.97,0.996,3.057,0.0,,,32,0.0,14.8
+00092,Overtaking Left,8.0,expert,ok,6,0,0,False,False,0,True,True,True,True,ego passes,-0.04,1.0,0.957,1.0,0.999,0.01,,,0,0.0,14.9
+00092,Overtaking Left,8.0,constvel+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,True,True,True,ego passes,19.04,1.0,0.958,1.149,1.474,0.0,0.0,0.07,30,0.0,14.9
+00092,Overtaking Left,8.0,rhd_scratch@cl,ok,6,0,0,False,False,0,True,True,True,True,ego passes,18.36,1.0,0.962,1.143,1.454,0.07,,,30,2.51,16.0
+00092,Overtaking Left,8.0,rhd_scratch@cl+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,True,True,True,ego passes,17.73,1.0,0.962,1.137,1.439,0.0,0.0,0.08,30,2.47,16.0
+00092,Overtaking Left,8.0,autopilot,ok,6,0,0,False,False,0,True,True,True,True,ego passes,-14.19,0.652,0.898,0.886,0.657,0.27,,,0,0.0,14.9
+00092,Overtaking Left,8.0,idm,ok,6,0,0,False,False,0,True,True,True,True,ego passes,-2.52,0.962,0.946,0.978,0.938,0.0,,,32,0.0,14.9
+00712,Vehicle Following,8.0,expert,ok,6,0,0,False,False,0,True,True,False,,,,1.0,1.0,0.948,0.882,0.0,,,0,0.0,14.9
+00712,Vehicle Following,8.0,constvel+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,False,False,,,,0.146,0.858,0.896,0.179,0.0,0.0,0.13,30,0.0,14.9
+00712,Vehicle Following,8.0,rhd_scratch@cl,ok,6,0,0,False,False,0,True,False,False,,,,0.439,0.906,0.918,0.43,0.0,,,30,2.26,16.4
+00712,Vehicle Following,8.0,rhd_scratch@cl+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,False,False,,,,0.198,0.866,0.9,0.234,0.0,0.0,0.12,30,2.22,16.4
+00712,Vehicle Following,8.0,autopilot,ok,6,0,0,False,False,0,True,False,False,,,,0.0,0.833,0.888,-0.0,0.0,,,0,0.0,14.9
+00712,Vehicle Following,8.0,idm,ok,6,0,0,False,False,0,True,False,False,,,,0.032,0.839,0.892,0.046,0.0,,,32,0.0,14.9
+01614,Vehicle Following,4.9,expert,off road,6,0,0,False,False,1,False,,False,,,,0.939,0.556,1.473,0.864,0.0,,,0,0.0,9.9
+01614,Vehicle Following,4.9,constvel+ttc:0.7:0.2,off road,6,0,0,False,False,1,False,,False,,,,0.0,0.409,1.406,-0.0,0.0,0.42,0.03,17,0.0,9.9
+01614,Vehicle Following,4.9,rhd_scratch@cl,off road,6,0,0,False,False,1,False,,False,,,,0.285,0.457,1.434,0.281,0.0,,,18,1.49,10.9
+01614,Vehicle Following,4.9,rhd_scratch@cl+ttc:0.7:0.2,off road,6,0,0,False,False,1,False,,False,,,,0.114,0.431,1.409,0.068,0.0,0.42,0.01,18,1.48,10.9
+01614,Vehicle Following,4.9,autopilot,off road,6,0,0,False,False,1,False,,False,,,,1.0,0.579,1.435,1.083,0.0,,,0,0.0,10.0
+01614,Vehicle Following,4.9,idm,off road,6,0,0,False,False,1,False,,False,,,,1.0,0.57,3.162,25.383,0.0,,,19,0.0,9.9
+00935,Vehicle Following,8.0,expert,ok,6,0,0,False,False,0,True,True,False,,,,1.0,0.79,0.992,1.0,0.0,,,0,0.0,14.9
+00935,Vehicle Following,8.0,constvel+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,True,False,,,,0.684,0.737,0.8,0.67,0.0,0.0,0.13,30,0.0,14.9
+00935,Vehicle Following,8.0,rhd_scratch@cl,ok,6,0,0,False,False,0,True,True,False,,,,1.0,0.785,1.181,1.353,0.0,,,30,2.42,16.4
+00935,Vehicle Following,8.0,rhd_scratch@cl+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,True,False,,,,0.703,0.741,0.815,0.697,0.0,0.0,0.14,30,2.38,16.5
+00935,Vehicle Following,8.0,autopilot,ok,6,0,0,False,False,0,True,True,False,,,,0.25,0.668,0.575,0.248,0.0,,,0,0.0,14.9
+00935,Vehicle Following,8.0,idm,ok,6,0,0,False,False,0,True,False,False,,,,1.0,0.805,2.178,3.188,0.0,,,32,0.0,14.9
+01106,Vehicle Following,8.0,expert,ok,4,0,0,False,False,0,True,True,True,True,ego behind,-1.55,1.0,1.0,1.009,1.027,0.0,,,0,0.0,14.5
+01106,Vehicle Following,8.0,constvel+ttc:0.7:0.2,ok,4,0,0,False,False,0,True,True,True,True,ego behind,-0.38,0.976,0.993,0.98,0.949,0.0,0.0,0.07,30,0.0,14.6
+01106,Vehicle Following,8.0,rhd_scratch@cl,collision,4,1,0,True,False,0,True,False,True,False,ego behind,10.5,1.0,1.0,1.104,1.279,0.07,,,30,2.53,15.5
+01106,Vehicle Following,8.0,rhd_scratch@cl+ttc:0.7:0.2,ok,4,0,0,False,False,0,True,True,True,False,ego behind,6.14,1.0,1.0,1.081,1.217,0.0,0.0,0.04,30,2.54,15.5
+01106,Vehicle Following,8.0,autopilot,ok,4,0,0,False,False,0,True,True,True,True,ego behind,-4.14,0.844,0.961,0.947,0.862,0.0,,,0,0.0,14.6
+01106,Vehicle Following,8.0,idm,ok,4,0,0,False,False,0,True,True,True,True,ego behind,0.83,1.0,1.0,1.004,1.013,0.0,,,32,0.0,14.6
+00613,Vehicle Following,8.0,expert,ok,5,0,0,False,False,0,True,True,False,,,,1.0,0.999,1.071,0.978,0.0,,,0,0.0,14.8
+00613,Vehicle Following,8.0,constvel+ttc:0.7:0.2,ok,5,0,0,False,False,0,True,True,False,,,,0.731,0.942,0.973,0.707,0.0,0.0,0.03,30,0.0,14.8
+00613,Vehicle Following,8.0,rhd_scratch@cl,ok,5,0,0,False,False,0,True,True,False,,,,0.655,0.926,0.956,0.643,0.0,,,30,2.49,16.7
+00613,Vehicle Following,8.0,rhd_scratch@cl+ttc:0.7:0.2,ok,5,0,0,False,False,0,True,True,False,,,,0.636,0.927,0.96,0.63,0.0,0.0,0.02,30,2.48,16.8
+00613,Vehicle Following,8.0,autopilot,ok,5,0,0,False,False,0,True,True,False,,,,0.454,0.887,0.872,0.445,0.0,,,0,0.0,14.8
+00613,Vehicle Following,8.0,idm,ok,5,0,0,False,False,0,True,True,False,,,,0.529,0.903,0.915,0.522,0.0,,,32,0.0,14.8
+00594,Vehicle Following,8.0,expert,ok,6,0,0,False,False,0,False,,False,,,,0.699,0.874,1.014,0.401,0.0,,,0,0.0,14.9
+00594,Vehicle Following,8.0,constvel+ttc:0.7:0.2,ok,6,0,0,False,False,0,False,,False,,,,0.625,0.859,0.988,0.053,0.0,0.0,0.14,30,0.0,14.9
+00594,Vehicle Following,8.0,rhd_scratch@cl,ok,6,0,0,False,False,0,False,,False,,,,0.647,0.865,0.993,-0.03,0.0,,,30,2.55,16.7
+00594,Vehicle Following,8.0,rhd_scratch@cl+ttc:0.7:0.2,ok,6,0,0,False,False,0,False,,False,,,,0.734,0.878,0.994,0.116,0.0,0.0,0.1,30,2.51,16.7
+00594,Vehicle Following,8.0,autopilot,ok,6,0,0,False,False,0,False,,False,,,,0.0,0.756,0.985,-0.0,0.0,,,0,0.0,15.0
+00594,Vehicle Following,8.0,idm,ok,6,0,0,False,False,0,False,,False,,,,0.628,0.861,0.985,0.008,0.0,,,32,0.0,14.9
+00455,Vehicle Following,8.0,expert,ok,6,0,0,False,False,0,False,,False,,,,0.966,0.788,1.256,1.041,0.0,,,0,0.0,14.9
+00455,Vehicle Following,8.0,constvel+ttc:0.7:0.2,ok,6,0,0,False,False,0,False,,False,,,,0.175,0.653,1.071,0.238,0.0,0.1,0.62,30,0.0,14.9
+00455,Vehicle Following,8.0,rhd_scratch@cl,ok,6,0,0,False,False,0,False,,False,,,,0.391,0.692,1.164,0.493,0.0,,,30,2.54,16.7
+00455,Vehicle Following,8.0,rhd_scratch@cl+ttc:0.7:0.2,ok,6,0,0,False,False,0,False,,False,,,,0.376,0.689,1.128,0.494,0.0,0.04,0.55,30,2.51,16.8
+00455,Vehicle Following,8.0,autopilot,ok,6,0,0,False,False,0,False,,False,,,,0.481,0.707,1.174,0.462,0.0,,,0,0.0,14.9
+00455,Vehicle Following,8.0,idm,collision,6,1,0,True,False,1,False,,False,,,,1.0,0.794,2.19,8.867,0.0,,,32,0.0,14.9
+00553,Vehicle Following,8.0,expert,ok,5,0,0,False,False,0,True,True,True,True,ego behind,-0.45,1.0,0.896,1.007,1.002,0.09,,,0,0.0,14.7
+00553,Vehicle Following,8.0,constvel+ttc:0.7:0.2,ok,5,0,0,False,False,0,True,False,True,False,ego behind,4.2,1.0,0.896,1.168,1.744,0.06,0.0,0.22,30,0.0,14.7
+00553,Vehicle Following,8.0,rhd_scratch@cl,ok,5,0,0,False,False,0,True,False,True,False,ego behind,15.35,1.0,0.896,1.588,3.516,0.0,,,30,2.59,16.6
+00553,Vehicle Following,8.0,rhd_scratch@cl+ttc:0.7:0.2,ok,5,0,0,False,False,0,True,False,True,False,ego behind,4.99,1.0,0.896,1.198,1.869,0.05,0.53,0.14,30,2.58,16.6
+00553,Vehicle Following,8.0,autopilot,ok,5,0,0,False,False,0,True,True,True,True,ego behind,-0.92,0.942,0.885,1.007,0.921,0.07,,,0,0.0,14.8
+00553,Vehicle Following,8.0,idm,ok,5,0,0,False,False,0,True,False,True,False,ego behind,30.65,1.0,0.896,2.253,6.411,0.0,,,32,0.0,14.8
+00600,Vehicle Following,8.0,expert,ok,5,0,0,False,False,0,True,True,False,,,,1.0,0.977,0.929,0.71,0.0,,,0,0.0,14.8
+00600,Vehicle Following,8.0,constvel+ttc:0.7:0.2,ok,5,0,0,False,False,0,True,True,False,,,,1.0,0.977,0.99,1.085,0.0,0.0,0.36,30,0.0,14.8
+00600,Vehicle Following,8.0,rhd_scratch@cl,collision,5,2,1,True,True,0,True,True,False,,,,0.931,0.963,1.122,1.887,0.0,,,30,2.55,16.6
+00600,Vehicle Following,8.0,rhd_scratch@cl+ttc:0.7:0.2,ok,5,0,0,False,False,0,True,True,False,,,,0.938,0.965,0.987,1.039,0.0,0.0,0.27,30,2.53,16.6
+00600,Vehicle Following,8.0,autopilot,ok,5,0,0,False,False,0,True,True,False,,,,0.669,0.911,0.926,0.667,0.0,,,0,0.0,14.8
+00600,Vehicle Following,8.0,idm,ok,5,0,0,False,False,0,True,True,False,,,,1.0,0.977,0.981,1.046,0.0,,,32,0.0,14.8
+00482,Vehicle Following,8.0,expert,ok,6,0,0,False,False,0,False,,False,,,,1.0,1.0,0.97,0.812,0.0,,,0,0.0,14.9
+00482,Vehicle Following,8.0,constvel+ttc:0.7:0.2,ok,6,0,0,False,False,0,False,,False,,,,0.0,0.833,0.899,-0.0,0.0,0.57,0.0,30,0.0,15.0
+00482,Vehicle Following,8.0,rhd_scratch@cl,ok,6,0,0,False,False,0,False,,False,,,,0.106,0.851,0.931,0.48,0.0,,,30,2.52,16.7
+00482,Vehicle Following,8.0,rhd_scratch@cl+ttc:0.7:0.2,ok,6,0,0,False,False,0,False,,False,,,,0.0,0.833,0.923,0.218,0.0,0.6,0.18,30,2.52,16.8
+00482,Vehicle Following,8.0,autopilot,ok,6,0,0,False,False,0,False,,False,,,,0.0,0.833,0.892,-0.0,0.0,,,0,0.0,14.9
+00482,Vehicle Following,8.0,idm,collision,6,2,1,True,True,1,False,,False,,,,1.0,1.0,4.499,34.504,0.0,,,32,0.0,14.9
+01138,Vehicle Following,8.0,expert,collision,4,2,1,True,True,0,False,,False,,,,1.0,0.875,0.695,0.424,0.0,,,0,0.0,14.7
+01138,Vehicle Following,8.0,constvel+ttc:0.7:0.2,ok,4,0,0,False,False,0,False,,False,,,,0.0,0.501,0.423,-0.0,0.0,3.94,0.05,30,0.0,14.7
+01138,Vehicle Following,8.0,rhd_scratch@cl,collision,4,2,1,True,True,0,False,,False,,,,0.0,0.75,0.912,0.244,0.0,,,30,2.51,16.3
+01138,Vehicle Following,8.0,rhd_scratch@cl+ttc:0.7:0.2,ok,4,0,0,False,False,0,False,,False,,,,0.0,0.501,0.415,-0.0,0.0,3.94,0.05,30,2.46,16.3
+01138,Vehicle Following,8.0,autopilot,collision,4,2,1,True,True,0,False,,False,,,,0.0,0.75,1.073,0.371,0.0,,,0,0.0,14.7
+01138,Vehicle Following,8.0,idm,collision,4,1,0,True,False,0,False,,False,,,,1.0,1.0,2.999,16.535,0.0,,,32,0.0,14.7
+01299,Overtaking Left,4.9,expert,ok,6,0,0,False,False,0,True,True,True,True,ego passes,-0.06,1.0,0.944,1.0,0.994,0.0,,,0,0.0,9.9
+01299,Overtaking Left,4.9,constvel+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,True,True,True,ego passes,-1.87,0.875,0.909,0.941,0.858,0.0,0.0,0.26,17,0.0,9.9
+01299,Overtaking Left,4.9,rhd_scratch@cl,ok,6,0,0,False,False,0,True,True,True,True,ego passes,-2.71,0.786,0.91,0.927,0.75,0.03,,,18,1.49,10.7
+01299,Overtaking Left,4.9,rhd_scratch@cl+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,True,True,True,ego passes,-1.2,0.942,0.92,0.951,0.892,0.0,0.0,0.23,18,1.48,10.7
+01299,Overtaking Left,4.9,autopilot,ok,6,0,0,False,False,0,True,True,True,True,ego passes,-2.11,0.854,0.921,0.939,0.791,0.06,,,0,0.0,9.9
+01299,Overtaking Left,4.9,idm,ok,6,0,0,False,False,0,True,True,True,True,ego passes,9.69,1.0,0.945,1.303,1.902,0.0,,,19,0.0,9.9
+00381,Vehicle Following,8.0,autopilot_stock,ok,6,0,0,False,False,0,True,False,True,False,ego behind,-12.62,0.03,0.816,0.816,0.022,0.63,,,0,0.0,15.0
+00381,Vehicle Following,8.0,rhd_lead@ep08,ok,6,0,0,False,False,0,True,True,True,False,ego behind,-11.11,0.156,0.833,0.839,0.147,0.42,,,30,2.86,16.8
+00381,Vehicle Following,8.0,rhd_lead@ep08+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,False,True,False,ego behind,-12.62,0.033,0.778,0.795,0.027,0.65,0.0,0.28,30,2.54,16.8
+00035,Overtaking Left,8.0,autopilot_stock,ok,6,0,0,False,False,0,True,True,True,True,ego passes,-0.51,0.936,0.823,0.996,0.935,0.31,,,0,0.0,15.0
+00035,Overtaking Left,8.0,rhd_lead@ep08,collision,6,2,1,True,False,1,True,True,True,True,ego passes,25.59,1.0,0.833,1.371,2.106,0.01,,,30,2.37,16.2
+00035,Overtaking Left,8.0,rhd_lead@ep08+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,True,True,True,ego passes,-3.92,0.808,0.778,0.898,0.799,0.18,0.17,0.82,30,2.42,16.2
+00496,Vehicle Following,8.0,autopilot_stock,ok,5,0,0,False,False,0,False,,False,,,,0.67,0.729,1.484,1.284,0.0,,,0,0.0,14.8
+00496,Vehicle Following,8.0,rhd_lead@ep08,collision,5,2,1,True,True,0,False,,False,,,,0.67,0.73,2.987,7.245,0.0,,,30,2.43,16.5
+00496,Vehicle Following,8.0,rhd_lead@ep08+ttc:0.7:0.2,ok,5,0,0,False,False,0,False,,False,,,,0.666,0.73,1.313,1.161,0.0,0.02,0.33,30,2.48,16.5
+00809,Vehicle Following,8.0,autopilot_stock,ok,5,0,0,False,False,0,True,True,True,False,ego behind,-10.09,0.452,0.89,0.911,0.447,0.89,,,0,0.0,14.9
+00809,Vehicle Following,8.0,rhd_lead@ep08,ok,5,0,0,False,False,0,True,True,True,False,ego behind,-5.36,0.739,0.948,0.95,0.711,0.13,,,30,2.53,16.4
+00809,Vehicle Following,8.0,rhd_lead@ep08+ttc:0.7:0.2,ok,5,0,0,False,False,0,True,True,True,True,ego behind,-4.2,0.81,0.962,0.958,0.763,0.01,0.0,0.17,30,2.58,16.5
+00208,Overtaking Left,8.0,autopilot_stock,ok,6,0,0,False,False,0,True,True,True,True,ego passes,24.16,1.0,0.953,1.556,1.991,0.0,,,0,0.0,14.7
+00208,Overtaking Left,8.0,rhd_lead@ep08,collision,6,2,1,True,True,0,True,False,True,False,ego passes,-23.03,0.173,0.696,0.4,0.171,0.84,,,30,2.52,16.1
+00208,Overtaking Left,8.0,rhd_lead@ep08+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,False,True,False,ego passes,-24.64,0.083,0.709,0.362,0.081,0.97,0.0,0.4,30,2.51,16.2
+01179,Vehicle Following,8.0,autopilot_stock,ok,6,0,0,False,False,0,True,False,False,,,,0.233,0.872,0.911,0.003,0.01,,,0,0.0,14.9
+01179,Vehicle Following,8.0,rhd_lead@ep08,ok,6,0,0,False,False,0,True,False,False,,,,0.254,0.872,0.906,0.029,0.0,,,30,2.57,16.2
+01179,Vehicle Following,8.0,rhd_lead@ep08+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,False,False,,,,0.253,0.866,0.907,0.027,0.0,0.01,0.47,30,2.56,16.2
+01540,Vehicle Following,4.9,autopilot_stock,ok,6,0,0,False,False,0,True,False,False,,,,0.482,0.906,1.843,6.906,0.02,,,0,0.0,9.9
+01540,Vehicle Following,4.9,rhd_lead@ep08,collision,6,2,1,True,False,0,True,False,False,,,,1.0,0.996,1.187,2.535,0.03,,,18,1.54,10.9
+01540,Vehicle Following,4.9,rhd_lead@ep08+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,True,False,,,,1.0,0.992,1.023,1.409,0.0,0.0,0.34,18,1.48,11.5
+00562,Vehicle Following,8.0,autopilot_stock,collision,6,1,0,False,False,0,True,True,False,,,,0.573,0.754,0.981,0.53,0.0,,,0,0.0,14.9
+00562,Vehicle Following,8.0,rhd_lead@ep08,collision,6,1,0,False,False,1,True,True,False,,,,1.0,0.838,1.026,1.185,0.0,,,30,2.56,16.8
+00562,Vehicle Following,8.0,rhd_lead@ep08+ttc:0.7:0.2,collision,6,1,0,False,False,1,True,True,False,,,,0.682,0.923,0.871,0.679,0.0,0.0,0.17,30,2.54,16.8
+01182,Vehicle Following,8.0,autopilot_stock,collision,6,2,1,True,False,1,True,True,True,True,ego behind,-3.66,0.618,0.738,0.877,0.611,0.04,,,0,0.0,14.9
+01182,Vehicle Following,8.0,rhd_lead@ep08,collision,6,3,2,True,True,0,True,False,True,False,ego behind,1.55,1.0,0.842,1.081,1.218,0.0,,,30,2.53,16.4
+01182,Vehicle Following,8.0,rhd_lead@ep08+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,True,True,True,ego behind,-2.71,0.707,0.749,0.863,0.688,0.06,0.24,1.82,30,2.52,16.4
+00368,Vehicle Following,8.0,autopilot_stock,ok,6,0,0,False,False,0,False,,False,,,,0.864,0.383,2.609,5.744,0.0,,,0,0.0,15.0
+00368,Vehicle Following,8.0,rhd_lead@ep08,ok,6,0,0,False,False,0,False,,False,,,,0.806,0.374,2.132,0.703,0.0,,,30,2.3,16.7
+00368,Vehicle Following,8.0,rhd_lead@ep08+ttc:0.7:0.2,ok,6,0,0,False,False,0,False,,False,,,,0.827,0.358,1.78,0.711,0.0,0.0,0.58,30,2.3,16.7
+01257,Vehicle Following,8.0,autopilot_stock,ok,6,0,0,False,False,0,False,,False,,,,0.0,0.65,1.146,-0.0,0.0,,,0,0.0,14.9
+01257,Vehicle Following,8.0,rhd_lead@ep08,ok,6,0,0,False,False,0,False,,False,,,,0.234,0.691,1.16,0.207,0.0,,,30,2.41,16.4
+01257,Vehicle Following,8.0,rhd_lead@ep08+ttc:0.7:0.2,ok,6,0,0,False,False,0,False,,False,,,,0.225,0.689,1.003,0.198,0.0,0.0,0.15,30,2.4,16.4
+01359,Overtaking Right,4.9,autopilot_stock,ok,6,0,0,False,False,0,True,False,True,False,ego passes,-11.23,0.343,0.89,1.338,1.886,0.0,,,0,0.0,9.9
+01359,Overtaking Right,4.9,rhd_lead@ep08,collision,6,2,1,True,False,0,True,True,True,True,ego passes,10.43,1.0,1.0,1.219,1.6,0.01,,,18,1.58,11.0
+01359,Overtaking Right,4.9,rhd_lead@ep08+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,True,True,True,ego passes,5.38,1.0,0.975,1.066,1.307,0.0,0.0,0.2,18,1.56,11.0
+00312,Overtaking Right,8.0,autopilot_stock,collision,6,2,1,True,False,0,True,True,True,True,ego passes,2.41,1.0,0.988,1.014,1.085,0.38,,,0,0.0,14.9
+00312,Overtaking Right,8.0,rhd_lead@ep08,collision,6,2,1,True,False,0,True,True,True,True,ego passes,4.3,1.0,0.987,1.017,1.147,0.13,,,30,2.53,16.2
+00312,Overtaking Right,8.0,rhd_lead@ep08+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,True,True,True,ego passes,-0.91,0.864,0.921,0.901,0.848,0.27,0.0,1.1,30,2.57,16.3
+01524,Vehicle Following,4.9,autopilot_stock,ok,6,0,0,False,False,0,True,False,True,False,ego is passed,6.9,1.0,0.983,1.043,1.711,0.21,,,0,0.0,9.9
+01524,Vehicle Following,4.9,rhd_lead@ep08,ok,6,0,0,False,False,0,True,True,True,True,ego is passed,-2.92,0.805,0.948,0.929,0.742,0.03,,,18,1.55,10.9
+01524,Vehicle Following,4.9,rhd_lead@ep08+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,True,True,True,ego is passed,-1.72,0.899,0.965,0.937,0.867,0.0,0.01,0.12,18,1.57,10.9
+00489,Vehicle Following,8.0,autopilot_stock,ok,6,0,0,False,False,0,False,,False,,,,1.0,0.865,1.983,25.26,0.0,,,0,0.0,14.7
+00489,Vehicle Following,8.0,rhd_lead@ep08,collision,6,2,1,True,False,0,False,,False,,,,1.0,0.865,1.208,5.372,0.0,,,30,2.54,16.6
+00489,Vehicle Following,8.0,rhd_lead@ep08+ttc:0.7:0.2,ok,6,0,0,False,False,0,False,,False,,,,1.0,0.858,1.032,2.302,0.0,0.0,0.47,30,2.57,16.6
+01588,Vehicle Following,4.9,autopilot_stock,off road,6,0,0,False,False,1,True,False,True,False,ego behind,-19.87,0.0,0.829,1.013,1.072,0.0,,,0,0.0,9.9
+01588,Vehicle Following,4.9,rhd_lead@ep08,collision,6,2,1,True,True,1,True,False,True,False,ego behind,-9.52,0.407,0.899,1.009,1.154,0.0,,,18,1.59,10.9
+01588,Vehicle Following,4.9,rhd_lead@ep08+ttc:0.7:0.2,off road,6,0,0,False,False,1,True,False,True,False,ego behind,-15.0,0.164,0.861,0.935,0.614,0.07,0.09,0.12,18,1.59,10.7
+01610,Vehicle Following,4.9,autopilot_stock,ok,6,0,0,False,False,0,True,True,False,,,,0.945,0.892,0.89,0.828,0.0,,,0,0.0,9.9
+01610,Vehicle Following,4.9,rhd_lead@ep08,collision,6,3,2,True,True,0,True,False,False,,,,1.0,0.901,0.99,2.263,0.0,,,18,1.48,11.3
+01610,Vehicle Following,4.9,rhd_lead@ep08+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,True,False,,,,0.707,0.743,0.735,0.628,0.0,0.12,0.59,18,1.55,11.3
+00168,Overtaking Left,8.0,autopilot_stock,ok,5,0,0,False,False,0,True,True,True,False,ego passes,-11.3,0.224,0.841,0.947,0.848,0.11,,,0,0.0,14.8
+00168,Overtaking Left,8.0,rhd_lead@ep08,collision,5,1,0,True,False,1,True,True,True,True,ego passes,6.07,1.0,0.998,1.046,1.256,0.03,,,30,2.47,15.7
+00168,Overtaking Left,8.0,rhd_lead@ep08+ttc:0.7:0.2,ok,5,0,0,False,False,0,True,True,True,True,ego passes,-7.3,0.96,0.955,0.869,0.703,0.0,0.19,0.52,30,2.6,15.7
+00495,Vehicle Following,8.0,autopilot_stock,ok,6,0,0,False,False,0,True,True,False,,,,1.0,0.781,1.141,1.071,0.0,,,0,0.0,14.9
+00495,Vehicle Following,8.0,rhd_lead@ep08,collision,6,2,1,True,True,0,True,True,False,,,,1.0,0.777,1.581,2.675,0.0,,,30,2.48,16.5
+00495,Vehicle Following,8.0,rhd_lead@ep08+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,True,False,,,,1.0,0.781,1.201,1.388,0.0,0.0,0.18,30,2.48,16.6
+00979,Vehicle Following,8.0,autopilot_stock,collision,4,1,0,False,False,1,True,False,True,True,ego behind,-0.53,0.86,0.701,0.942,0.834,0.09,,,0,0.0,14.7
+00979,Vehicle Following,8.0,rhd_lead@ep08,collision,4,1,0,False,False,1,True,True,True,True,ego behind,-1.24,0.831,0.691,0.924,0.792,0.07,,,30,2.51,16.3
+00979,Vehicle Following,8.0,rhd_lead@ep08+ttc:0.7:0.2,collision,4,1,0,False,False,1,True,True,True,True,ego behind,2.07,0.976,0.729,0.971,0.943,0.05,0.0,0.0,30,2.47,16.3
+00169,Overtaking Left,8.0,autopilot_stock,ok,5,0,0,False,False,0,True,True,True,True,ego passes,0.41,1.0,0.994,0.984,1.001,0.01,,,0,0.0,14.8
+00169,Overtaking Left,8.0,rhd_lead@ep08,collision,5,2,1,True,True,0,True,False,True,False,ego passes,-25.42,0.22,0.838,0.713,0.218,1.02,,,30,2.51,16.2
+00169,Overtaking Left,8.0,rhd_lead@ep08+ttc:0.7:0.2,ok,5,0,0,False,False,0,True,False,True,False,ego passes,-27.42,0.159,0.778,0.674,0.157,0.85,0.0,0.51,30,2.48,16.3
+00430,Vehicle Following,8.0,autopilot_stock,ok,6,0,0,False,False,0,True,True,False,,,,1.0,0.785,1.081,1.057,0.0,,,0,0.0,14.9
+00430,Vehicle Following,8.0,rhd_lead@ep08,ok,6,0,0,False,False,0,True,False,False,,,,0.182,0.649,0.924,0.173,0.0,,,30,2.44,16.5
+00430,Vehicle Following,8.0,rhd_lead@ep08+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,False,False,,,,0.177,0.649,0.918,0.125,0.0,0.0,0.22,30,2.51,16.5
+00147,Overtaking Left,8.0,autopilot_stock,ok,6,0,0,False,False,0,True,True,True,True,ego passes,6.47,1.0,0.987,1.047,1.172,0.18,,,0,0.0,14.9
+00147,Overtaking Left,8.0,rhd_lead@ep08,ok,6,0,0,False,False,0,True,True,True,True,ego passes,7.28,1.0,0.982,1.034,1.192,0.0,,,30,2.57,16.2
+00147,Overtaking Left,8.0,rhd_lead@ep08+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,True,True,True,ego passes,7.31,1.0,0.987,1.052,1.192,0.0,0.0,0.0,30,2.56,16.2
+01435,Vehicle Following,4.9,autopilot_stock,ok,6,0,0,False,False,0,False,,False,,,,0.858,0.462,1.354,0.881,0.0,,,0,0.0,9.9
+01435,Vehicle Following,4.9,rhd_lead@ep08,ok,6,0,0,False,False,0,False,,False,,,,1.0,0.465,1.523,1.285,0.0,,,18,1.51,11.1
+01435,Vehicle Following,4.9,rhd_lead@ep08+ttc:0.7:0.2,ok,6,0,0,False,False,0,False,,False,,,,0.2,0.315,1.088,0.282,0.0,0.0,0.11,18,1.5,11.1
+00155,Overtaking Left,8.0,autopilot_stock,collision,5,1,0,False,False,0,True,True,True,True,ego passes,16.34,1.0,1.0,1.447,1.758,0.01,,,0,0.0,14.8
+00155,Overtaking Left,8.0,rhd_lead@ep08,collision,5,1,0,False,False,0,True,True,True,True,ego passes,5.07,1.0,1.0,1.119,1.23,0.0,,,30,2.54,16.1
+00155,Overtaking Left,8.0,rhd_lead@ep08+ttc:0.7:0.2,collision,5,1,0,False,False,0,True,True,True,True,ego passes,4.91,1.0,1.0,1.114,1.223,0.0,0.0,0.0,30,2.5,16.1
+01297,Overtaking Left,4.9,autopilot_stock,ok,5,0,0,False,False,0,True,False,True,False,ego passes,-7.38,0.072,0.814,0.872,0.059,0.03,,,0,0.0,9.8
+01297,Overtaking Left,4.9,rhd_lead@ep08,ok,5,0,0,False,False,0,True,True,True,True,ego passes,3.27,1.0,0.999,1.031,1.265,0.0,,,18,1.56,10.8
+01297,Overtaking Left,4.9,rhd_lead@ep08+ttc:0.7:0.2,ok,5,0,0,False,False,0,True,False,True,False,ego passes,-6.27,0.21,0.841,0.894,0.219,0.03,0.0,0.3,18,1.55,10.8
+01587,Vehicle Following,4.9,autopilot_stock,collision,3,1,0,False,False,0,True,True,True,True,ego behind,-0.13,0.944,0.743,0.999,0.937,0.0,,,0,0.0,9.6
+01587,Vehicle Following,4.9,rhd_lead@ep08,collision,3,2,1,True,True,0,True,True,True,True,ego behind,2.19,1.0,0.785,1.228,1.33,0.0,,,18,1.49,10.8
+01587,Vehicle Following,4.9,rhd_lead@ep08+ttc:0.7:0.2,collision,3,1,0,False,False,0,True,True,True,True,ego behind,1.04,1.0,0.762,1.1,1.118,0.0,0.0,0.25,18,1.48,10.7
+00380,Vehicle Following,8.0,autopilot_stock,ok,6,0,0,False,False,0,True,True,False,,,,0.745,0.826,0.98,0.723,0.0,,,0,0.0,14.7
+00380,Vehicle Following,8.0,rhd_lead@ep08,collision,6,2,1,True,True,0,True,True,False,,,,0.976,0.864,1.087,1.959,0.0,,,30,2.52,16.3
+00380,Vehicle Following,8.0,rhd_lead@ep08+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,True,False,,,,0.976,0.852,1.028,1.463,0.0,0.0,0.4,30,2.5,16.4
+00359,Vehicle Following,8.0,autopilot_stock,collision,6,1,0,False,False,0,True,True,True,False,ego behind,-19.08,0.126,0.832,0.634,0.121,0.88,,,0,0.0,14.9
+00359,Vehicle Following,8.0,rhd_lead@ep08,collision,6,4,2,True,True,0,True,False,True,False,ego behind,9.7,1.0,0.979,1.301,1.608,0.12,,,30,2.59,16.3
+00359,Vehicle Following,8.0,rhd_lead@ep08+ttc:0.7:0.2,collision,6,1,0,False,False,0,True,True,True,True,ego behind,-2.37,0.904,0.962,0.938,0.878,0.05,0.0,0.18,30,2.59,16.4
+01532,Vehicle Following,4.9,autopilot_stock,collision,6,2,1,True,False,0,True,True,True,True,ego behind,-1.07,0.965,0.994,0.967,0.85,0.09,,,0,0.0,10.0
+01532,Vehicle Following,4.9,rhd_lead@ep08,ok,6,0,0,False,False,0,True,True,True,True,ego behind,-0.96,0.931,0.988,0.985,0.902,0.05,,,18,1.54,11.0
+01532,Vehicle Following,4.9,rhd_lead@ep08+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,True,True,True,ego behind,-2.91,0.661,0.892,0.885,0.633,0.05,0.13,0.42,18,1.56,11.1
+00835,Vehicle Following,8.0,autopilot_stock,ok,5,0,0,False,False,0,True,True,True,False,ego behind,-22.82,0.158,0.832,0.797,0.152,1.21,,,0,0.0,14.9
+00835,Vehicle Following,8.0,rhd_lead@ep08,collision,5,2,1,True,True,0,True,False,True,True,ego behind,1.62,1.0,1.0,1.035,1.167,0.05,,,30,2.59,16.2
+00835,Vehicle Following,8.0,rhd_lead@ep08+ttc:0.7:0.2,ok,5,0,0,False,False,0,True,True,True,False,ego behind,-6.06,0.813,0.963,0.938,0.777,0.02,0.02,0.55,30,2.55,16.2
+01266,Vehicle Following,8.0,autopilot_stock,ok,6,0,0,False,False,0,False,,False,,,,1.0,1.0,0.731,1.568,0.0,,,0,0.0,15.0
+01266,Vehicle Following,8.0,rhd_lead@ep08,ok,6,0,0,False,False,0,False,,False,,,,0.108,0.851,0.412,0.026,0.0,,,30,2.29,16.5
+01266,Vehicle Following,8.0,rhd_lead@ep08+ttc:0.7:0.2,ok,6,0,0,False,False,0,False,,False,,,,0.153,0.859,0.408,0.098,0.0,0.38,0.05,30,2.26,16.5
+00595,Vehicle Following,8.0,autopilot_stock,ok,5,0,0,False,False,0,False,,False,,,,1.0,0.82,5.51,56.943,0.0,,,0,0.0,14.8
+00595,Vehicle Following,8.0,rhd_lead@ep08,ok,5,0,0,False,False,0,False,,False,,,,0.034,0.627,1.014,-0.005,0.0,,,30,2.52,16.5
+00595,Vehicle Following,8.0,rhd_lead@ep08+ttc:0.7:0.2,ok,5,0,0,False,False,0,False,,False,,,,0.033,0.626,0.998,-0.015,0.0,0.0,0.28,30,2.5,16.5
+01276,Cut Out,4.9,autopilot_stock,ok,5,0,0,False,False,0,False,,False,,,,0.916,0.918,1.86,42.455,0.01,,,0,0.0,9.8
+01276,Cut Out,4.9,rhd_lead@ep08,ok,5,0,0,False,False,0,False,,False,,,,0.916,0.911,0.974,0.918,0.0,,,18,1.6,11.0
+01276,Cut Out,4.9,rhd_lead@ep08+ttc:0.7:0.2,ok,5,0,0,False,False,0,False,,False,,,,0.86,0.799,0.922,0.673,0.0,0.0,0.17,18,1.58,11.0
+00022,Overtaking Left,8.0,autopilot_stock,ok,6,0,0,False,False,0,True,False,True,True,ego passes,27.47,1.0,1.0,1.53,2.33,0.0,,,0,0.0,14.9
+00022,Overtaking Left,8.0,rhd_lead@ep08,ok,6,0,0,False,False,0,True,True,True,True,ego passes,17.45,1.0,1.0,1.311,1.823,0.0,,,30,2.61,16.3
+00022,Overtaking Left,8.0,rhd_lead@ep08+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,True,True,True,ego passes,11.18,1.0,1.0,1.18,1.525,0.0,0.01,0.07,30,2.57,16.3
+00395,Vehicle Following,8.0,autopilot_stock,collision,6,2,1,False,False,0,True,False,False,,,,0.368,0.73,0.855,0.385,0.0,,,0,0.0,14.9
+00395,Vehicle Following,8.0,rhd_lead@ep08,collision,6,2,1,False,False,0,True,True,False,,,,1.0,0.836,1.089,1.09,0.0,,,30,2.49,16.5
+00395,Vehicle Following,8.0,rhd_lead@ep08+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,True,False,,,,0.441,0.696,0.736,0.447,0.0,0.03,1.48,30,2.48,16.5
+01228,Vehicle Following,8.0,autopilot_stock,ok,6,0,0,False,False,0,True,False,True,False,ego behind,14.86,1.0,1.0,1.187,2.462,0.38,,,0,0.0,14.9
+01228,Vehicle Following,8.0,rhd_lead@ep08,collision,6,2,1,True,True,0,True,False,True,False,ego behind,1.71,1.0,1.0,1.172,2.359,0.0,,,30,2.5,16.1
+01228,Vehicle Following,8.0,rhd_lead@ep08+ttc:0.7:0.2,off road,6,0,0,False,False,1,True,False,True,True,ego behind,-2.96,0.71,0.951,1.158,2.254,0.01,0.02,0.37,30,2.57,16.1
+00537,Vehicle Following,8.0,autopilot_stock,collision,6,1,0,False,False,0,False,,False,,,,0.911,0.816,1.564,8.491,0.0,,,0,0.0,15.0
+00537,Vehicle Following,8.0,rhd_lead@ep08,collision,6,1,0,False,False,1,False,,False,,,,0.283,0.712,1.099,0.286,0.0,,,30,2.49,16.7
+00537,Vehicle Following,8.0,rhd_lead@ep08+ttc:0.7:0.2,ok,6,0,0,False,False,0,False,,False,,,,0.0,0.664,1.088,0.086,0.0,0.0,0.02,30,2.51,16.6
+00579,Vehicle Following,8.0,autopilot_stock,ok,5,0,0,False,False,0,False,,False,,,,0.0,0.799,0.892,-0.0,0.01,,,0,0.0,14.9
+00579,Vehicle Following,8.0,rhd_lead@ep08,ok,5,0,0,False,False,0,False,,False,,,,0.458,0.892,0.944,0.581,0.0,,,30,2.55,16.6
+00579,Vehicle Following,8.0,rhd_lead@ep08+ttc:0.7:0.2,ok,5,0,0,False,False,0,False,,False,,,,0.445,0.889,0.935,0.536,0.01,0.0,0.0,30,2.52,16.6
+00592,Vehicle Following,8.0,autopilot_stock,ok,6,0,0,False,False,0,True,True,False,,,,0.616,0.909,0.79,0.638,0.0,,,0,0.0,14.9
+00592,Vehicle Following,8.0,rhd_lead@ep08,ok,6,0,0,False,False,0,True,True,False,,,,0.823,0.944,0.903,0.933,0.0,,,30,2.56,16.6
+00592,Vehicle Following,8.0,rhd_lead@ep08+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,True,False,,,,0.62,0.902,0.796,0.668,0.0,0.0,0.12,30,2.54,16.7
+00838,Vehicle Following,8.0,autopilot_stock,ok,6,0,0,False,False,0,True,True,True,False,ego behind,-6.86,0.583,0.93,0.931,0.571,0.44,,,0,0.0,15.0
+00838,Vehicle Following,8.0,rhd_lead@ep08,ok,6,0,0,False,False,0,True,False,True,False,ego behind,8.32,1.0,1.0,1.068,1.49,0.02,,,30,2.59,16.5
+00838,Vehicle Following,8.0,rhd_lead@ep08+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,False,True,False,ego behind,-5.47,0.687,0.944,0.94,0.665,0.0,0.03,0.48,30,2.55,16.7
+00843,Vehicle Following,8.0,autopilot_stock,ok,5,0,0,False,False,0,True,True,True,True,ego behind,-1.13,0.947,0.989,0.976,0.858,0.04,,,0,0.0,14.9
+00843,Vehicle Following,8.0,rhd_lead@ep08,collision,5,2,1,True,True,0,True,True,True,True,ego behind,3.31,1.0,1.0,1.034,1.26,0.05,,,30,2.52,16.4
+00843,Vehicle Following,8.0,rhd_lead@ep08+ttc:0.7:0.2,ok,5,0,0,False,False,0,True,True,True,True,ego behind,-1.19,0.929,0.986,0.974,0.887,0.02,0.0,0.56,30,2.51,16.6
+01399,Overtaking Right,4.9,autopilot_stock,ok,6,0,0,False,False,0,True,True,True,True,ego passes,17.81,1.0,0.959,1.38,2.212,0.0,,,0,0.0,10.0
+01399,Overtaking Right,4.9,rhd_lead@ep08,ok,6,0,0,False,False,0,True,True,True,True,ego passes,11.55,1.0,0.96,1.256,1.788,0.0,,,18,1.48,10.9
+01399,Overtaking Right,4.9,rhd_lead@ep08+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,True,True,True,ego passes,7.94,1.0,0.959,1.153,1.538,0.0,0.0,0.12,18,1.45,10.9
+01401,Overtaking Right,4.9,autopilot_stock,ok,6,0,0,False,False,0,True,True,True,False,ego passes,14.35,1.0,0.905,1.346,1.807,0.0,,,0,0.0,9.9
+01401,Overtaking Right,4.9,rhd_lead@ep08,collision,6,2,1,True,False,0,True,True,True,True,ego passes,15.42,1.0,0.906,1.351,1.821,0.0,,,18,1.53,10.8
+01401,Overtaking Right,4.9,rhd_lead@ep08+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,False,True,False,ego passes,-6.75,0.658,0.854,0.827,0.635,0.0,0.0,0.17,18,1.53,10.8
+00554,Vehicle Following,8.0,autopilot_stock,ok,6,0,0,False,False,0,True,False,False,,,,1.0,0.959,1.648,13.183,0.05,,,0,0.0,14.9
+00554,Vehicle Following,8.0,rhd_lead@ep08,collision,6,2,1,True,False,0,True,False,False,,,,1.0,0.959,1.079,3.114,0.06,,,30,2.5,16.8
+00554,Vehicle Following,8.0,rhd_lead@ep08+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,False,False,,,,1.0,0.959,0.99,1.701,0.08,0.0,0.26,30,2.55,16.7
+00307,Overtaking Right,8.0,autopilot_stock,ok,5,0,0,False,False,0,True,True,True,True,ego passes,3.45,1.0,0.911,1.163,1.293,0.0,,,0,0.0,14.7
+00307,Overtaking Right,8.0,rhd_lead@ep08,collision,5,2,1,True,True,0,True,False,True,False,ego passes,-8.47,0.593,0.69,0.621,0.617,0.0,,,30,2.45,16.2
+00307,Overtaking Right,8.0,rhd_lead@ep08+ttc:0.7:0.2,ok,5,0,0,False,False,0,True,True,True,True,ego passes,-3.42,0.625,0.66,0.827,0.6,0.0,0.0,0.51,30,2.42,16.1
+00463,Vehicle Following,8.0,autopilot_stock,ok,6,0,0,False,False,0,True,False,False,,,,0.0,0.667,0.935,-0.0,0.0,,,0,0.0,14.9
+00463,Vehicle Following,8.0,rhd_lead@ep08,ok,6,0,0,False,False,0,True,False,False,,,,0.11,0.685,0.943,0.095,0.0,,,30,2.46,16.6
+00463,Vehicle Following,8.0,rhd_lead@ep08+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,False,False,,,,0.093,0.647,0.842,0.079,0.0,0.0,0.19,30,2.44,16.6
+00010,Overtaking Left,8.0,autopilot_stock,ok,6,0,0,False,False,0,True,False,True,False,ego passes,-8.21,0.533,0.868,0.823,0.52,0.38,,,0,0.0,14.9
+00010,Overtaking Left,8.0,rhd_lead@ep08,ok,6,0,0,False,False,0,True,True,True,True,ego passes,10.31,1.0,0.964,1.207,1.578,0.0,,,30,2.58,16.0
+00010,Overtaking Left,8.0,rhd_lead@ep08+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,True,True,True,ego passes,2.37,1.0,0.946,1.05,1.134,0.0,0.02,0.01,30,2.57,16.1
+00492,Vehicle Following,8.0,autopilot_stock,ok,4,0,0,False,False,0,True,False,True,False,ego behind,8.92,0.965,0.989,3.67,5.847,0.0,,,0,0.0,14.8
+00492,Vehicle Following,8.0,rhd_lead@ep08,collision,4,3,3,True,True,1,True,False,True,False,ego behind,9.49,0.998,0.951,1.465,2.187,0.0,,,30,2.42,16.6
+00492,Vehicle Following,8.0,rhd_lead@ep08+ttc:0.7:0.2,ok,4,0,0,False,False,0,True,True,True,True,ego behind,1.34,0.965,0.989,1.127,1.336,0.01,0.0,0.29,30,2.5,16.4
+01186,Vehicle Following,8.0,autopilot_stock,ok,6,0,0,False,False,0,False,,False,,,,0.0,0.5,1.323,-0.0,0.0,,,0,0.0,14.9
+01186,Vehicle Following,8.0,rhd_lead@ep08,ok,6,0,0,False,False,0,False,,False,,,,0.162,0.527,1.369,0.257,0.0,,,30,2.35,16.5
+01186,Vehicle Following,8.0,rhd_lead@ep08+ttc:0.7:0.2,ok,6,0,0,False,False,0,False,,False,,,,0.156,0.526,1.368,0.265,0.0,0.02,0.17,30,2.34,16.5
+00987,Vehicle Following,8.0,autopilot_stock,collision,6,2,1,False,False,0,False,,False,,,,0.802,0.568,1.756,67.229,0.03,,,0,0.0,14.9
+00987,Vehicle Following,8.0,rhd_lead@ep08,collision,6,3,2,False,False,0,False,,False,,,,0.082,0.359,1.009,0.075,0.0,,,30,2.59,16.6
+00987,Vehicle Following,8.0,rhd_lead@ep08+ttc:0.7:0.2,ok,6,0,0,False,False,0,False,,False,,,,0.099,0.471,0.769,0.105,0.0,0.0,0.78,30,2.54,16.5
+00555,Vehicle Following,8.0,autopilot_stock,ok,6,0,0,False,False,0,True,True,False,,,,1.0,0.87,1.125,1.525,0.0,,,0,0.0,14.9
+00555,Vehicle Following,8.0,rhd_lead@ep08,ok,6,0,0,False,False,0,True,False,False,,,,1.0,0.872,1.284,2.098,0.0,,,30,2.56,16.7
+00555,Vehicle Following,8.0,rhd_lead@ep08+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,False,False,,,,1.0,0.868,1.182,1.773,0.0,0.0,0.12,30,2.54,16.7
+00317,Overtaking Right,8.0,autopilot_stock,collision,4,3,3,True,False,0,True,False,True,False,ego ahead,-7.99,0.551,0.784,0.871,0.539,0.65,,,0,0.0,14.8
+00317,Overtaking Right,8.0,rhd_lead@ep08,collision,4,2,1,False,False,0,True,True,True,False,ego ahead,13.28,1.0,0.958,1.181,1.83,0.0,,,30,2.57,16.1
+00317,Overtaking Right,8.0,rhd_lead@ep08+ttc:0.7:0.2,ok,4,0,0,False,False,0,True,True,True,False,ego ahead,14.34,1.0,0.94,1.156,1.878,0.0,0.15,1.05,30,2.55,16.1
+01218,Vehicle Following,8.0,autopilot_stock,ok,6,0,0,False,False,0,False,,False,,,,1.0,0.61,1.086,0.466,0.0,,,0,0.0,14.9
+01218,Vehicle Following,8.0,rhd_lead@ep08,ok,6,0,0,False,False,0,False,,False,,,,0.004,0.444,1.042,0.12,0.0,,,30,2.52,16.7
+01218,Vehicle Following,8.0,rhd_lead@ep08+ttc:0.7:0.2,ok,6,0,0,False,False,0,False,,False,,,,0.004,0.444,1.049,0.137,0.02,0.0,0.02,30,2.54,16.8
+00431,Vehicle Following,8.0,autopilot_stock,ok,6,0,0,False,False,0,False,,False,,,,0.288,0.589,1.498,0.345,0.0,,,0,0.0,14.9
+00431,Vehicle Following,8.0,rhd_lead@ep08,ok,6,0,0,False,False,0,False,,False,,,,0.104,0.559,1.414,0.069,0.0,,,30,2.49,16.5
+00431,Vehicle Following,8.0,rhd_lead@ep08+ttc:0.7:0.2,ok,6,0,0,False,False,0,False,,False,,,,0.059,0.551,1.411,0.05,0.0,0.0,0.2,30,2.47,16.5
+01229,Vehicle Following,8.0,autopilot_stock,ok,6,0,0,False,False,0,True,True,False,,,,1.0,1.0,1.96,12.771,0.0,,,0,0.0,14.9
+01229,Vehicle Following,8.0,rhd_lead@ep08,ok,6,0,0,False,False,0,True,True,False,,,,1.0,1.0,1.108,2.513,0.0,,,30,2.51,16.4
+01229,Vehicle Following,8.0,rhd_lead@ep08+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,True,False,,,,1.0,1.0,1.115,2.588,0.0,0.0,0.07,30,2.52,16.4
+00354,Vehicle Following,8.0,autopilot_stock,ok,6,0,0,False,False,0,True,False,True,False,ego behind,6.45,1.0,0.973,1.078,1.205,0.07,,,0,0.0,14.9
+00354,Vehicle Following,8.0,rhd_lead@ep08,ok,6,0,0,False,False,0,True,False,True,False,ego behind,27.0,1.0,0.973,1.283,1.796,0.08,,,30,2.49,16.1
+00354,Vehicle Following,8.0,rhd_lead@ep08+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,False,True,False,ego behind,25.14,1.0,0.973,1.261,1.737,0.0,0.0,0.16,30,2.48,16.2
+00060,Overtaking Left,8.0,autopilot_stock,ok,6,0,0,False,False,0,True,False,True,False,ego passes,-10.21,0.249,0.843,0.728,0.243,0.74,,,0,0.0,15.0
+00060,Overtaking Left,8.0,rhd_lead@ep08,collision,6,2,1,True,False,0,True,False,True,False,ego passes,-6.09,0.625,0.906,0.821,0.581,0.13,,,30,2.47,16.0
+00060,Overtaking Left,8.0,rhd_lead@ep08+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,False,True,False,ego passes,-5.68,0.576,0.871,0.772,0.558,0.11,0.08,0.67,30,2.49,16.1
+00017,Overtaking Left,8.0,autopilot_stock,ok,6,0,0,False,False,0,True,False,True,False,ego passes,-19.41,0.0,0.833,1.135,1.471,0.03,,,0,0.0,14.9
+00017,Overtaking Left,8.0,rhd_lead@ep08,collision,6,1,0,True,False,1,True,True,True,True,ego passes,3.33,1.0,1.0,1.04,1.135,0.0,,,30,2.45,15.8
+00017,Overtaking Left,8.0,rhd_lead@ep08+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,False,True,False,ego passes,-17.22,0.39,0.801,0.702,0.252,0.36,0.29,1.16,30,2.61,15.9
+00003,Cut Out,8.0,autopilot_stock,ok,6,0,0,False,False,0,False,,False,,,,1.0,0.985,1.206,30.508,0.03,,,0,0.0,14.9
+00003,Cut Out,8.0,rhd_lead@ep08,ok,6,0,0,False,False,0,False,,False,,,,0.523,0.906,0.989,0.51,0.0,,,30,2.63,16.7
+00003,Cut Out,8.0,rhd_lead@ep08+ttc:0.7:0.2,ok,6,0,0,False,False,0,False,,False,,,,1.0,0.965,0.975,0.912,0.0,0.14,0.33,30,2.6,16.7
+00842,Vehicle Following,8.0,autopilot_stock,ok,6,0,0,False,False,0,True,True,True,False,ego behind,-13.6,0.225,0.871,0.88,0.213,0.64,,,0,0.0,14.9
+00842,Vehicle Following,8.0,rhd_lead@ep08,collision,6,2,1,True,True,0,True,False,True,False,ego behind,8.77,1.0,1.0,1.072,1.496,0.03,,,30,2.61,16.4
+00842,Vehicle Following,8.0,rhd_lead@ep08+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,True,True,True,ego behind,0.24,1.0,1.0,0.997,0.998,0.0,0.0,0.26,30,2.57,16.4
+00593,Vehicle Following,8.0,autopilot_stock,ok,6,0,0,False,False,0,False,,False,,,,0.053,0.748,0.833,0.002,0.0,,,0,0.0,15.0
+00593,Vehicle Following,8.0,rhd_lead@ep08,collision,6,2,1,True,True,0,False,,False,,,,0.736,0.865,1.177,2.086,0.0,,,30,2.56,16.7
+00593,Vehicle Following,8.0,rhd_lead@ep08+ttc:0.7:0.2,ok,6,0,0,False,False,0,False,,False,,,,0.332,0.794,0.883,0.332,0.0,0.0,0.03,30,2.53,16.6
+00393,Vehicle Following,8.0,autopilot_stock,ok,6,0,0,False,False,0,False,,False,,,,0.0,0.833,0.776,-0.0,0.0,,,0,0.0,14.9
+00393,Vehicle Following,8.0,rhd_lead@ep08,ok,6,0,0,False,False,0,False,,False,,,,0.035,0.838,0.785,0.143,0.0,,,30,2.49,16.6
+00393,Vehicle Following,8.0,rhd_lead@ep08+ttc:0.7:0.2,ok,6,0,0,False,False,0,False,,False,,,,0.095,0.849,0.795,0.239,0.0,0.0,0.0,30,2.46,16.5
+01224,Vehicle Following,8.0,autopilot_stock,ok,6,0,0,False,False,0,True,True,True,True,ego behind,-3.8,0.738,0.951,0.923,0.716,0.45,,,0,0.0,14.9
+01224,Vehicle Following,8.0,rhd_lead@ep08,ok,6,0,0,False,False,0,True,False,True,False,ego behind,-9.57,0.371,0.892,0.863,0.332,0.14,,,30,2.6,16.8
+01224,Vehicle Following,8.0,rhd_lead@ep08+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,False,True,False,ego behind,-7.9,0.491,0.91,0.881,0.448,0.07,0.0,0.08,30,2.61,16.8
+01147,Vehicle Following,8.0,autopilot_stock,ok,6,0,0,False,False,0,True,False,True,False,ego behind,34.23,1.0,1.0,1.348,2.689,0.0,,,0,0.0,14.8
+01147,Vehicle Following,8.0,rhd_lead@ep08,collision,6,2,1,True,True,0,True,False,True,False,ego behind,9.02,1.0,1.0,1.089,1.442,0.0,,,30,2.44,16.2
+01147,Vehicle Following,8.0,rhd_lead@ep08+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,True,True,False,ego behind,6.54,1.0,1.0,1.06,1.32,0.0,0.0,0.24,30,2.43,16.3
+00601,Vehicle Following,8.0,autopilot_stock,ok,5,0,0,False,False,0,False,,False,,,,0.0,0.795,0.868,-0.001,0.0,,,0,0.0,14.9
+00601,Vehicle Following,8.0,rhd_lead@ep08,ok,5,0,0,False,False,0,False,,False,,,,0.19,0.832,0.919,0.652,0.0,,,30,2.57,16.8
+00601,Vehicle Following,8.0,rhd_lead@ep08+ttc:0.7:0.2,ok,5,0,0,False,False,0,False,,False,,,,0.19,0.831,0.89,0.679,0.02,0.0,0.0,30,2.56,16.7
+00369,Vehicle Following,8.0,autopilot_stock,ok,6,0,0,False,False,0,False,,False,,,,0.889,0.954,0.905,1.967,0.0,,,0,0.0,14.9
+00369,Vehicle Following,8.0,rhd_lead@ep08,ok,6,0,0,False,False,0,False,,False,,,,1.0,0.97,0.781,0.639,0.0,,,30,2.43,16.6
+00369,Vehicle Following,8.0,rhd_lead@ep08+ttc:0.7:0.2,ok,6,0,0,False,False,0,False,,False,,,,1.0,0.968,0.766,0.569,0.0,0.0,0.04,30,2.37,16.6
+00986,Vehicle Following,8.0,autopilot_stock,ok,5,0,0,False,False,0,False,,False,,,,1.0,0.995,3.014,40.711,0.0,,,0,0.0,14.8
+00986,Vehicle Following,8.0,rhd_lead@ep08,ok,5,0,0,False,False,0,False,,False,,,,0.0,0.795,1.16,0.086,0.0,,,30,2.61,16.5
+00986,Vehicle Following,8.0,rhd_lead@ep08+ttc:0.7:0.2,ok,5,0,0,False,False,0,False,,False,,,,0.0,0.595,1.092,0.081,0.0,0.0,0.78,30,2.58,16.5
+01141,Vehicle Following,8.0,autopilot_stock,ok,6,0,0,False,False,0,True,False,True,False,ego behind,-43.15,0.0,0.671,1.155,1.357,0.01,,,0,0.0,14.9
+01141,Vehicle Following,8.0,rhd_lead@ep08,collision,6,2,1,True,True,0,True,True,True,False,ego behind,5.6,1.0,0.827,1.122,1.196,0.0,,,30,2.47,16.8
+01141,Vehicle Following,8.0,rhd_lead@ep08+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,True,True,False,ego behind,-14.58,0.576,0.798,0.807,0.547,0.02,0.0,0.53,30,2.57,16.9
+00984,Vehicle Following,8.0,autopilot_stock,ok,6,0,0,False,False,0,False,,False,,,,0.0,0.628,1.04,0.609,0.0,,,0,0.0,14.9
+00984,Vehicle Following,8.0,rhd_lead@ep08,ok,6,0,0,False,False,0,False,,False,,,,0.0,0.624,1.041,0.639,0.0,,,30,2.6,16.6
+00984,Vehicle Following,8.0,rhd_lead@ep08+ttc:0.7:0.2,ok,6,0,0,False,False,0,False,,False,,,,0.0,0.627,1.039,0.518,0.0,0.0,0.08,30,2.62,16.6
+00568,Vehicle Following,8.0,autopilot_stock,collision,6,2,1,False,False,0,True,False,False,,,,0.133,0.475,1.141,0.141,0.0,,,0,0.0,14.9
+00568,Vehicle Following,8.0,rhd_lead@ep08,collision,6,3,2,True,True,0,True,True,False,,,,1.0,0.629,1.289,1.447,0.0,,,30,2.51,16.6
+00568,Vehicle Following,8.0,rhd_lead@ep08+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,True,False,,,,0.794,0.736,1.174,0.833,0.0,0.0,0.32,30,2.53,16.7
+00002,Cut Out,8.0,autopilot_stock,ok,5,0,0,False,False,0,True,True,True,True,ego ahead,-0.46,1.0,1.0,0.992,0.991,0.0,,,0,0.0,14.8
+00002,Cut Out,8.0,rhd_lead@ep08,ok,5,0,0,False,False,0,True,True,True,True,ego ahead,-3.32,0.828,0.966,0.958,0.764,0.0,,,30,2.64,16.7
+00002,Cut Out,8.0,rhd_lead@ep08+ttc:0.7:0.2,ok,5,0,0,False,False,0,True,True,True,True,ego ahead,-2.13,0.797,0.959,0.913,0.734,0.0,0.0,0.15,30,2.56,16.6
+00655,Vehicle Following,8.0,autopilot_stock,collision,6,2,1,True,False,0,True,True,True,False,ego behind,-25.03,0.307,0.865,0.826,0.285,0.64,,,0,0.0,14.9
+00655,Vehicle Following,8.0,rhd_lead@ep08,ok,6,0,0,False,False,0,True,True,True,False,ego behind,-5.3,0.881,0.98,0.966,0.859,0.01,,,30,2.53,16.3
+00655,Vehicle Following,8.0,rhd_lead@ep08+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,True,True,False,ego behind,-8.65,0.781,0.963,0.943,0.754,0.0,0.0,0.01,30,2.55,16.4
+00961,Vehicle Following,8.0,autopilot_stock,ok,6,0,0,False,False,0,True,False,True,False,ego behind,42.55,1.0,0.864,2.374,6.097,0.0,,,0,0.0,14.9
+00961,Vehicle Following,8.0,rhd_lead@ep08,ok,6,0,0,False,False,0,True,True,True,True,ego behind,1.33,1.0,0.864,1.214,1.159,0.0,,,30,2.49,16.5
+00961,Vehicle Following,8.0,rhd_lead@ep08+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,False,True,True,ego behind,1.5,1.0,0.914,1.128,1.176,0.0,0.0,0.53,30,2.5,16.5
+00669,Vehicle Following,8.0,autopilot_stock,ok,6,0,0,False,False,0,True,True,True,True,ego behind,-3.81,0.848,0.873,0.963,0.863,0.37,,,0,0.0,14.9
+00669,Vehicle Following,8.0,rhd_lead@ep08,ok,6,0,0,False,False,0,True,False,True,False,ego behind,26.89,1.0,0.899,1.322,2.124,0.0,,,30,2.49,16.1
+00669,Vehicle Following,8.0,rhd_lead@ep08+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,True,True,True,ego behind,0.92,1.0,0.897,0.998,1.044,0.05,0.04,0.46,30,2.44,16.0
+00565,Vehicle Following,8.0,autopilot_stock,collision,6,3,2,True,False,0,True,True,True,False,ego behind,-18.16,0.182,0.756,0.731,0.18,1.82,,,0,0.0,14.9
+00565,Vehicle Following,8.0,rhd_lead@ep08,collision,6,2,1,True,False,0,True,True,True,True,ego behind,-3.3,0.884,0.981,0.966,0.842,0.0,,,30,2.54,16.3
+00565,Vehicle Following,8.0,rhd_lead@ep08+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,True,True,True,ego behind,-2.97,0.898,0.974,0.956,0.855,0.0,0.03,0.45,30,2.52,16.3
+01362,Overtaking Right,4.9,autopilot_stock,ok,6,0,0,False,False,0,True,False,True,False,ego passes,-7.87,0.12,0.836,0.252,0.103,0.42,,,0,0.0,9.9
+01362,Overtaking Right,4.9,rhd_lead@ep08,ok,6,0,0,False,False,0,True,True,True,True,ego passes,0.85,1.0,0.984,1.039,1.083,0.0,,,18,1.57,11.3
+01362,Overtaking Right,4.9,rhd_lead@ep08+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,False,True,False,ego passes,-4.57,0.557,0.91,0.557,0.483,0.17,0.0,0.2,18,1.58,11.3
+00424,Vehicle Following,8.0,autopilot_stock,off road,5,0,0,False,False,1,True,True,True,False,ego behind,-6.16,0.69,0.938,1.155,1.989,0.01,,,0,0.0,14.8
+00424,Vehicle Following,8.0,rhd_lead@ep08,collision,5,2,1,True,True,1,True,True,True,True,ego behind,-2.66,0.921,0.984,1.074,1.389,0.03,,,30,2.63,16.0
+00424,Vehicle Following,8.0,rhd_lead@ep08+ttc:0.7:0.2,off road,5,0,0,False,False,1,True,True,True,True,ego behind,-0.19,1.0,0.981,0.923,0.676,0.05,0.02,0.5,30,2.61,16.1
+00580,Vehicle Following,8.0,autopilot_stock,ok,6,0,0,False,False,0,False,,False,,,,0.0,0.769,0.84,-0.0,0.0,,,0,0.0,14.9
+00580,Vehicle Following,8.0,rhd_lead@ep08,ok,6,0,0,False,False,0,False,,False,,,,0.0,0.807,0.903,0.595,0.0,,,30,2.53,16.7
+00580,Vehicle Following,8.0,rhd_lead@ep08+ttc:0.7:0.2,ok,6,0,0,False,False,0,False,,False,,,,0.0,0.807,0.906,0.703,0.0,0.0,0.01,30,2.55,16.7
+00570,Vehicle Following,8.0,autopilot_stock,ok,6,0,0,False,False,0,True,False,False,,,,0.09,0.529,1.277,0.086,0.0,,,0,0.0,14.9
+00570,Vehicle Following,8.0,rhd_lead@ep08,ok,6,0,0,False,False,0,True,False,False,,,,0.05,0.523,1.23,0.009,0.0,,,30,2.55,16.7
+00570,Vehicle Following,8.0,rhd_lead@ep08+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,False,False,,,,0.04,0.515,1.259,0.043,0.0,0.0,0.05,30,2.53,16.6
+01265,Vehicle Following,8.0,autopilot_stock,off road,6,0,0,False,False,1,False,,False,,,,1.0,0.627,10.63,86.884,0.0,,,0,0.0,14.9
+01265,Vehicle Following,8.0,rhd_lead@ep08,off road,6,0,0,False,False,1,False,,False,,,,0.443,0.536,1.581,0.594,0.0,,,30,2.3,16.4
+01265,Vehicle Following,8.0,rhd_lead@ep08+ttc:0.7:0.2,off road,6,0,0,False,False,1,False,,False,,,,0.293,0.461,1.516,0.382,0.0,0.23,0.4,30,2.3,16.4
+01586,Vehicle Following,4.9,autopilot_stock,ok,6,0,0,False,False,0,True,False,True,False,ego behind,5.7,1.0,0.907,1.152,1.575,0.0,,,0,0.0,9.9
+01586,Vehicle Following,4.9,rhd_lead@ep08,ok,6,0,0,False,False,0,True,True,True,True,ego behind,-0.75,0.996,0.906,0.994,0.941,0.0,,,18,1.54,11.1
+01586,Vehicle Following,4.9,rhd_lead@ep08+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,True,True,True,ego behind,-1.53,0.903,0.807,0.873,0.865,0.06,0.14,0.26,18,1.55,11.1
+01600,Vehicle Following,4.9,autopilot_stock,ok,6,0,0,False,False,0,False,,False,,,,0.0,0.773,0.823,-0.0,0.0,,,0,0.0,9.9
+01600,Vehicle Following,4.9,rhd_lead@ep08,ok,6,0,0,False,False,0,False,,False,,,,0.322,0.827,0.847,0.415,0.0,,,18,1.44,11.0
+01600,Vehicle Following,4.9,rhd_lead@ep08+ttc:0.7:0.2,ok,6,0,0,False,False,0,False,,False,,,,0.322,0.812,0.849,0.39,0.0,0.03,0.02,18,1.44,11.1
+00545,Vehicle Following,8.0,autopilot_stock,ok,5,0,0,False,False,0,False,,False,,,,0.0,0.777,0.833,-0.0,0.0,,,0,0.0,14.9
+00545,Vehicle Following,8.0,rhd_lead@ep08,ok,5,0,0,False,False,0,False,,False,,,,0.23,0.817,0.854,0.279,0.0,,,30,2.56,16.7
+00545,Vehicle Following,8.0,rhd_lead@ep08+ttc:0.7:0.2,ok,5,0,0,False,False,0,False,,False,,,,0.228,0.827,0.85,0.272,0.0,0.0,0.1,30,2.56,16.7
+00668,Vehicle Following,8.0,autopilot_stock,ok,6,0,0,False,False,0,True,True,True,False,ego behind,-12.52,0.344,0.877,0.874,0.284,0.74,,,0,0.0,14.9
+00668,Vehicle Following,8.0,rhd_lead@ep08,ok,6,0,0,False,False,0,True,True,True,True,ego behind,-1.71,0.939,0.979,0.956,0.901,0.01,,,30,2.54,16.4
+00668,Vehicle Following,8.0,rhd_lead@ep08+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,True,True,True,ego behind,-3.46,0.832,0.952,0.926,0.798,0.02,0.0,0.51,30,2.55,16.4
+00174,Overtaking Left,8.0,autopilot_stock,ok,4,0,0,False,False,0,True,True,True,True,ego passes,-1.85,0.998,0.995,0.955,0.89,0.25,,,0,0.0,14.7
+00174,Overtaking Left,8.0,rhd_lead@ep08,ok,4,0,0,False,False,0,True,True,True,True,ego passes,3.35,1.0,0.997,1.076,1.157,0.0,,,30,2.53,16.2
+00174,Overtaking Left,8.0,rhd_lead@ep08+ttc:0.7:0.2,ok,4,0,0,False,False,0,True,True,True,True,ego passes,4.2,1.0,0.997,1.087,1.197,0.0,0.0,0.0,30,2.53,16.2
+01612,Vehicle Following,4.9,autopilot_stock,ok,4,0,0,False,False,0,True,True,True,True,ego behind,-2.07,0.874,0.844,0.94,0.838,0.07,,,0,0.0,9.7
+01612,Vehicle Following,4.9,rhd_lead@ep08,collision,4,2,1,True,True,0,True,True,True,True,ego behind,0.26,1.0,0.875,1.004,1.021,0.0,,,18,1.52,10.6
+01612,Vehicle Following,4.9,rhd_lead@ep08+ttc:0.7:0.2,ok,4,0,0,False,False,0,True,True,True,True,ego behind,-1.09,0.914,0.854,0.963,0.907,0.0,0.0,0.26,18,1.54,10.6
+00479,Vehicle Following,8.0,autopilot_stock,ok,6,0,0,False,False,0,False,,False,,,,0.0,0.613,0.751,-0.0,0.0,,,0,0.0,14.9
+00479,Vehicle Following,8.0,rhd_lead@ep08,ok,6,0,0,False,False,0,False,,False,,,,0.645,0.726,1.452,1.94,0.0,,,30,2.46,16.5
+00479,Vehicle Following,8.0,rhd_lead@ep08+ttc:0.7:0.2,ok,6,0,0,False,False,0,False,,False,,,,0.041,0.626,0.846,0.23,0.0,0.0,0.06,30,2.41,16.5
+01608,Vehicle Following,4.9,autopilot_stock,ok,6,0,0,False,False,0,True,True,True,True,ego behind,-1.53,0.93,0.822,0.98,0.904,0.03,,,0,0.0,9.9
+01608,Vehicle Following,4.9,rhd_lead@ep08,collision,6,2,1,True,False,0,True,False,True,False,ego behind,2.18,1.0,0.833,1.038,1.124,0.01,,,18,1.54,10.8
+01608,Vehicle Following,4.9,rhd_lead@ep08+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,True,True,True,ego behind,-0.44,1.0,0.833,0.993,0.961,0.0,0.0,0.44,18,1.55,11.1
+01230,Vehicle Following,8.0,autopilot_stock,ok,5,0,0,False,False,0,True,False,False,,,,1.0,0.999,1.165,8.338,0.01,,,0,0.0,14.9
+01230,Vehicle Following,8.0,rhd_lead@ep08,ok,5,0,0,False,False,0,True,False,False,,,,1.0,1.0,1.157,7.946,0.0,,,30,2.52,16.8
+01230,Vehicle Following,8.0,rhd_lead@ep08+ttc:0.7:0.2,ok,5,0,0,False,False,0,True,True,False,,,,0.871,0.961,0.945,0.88,0.0,0.01,0.37,30,2.56,17.0
+00567,Vehicle Following,8.0,autopilot_stock,ok,6,0,0,False,False,0,True,True,False,,,,0.678,0.944,0.86,0.677,0.0,,,0,0.0,14.9
+00567,Vehicle Following,8.0,rhd_lead@ep08,collision,6,2,1,True,False,0,True,False,False,,,,0.058,0.761,0.559,0.065,0.0,,,30,2.6,16.8
+00567,Vehicle Following,8.0,rhd_lead@ep08+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,False,False,,,,0.035,0.704,0.468,0.031,0.0,0.11,0.56,30,2.57,16.7
+00604,Vehicle Following,8.0,autopilot_stock,ok,6,0,0,False,False,0,True,False,False,,,,1.0,0.808,2.67,5.378,0.0,,,0,0.0,14.9
+00604,Vehicle Following,8.0,rhd_lead@ep08,ok,6,0,0,False,False,0,True,True,False,,,,1.0,0.797,1.245,1.075,0.0,,,30,2.48,16.7
+00604,Vehicle Following,8.0,rhd_lead@ep08+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,True,False,,,,1.0,0.797,1.268,1.173,0.0,0.0,0.0,30,2.48,16.6
+00219,Overtaking Left,8.0,autopilot_stock,ok,5,0,0,False,False,0,True,True,True,False,ego passes,-16.11,0.0,0.792,1.079,1.332,0.0,,,0,0.0,14.8
+00219,Overtaking Left,8.0,rhd_lead@ep08,collision,5,1,0,True,False,1,True,True,True,True,ego passes,1.45,1.0,0.992,0.998,1.05,0.01,,,30,2.45,15.7
+00219,Overtaking Left,8.0,rhd_lead@ep08+ttc:0.7:0.2,ok,5,0,0,False,False,0,True,True,True,True,ego passes,-11.68,0.895,0.971,0.848,0.517,0.01,0.0,0.06,30,2.58,15.8
+00985,Vehicle Following,8.0,autopilot_stock,ok,6,0,0,False,False,0,False,,False,,,,0.229,0.852,1.046,2.743,0.0,,,0,0.0,14.9
+00985,Vehicle Following,8.0,rhd_lead@ep08,ok,6,0,0,False,False,0,False,,False,,,,0.177,0.843,1.009,0.086,0.0,,,30,2.62,16.6
+00985,Vehicle Following,8.0,rhd_lead@ep08+ttc:0.7:0.2,ok,6,0,0,False,False,0,False,,False,,,,0.098,0.83,1.007,0.072,0.0,0.0,0.0,30,2.59,16.6
+00520,Vehicle Following,8.0,autopilot_stock,ok,5,0,0,False,False,0,True,True,False,,,,1.0,0.8,1.135,1.115,0.0,,,0,0.0,14.8
+00520,Vehicle Following,8.0,rhd_lead@ep08,ok,5,0,0,False,False,0,True,True,False,,,,0.818,0.764,0.999,0.741,0.0,,,30,2.54,16.6
+00520,Vehicle Following,8.0,rhd_lead@ep08+ttc:0.7:0.2,ok,5,0,0,False,False,0,True,True,False,,,,0.763,0.753,0.98,0.7,0.0,0.0,0.0,30,2.54,16.6
+01444,Vehicle Following,4.9,autopilot_stock,ok,5,0,0,False,False,0,False,,False,,,,1.0,1.0,5.382,56.315,0.0,,,0,0.0,9.8
+01444,Vehicle Following,4.9,rhd_lead@ep08,ok,5,0,0,False,False,0,False,,False,,,,0.114,0.823,0.917,0.125,0.0,,,18,1.51,11.0
+01444,Vehicle Following,4.9,rhd_lead@ep08+ttc:0.7:0.2,ok,5,0,0,False,False,0,False,,False,,,,0.004,0.796,0.868,0.025,0.0,0.21,0.35,18,1.5,11.0
+00473,Vehicle Following,8.0,autopilot_stock,ok,6,0,0,False,False,0,True,False,True,False,ego behind,-13.3,0.095,0.722,1.701,3.835,0.0,,,0,0.0,14.9
+00473,Vehicle Following,8.0,rhd_lead@ep08,ok,6,0,0,False,False,0,True,False,True,False,ego behind,19.39,1.0,0.875,1.342,2.365,0.01,,,30,2.5,16.4
+00473,Vehicle Following,8.0,rhd_lead@ep08+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,True,True,True,ego behind,-3.92,0.755,0.818,0.911,0.731,0.06,0.01,0.68,30,2.64,16.5
+01508,Vehicle Following,4.9,autopilot_stock,ok,6,0,0,False,False,0,True,False,True,False,ego behind,-15.2,0.337,0.886,1.073,1.428,0.0,,,0,0.0,9.9
+01508,Vehicle Following,4.9,rhd_lead@ep08,ok,6,0,0,False,False,0,True,True,True,True,ego behind,3.97,1.0,0.995,1.021,1.162,0.0,,,18,1.58,10.8
+01508,Vehicle Following,4.9,rhd_lead@ep08+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,False,True,True,ego behind,1.2,1.0,0.995,0.987,1.04,0.0,0.02,0.09,18,1.58,10.8
+00569,Vehicle Following,8.0,autopilot_stock,ok,6,0,0,False,False,0,False,,False,,,,0.0,0.667,1.071,-0.0,0.0,,,0,0.0,14.9
+00569,Vehicle Following,8.0,rhd_lead@ep08,ok,6,0,0,False,False,0,False,,False,,,,0.01,0.668,1.076,0.081,0.0,,,30,2.54,16.7
+00569,Vehicle Following,8.0,rhd_lead@ep08+ttc:0.7:0.2,ok,6,0,0,False,False,0,False,,False,,,,0.061,0.674,1.061,0.019,0.0,0.0,0.02,30,2.53,16.7
+01098,Vehicle Following,8.0,autopilot_stock,ok,3,0,0,False,False,0,True,False,True,False,ego behind,-10.48,0.64,0.88,0.858,0.638,0.8,,,0,0.0,14.5
+01098,Vehicle Following,8.0,rhd_lead@ep08,collision,3,2,1,True,True,0,True,True,True,False,ego behind,8.7,1.0,1.0,1.107,1.297,0.0,,,30,2.56,15.6
+01098,Vehicle Following,8.0,rhd_lead@ep08+ttc:0.7:0.2,ok,3,0,0,False,False,0,True,False,True,True,ego behind,-3.32,0.863,0.946,0.907,0.828,0.0,0.0,0.13,30,2.49,15.6
+00988,Vehicle Following,8.0,autopilot_stock,ok,5,0,0,False,False,0,False,,False,,,,0.159,0.832,1.677,56.514,0.0,,,0,0.0,14.8
+00988,Vehicle Following,8.0,rhd_lead@ep08,ok,5,0,0,False,False,0,False,,False,,,,0.085,0.817,0.973,0.076,0.0,,,30,2.53,16.4
+00988,Vehicle Following,8.0,rhd_lead@ep08+ttc:0.7:0.2,ok,5,0,0,False,False,0,False,,False,,,,0.137,0.815,0.892,0.09,0.0,0.0,0.2,30,2.54,16.5
+00092,Overtaking Left,8.0,autopilot_stock,ok,6,0,0,False,False,0,True,True,True,True,ego passes,-14.27,0.649,0.9,0.886,0.651,0.45,,,0,0.0,14.9
+00092,Overtaking Left,8.0,rhd_lead@ep08,ok,6,0,0,False,False,0,True,True,True,True,ego passes,26.47,1.0,0.958,1.208,1.657,0.0,,,30,2.53,16.0
+00092,Overtaking Left,8.0,rhd_lead@ep08+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,True,True,True,ego passes,12.48,1.0,0.958,1.093,1.309,0.0,0.0,0.08,30,2.49,16.1
+00712,Vehicle Following,8.0,autopilot_stock,ok,6,0,0,False,False,0,True,False,False,,,,0.0,0.833,0.888,-0.0,0.0,,,0,0.0,14.9
+00712,Vehicle Following,8.0,rhd_lead@ep08,collision,6,2,1,True,True,0,True,True,False,,,,0.955,0.992,1.044,2.316,0.0,,,30,2.3,16.4
+00712,Vehicle Following,8.0,rhd_lead@ep08+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,False,False,,,,0.434,0.906,0.918,0.484,0.0,0.0,0.12,30,2.26,16.4
+01614,Vehicle Following,4.9,autopilot_stock,off road,6,0,0,False,False,1,False,,False,,,,1.0,0.587,2.148,10.648,0.0,,,0,0.0,10.0
+01614,Vehicle Following,4.9,rhd_lead@ep08,off road,6,0,0,False,False,1,False,,False,,,,0.196,0.444,1.397,0.236,0.0,,,18,1.48,10.9
+01614,Vehicle Following,4.9,rhd_lead@ep08+ttc:0.7:0.2,off road,6,0,0,False,False,1,False,,False,,,,0.082,0.42,1.408,0.061,0.0,0.42,0.03,18,1.49,10.9
+00935,Vehicle Following,8.0,autopilot_stock,ok,6,0,0,False,False,0,True,True,False,,,,0.541,0.718,0.608,0.323,0.0,,,0,0.0,15.0
+00935,Vehicle Following,8.0,rhd_lead@ep08,ok,6,0,0,False,False,0,True,False,False,,,,1.0,0.806,1.364,1.681,0.0,,,30,2.4,16.5
+00935,Vehicle Following,8.0,rhd_lead@ep08+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,True,False,,,,0.781,0.754,0.853,0.766,0.0,0.0,0.3,30,2.39,16.5
+01106,Vehicle Following,8.0,autopilot_stock,ok,4,0,0,False,False,0,True,True,True,False,ego behind,-23.79,0.178,0.795,0.689,0.176,1.38,,,0,0.0,14.6
+01106,Vehicle Following,8.0,rhd_lead@ep08,collision,4,1,0,True,False,0,True,True,True,False,ego behind,9.6,1.0,1.0,1.104,1.28,0.04,,,30,2.54,15.6
+01106,Vehicle Following,8.0,rhd_lead@ep08+ttc:0.7:0.2,ok,4,0,0,False,False,0,True,True,True,True,ego behind,3.71,1.0,1.0,1.043,1.116,0.0,0.0,0.07,30,2.56,15.5
+00613,Vehicle Following,8.0,autopilot_stock,ok,5,0,0,False,False,0,True,True,False,,,,0.573,0.909,0.933,0.559,0.0,,,0,0.0,14.8
+00613,Vehicle Following,8.0,rhd_lead@ep08,collision,5,2,1,True,True,0,True,True,False,,,,1.0,1.0,1.35,1.49,0.0,,,30,2.53,16.7
+00613,Vehicle Following,8.0,rhd_lead@ep08+ttc:0.7:0.2,ok,5,0,0,False,False,0,True,True,False,,,,0.823,0.965,1.019,0.801,0.0,0.0,0.12,30,2.48,16.8
+00594,Vehicle Following,8.0,autopilot_stock,ok,6,0,0,False,False,0,False,,False,,,,0.0,0.753,0.998,-0.0,0.0,,,0,0.0,15.0
+00594,Vehicle Following,8.0,rhd_lead@ep08,ok,6,0,0,False,False,0,False,,False,,,,0.003,0.757,0.982,0.011,0.0,,,30,2.56,16.7
+00594,Vehicle Following,8.0,rhd_lead@ep08+ttc:0.7:0.2,ok,6,0,0,False,False,0,False,,False,,,,0.609,0.858,0.983,-0.073,0.0,0.0,0.15,30,2.55,16.7
+00455,Vehicle Following,8.0,autopilot_stock,ok,6,0,0,False,False,0,False,,False,,,,1.0,0.794,1.779,5.51,0.0,,,0,0.0,15.0
+00455,Vehicle Following,8.0,rhd_lead@ep08,ok,6,0,0,False,False,0,False,,False,,,,0.217,0.663,1.152,0.334,0.0,,,30,2.52,16.6
+00455,Vehicle Following,8.0,rhd_lead@ep08+ttc:0.7:0.2,ok,6,0,0,False,False,0,False,,False,,,,0.206,0.659,1.089,0.321,0.0,0.07,0.63,30,2.51,16.6
+00553,Vehicle Following,8.0,autopilot_stock,ok,5,0,0,False,False,0,True,False,True,False,ego behind,35.87,1.0,0.896,2.338,6.782,0.0,,,0,0.0,14.8
+00553,Vehicle Following,8.0,rhd_lead@ep08,collision,5,2,1,True,False,0,True,False,True,False,ego behind,14.57,1.0,0.896,1.554,3.357,0.0,,,30,2.59,16.7
+00553,Vehicle Following,8.0,rhd_lead@ep08+ttc:0.7:0.2,ok,5,0,0,False,False,0,True,True,True,True,ego behind,1.32,1.0,0.896,1.068,1.27,0.0,0.0,0.28,30,2.6,16.6
+00600,Vehicle Following,8.0,autopilot_stock,ok,5,0,0,False,False,0,True,True,False,,,,0.671,0.911,0.926,0.669,0.0,,,0,0.0,14.9
+00600,Vehicle Following,8.0,rhd_lead@ep08,collision,5,2,1,True,False,0,True,False,False,,,,0.931,0.963,1.438,4.015,0.0,,,30,2.54,16.7
+00600,Vehicle Following,8.0,rhd_lead@ep08+ttc:0.7:0.2,ok,5,0,0,False,False,0,True,True,False,,,,0.936,0.964,0.991,1.109,0.0,0.0,0.36,30,2.55,16.7
+00482,Vehicle Following,8.0,autopilot_stock,ok,6,0,0,False,False,0,False,,False,,,,0.0,0.833,0.88,-0.0,0.0,,,0,0.0,15.0
+00482,Vehicle Following,8.0,rhd_lead@ep08,ok,6,0,0,False,False,0,False,,False,,,,0.106,0.851,0.918,0.267,0.0,,,30,2.52,16.6
+00482,Vehicle Following,8.0,rhd_lead@ep08+ttc:0.7:0.2,ok,6,0,0,False,False,0,False,,False,,,,0.0,0.833,0.9,0.019,0.0,0.57,0.01,30,2.52,16.6
+01138,Vehicle Following,8.0,autopilot_stock,collision,4,2,1,True,True,0,False,,False,,,,1.0,1.0,2.164,8.099,0.0,,,0,0.0,14.8
+01138,Vehicle Following,8.0,rhd_lead@ep08,collision,4,2,1,True,True,0,False,,False,,,,0.0,0.75,0.929,0.272,0.0,,,30,2.48,16.4
+01138,Vehicle Following,8.0,rhd_lead@ep08+ttc:0.7:0.2,ok,4,0,0,False,False,0,False,,False,,,,0.0,0.501,0.44,-0.0,0.0,3.94,0.04,30,2.49,16.4
+01299,Overtaking Left,4.9,autopilot_stock,collision,6,2,1,True,False,0,True,False,True,False,ego passes,-7.14,0.344,0.825,0.771,0.336,0.52,,,0,0.0,9.9
+01299,Overtaking Left,4.9,rhd_lead@ep08,ok,6,0,0,False,False,0,True,True,True,True,ego passes,-0.67,0.991,0.944,0.984,0.936,0.0,,,18,1.48,10.7
+01299,Overtaking Left,4.9,rhd_lead@ep08+ttc:0.7:0.2,ok,6,0,0,False,False,0,True,True,True,True,ego passes,-3.13,0.741,0.884,0.879,0.704,0.05,0.0,0.38,18,1.48,10.7

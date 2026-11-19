@@ -1,0 +1,16 @@
+{
+ "v0": {
+  "vehicle.kawasaki.ninja": 6.91,
+  "vehicle.mercedes.sprinter": 5.13,
+  "vehicle.micro.microlino": 5.34,
+  "vehicle.nissan.micra": 6.0,
+  "vehicle.volkswagen.t2": 6.16
+ },
+ "T": 0.39,
+ "s0": 2.016,
+ "a": 1.626,
+ "b": 1.619,
+ "delta": 4.0,
+ "samples": 113012,
+ "fit": "il/idm.py, train-split base scenarios"
+}

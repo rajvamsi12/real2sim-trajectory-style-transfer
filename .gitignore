@@ -51,3 +51,7 @@ archive/
 .vscode/
 .idea/
 .codex
+
+# IL: third-party pretrained weights (see il/README.md); our own lidar_pca.npz is kept
+il/weights/*
+!il/weights/lidar_pca.npz
